@@ -56,9 +56,11 @@ class HieroJaxInteractive {
 		const formData = new FormData($('form'));
 		$('download-svg').style.setProperty('display', 'none');
 		$('download-canvas').style.setProperty('display', 'none');
+		$('svg-note').style.setProperty('display', 'none');
 		switch (formData.get('type')) {
 			case 'svg': 
 				$('download-svg').style.setProperty('display', 'inline-block');
+				$('svg-note').style.setProperty('display', 'inline-block');
 				break;
 			case 'canvas': 
 				$('download-canvas').style.setProperty('display', 'inline-block');

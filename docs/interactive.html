@@ -108,6 +108,19 @@
 	<input type="button" id="download-svg" value="download SVG" onclick="HieroJaxInteractive.downloadSVG();">
 	<input type="button" id="download-canvas" value="download canvas" onclick="HieroJaxInteractive.downloadCanvas();">
 </div>
+<div style="clear: both; float: left;" id="svg-note">
+<h2>Note</h2>
+
+For a downloaded SVG to be useful, it needs to be associated with
+the correct font. One solution seems to be to install <a href="NewGardinerSMP.ttf">NewGardinerSMP.ttf</a> locally.
+On Linux, the font is then included if, for example, the SVG is converted to a PDF image
+by Inkscape as in:
+<pre><code>
+inkscape myimage.svg --without-gui --export-filename=myimage.pdf
+</code></pre>
+(This is despite error messages being generated in the process.)
+The situation is likely to be similar on other platforms.
+</div>
 
 </body>
 </html>

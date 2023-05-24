@@ -806,6 +806,9 @@ class EnclosureNode extends Node {
 	static initial(groups) {
 		return new Enclosure('plain', groups, '\u{13379}', 0, '\u{1337A}', 0);
 	}
+	isInsertion() {
+		return true;
+	}
 	acceptsMultipleChildren() {
 		return true;
 	}
@@ -1150,6 +1153,8 @@ class LiteralNode extends Node {
 		const name = uniHiero.pointToText[this.group.ch];
 		$('name-text').value = name ? name : '';
 		$('name-param').classList.remove('hidden');
+		if (!name)
+			$('name-text').focus();
 		const rotations = Shapes.allowedRotations(this.group.ch);
 		for (let rot = 45; rot < 360; rot += 45) {
 			if (rotations.includes(rot))
