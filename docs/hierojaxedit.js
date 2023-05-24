@@ -7730,15 +7730,20 @@ class Edit {
 	static adjustPlace(place) {
 		if (!(tree.focus instanceof BasicOpNode))
 			return;	
+		const basic = tree.focus.parent;
 		const prev = tree.focus.place;
 		if (place == prev)
 			return;
-		if (tree.focus.parent.places().includes(place))
+		if (basic.places().includes(place))
 			return;
 		editHistory.remember();
-		tree.focus.parent.group[place] = tree.focus.parent.group[prev];
-		delete tree.focus.parent.group[prev];
+		basic.group[place] = basic.group[prev];
+		delete basic.group[prev];
 		tree.focus.place = place;
+		basic[place + 'Op'] = basic[prev + 'Op'];
+		basic[place + 'Node'] = basic[prev + 'Node'];
+		delete basic[prev + 'Op'];
+		delete basic[prev + 'Node'];
 		Edit.redrawFocus();
 	}
 	static adjustPlaceNext() {
@@ -8132,7 +8137,6 @@ class Embedded {
 		}
 	}
 	save() {
-console.log("ok");
 		if (window.opener) {
 			window.opener.saveEncoding(tree.toString());
 			window.close();
