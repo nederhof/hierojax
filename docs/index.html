@@ -10,9 +10,23 @@
 
 <h2>JavaScript implementation of Ancient Egyptian in Unicode</h2>
 
+<p>
 This implements <a
 href="https://www.unicode.org/L2/L2021/21248-egyptian-controls.pdf">Additional
 control characters for Ancient Egyptian hieroglyphic texts</a> (L2/21-248).
+There is a choice of three different technologies:
+</p>
+<ol>
+<li>using SVG,</li>
+<li>using CSS and HTML elements, and</li>
+<li>using HTML canvas.</li>
+</ol>
+<p>
+The last of these three is the most robust but suffers from
+pixelization. For most applications, SVG seems to be the best choice.
+</p>
+
+<h2>Other pages on this site</h2>
 
 <ul>
 <li><a href="demo.html">Demo</a> with fine-tuning of parameters</li>
@@ -23,6 +37,39 @@ control characters for Ancient Egyptian hieroglyphic texts</a> (L2/21-248).
 <li><a href="edit.html">Graphical editor</a> for editing encodings</li>
 <li><a href="embedding.html">Demo how to embed graphical editor</a> into a larger web application</li>
 </ul>
+
+All the relevant files can be found on <a
+href="https://github.com/nederhof/hierojax">GitHub</a>.
+
+<h2>How to use hieroglyphic encoding in web pages</h2>
+
+Copy 
+<a href="hierojax.js">hierojax.js</a>, 
+<a href="hierojax.css">hierojax.css</a>, and
+<a href="NewGardinerSMP.ttf">NewGardinerSMP.ttf</a> 
+to your folder with web
+pages. In the header of a web page with hieroglyphic, include:
+<pre><code>
+&lt;link rel="stylesheet" type="text/css" href="hierojax.css" /&gt;
+&lt;script type="text/javascript" src="hierojax.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript"&gt;
+    window.addEventListener("DOMContentLoaded", () =&gt; { hierojax.processFragments(); });
+&lt;/script&gt;
+</code></pre>
+
+In your web page, represent fragments of hieroglyphic as exemplified
+in <a href="demo.html">demo.html</a>.
+
+<h2>How to invoke the graphical editor off-line</h2>
+
+Copy 
+<a href="hierojax.js">hierojaxedit.js</a>, 
+<a href="hierojax.css">hierojax.css</a>, 
+<a href="hierojax.css">edit.html</a>, 
+<a href="hierojax.css">help.html</a>, 
+<a href="hierojax.css">edit.css</a>, and 
+<a href="NewGardinerSMP.ttf">NewGardinerSMP.ttf</a> 
+to a local folder. Open <tt>edit.html</tt> in your browser.
 
 </body>
 </html>

@@ -124,14 +124,14 @@ and vertical group, respectively.
 <li> '<b>[</b>' and '<b>]</b>' add a bracket before or after a sign.
 <li> <b>overlay</b> and <b>insert</b> generally create
 a new element in the structure, of which the current focus becomes the
-first argument; the second argument initially consists of a named glyph.
+first argument; the second argument initially consists of a sign.
 If the current focus is another operator such as '<b>:</b>' however, 
 then the two groups on either side become the two arguments of an overlay or insert,
 respectively.
 <li> <b>enclosure</b> creates an enclosure around a previously created group.
 Note that at least one group from among the enclosed groups must exist first before the
 enclosure itself can be created.
-<li> <b>swap</b> swaps the name of the current named glyph and that of
+<li> <b>swap</b> swaps the name of the current literal and that of
 the next one.
 <li> <b>delete</b> generally removes the node with the current focus. 
 This may lead to further changes to preserve the integrity of the syntax.
@@ -157,14 +157,17 @@ The above keyboard shortcuts will work if the browser's focus is
 on the preview or tree panels, which is indicated by a blue dotted border
 around the preview or tree panels.
 <p>
-If the browser's focus is in a text field, it can be transferred to the tree panel
+If the browser's focus is in the text field of a literal, it can be transferred to the tree panel
 by pressing Enter. Conversely, if the browser's focus is in the preview or
 tree panel, and the editor's focus is on a literal, then the browser's focus
 can be transferred to the name field by pressing the space bar.
+<p>
+The name of a sign can be entered as a 'Gardiner name', or for some signs as a
+'mnemonic', as for example <tt>sw</tt> in place of <tt>M23</tt>.
 
 <h2>Sign chooser</h2>
 
-The following is relevant when the editor's focus is on a sign.
+The following is relevant when the editor's focus is on a sign (literal).
 <p>
 The menu of signs is activated by clicking <b>menu</b>, or by entering
 '<b>u</b>' when the browser's focus is on the preview or tree panels, or
