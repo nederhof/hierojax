@@ -1,0 +1,5 @@
+<?xml version="1.0" standalone="yes"?>
+<svg viewBox="0 0 30 50" width="30" height="50" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<path d="M 25,5 A 20,20 0 0 0 5,25" fill="none" stroke="blue" stroke-width="3" />
+<polygon points="0,-5 5,0 0,5" fill="blue" transform="translate(5,25) rotate(90)" />
+</svg>

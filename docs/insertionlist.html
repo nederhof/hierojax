@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Unicode list of insertions</title>
+<link rel="stylesheet" type="text/css" href="insertionlist.css" />
+<script type="text/javascript" src="hierojax.js"></script>
+<script type="text/javascript" src="insertionlist.js"></script>
+</head>
+<body>
+
+<h1>Insertions</h1>
+
+<p>
+Below is a list of <i>conceivable</i> insertions, compiled out of the file
+<a href="insertions.js">insertions.js</a>. Not all of these insertions have
+been attested yet, and we have erred on the side on anticipating more 
+potential insertions than may occur in actual texts. The motivation is that we
+do not wish to place undue limitations on encoding projects in the near
+future. Even so, it is very likely that encoders will come across insertions that
+have been overlooked so far.
+</p>
+<p>
+Two kinds of information are provided here:
+<ol>
+<li>Per sign, the potential insertions.</li>
+<li>The positions where inserted groups would be placed.</li>
+</ol>
+The purpose of the first kind of information is to avoid inconsistent encoding.
+The second issue is font-dependent, i.e., the exact positions
+pertain only to the <a href="https://mjn.host.cs.st-andrews.ac.uk/egyptian/fonts/newgardiner.html">NewGardiner</a> 
+font shown here, and could be slightly different for a different font.
+</p>
+<p>
+The choice of insertions can seem somewhat arbitrary. For some signs,
+both T and TS (or TE) might seem plausible. For some other signs, one could
+even differ whether TS or BS is the most appropriate choice, if an inserted
+group would be neither strictly in the top-left corner nor in the bottom-left
+corner, but somewhere in between. We have followed these guidelines:
+<ul>
+<li>If the inserted group would appear immediately above the feet of a bird 
+(or other animal or human), then this is generally seen as BS or BE insertion,
+provided the bird or animal is not placed on top of another object (in which
+case this is seen as TS or TE insertion instead, reserving BS or BE for potential
+groups to be inserted below that object).</li>
+<li>Consistency between related signs takes precedent over absolute position. 
+For example, we do not necessarily opt for TS rather than BS just because the
+inserted group could be placed slightly closer to the top rather than to the
+bottom.
+<li>The M insertion generally encodes that the inserted
+group appears entirely within the bounding box of the base sign, 
+whereas in the case of T and B, the inserted
+group might (but is not guaranteed to) protrude outside the bounding box.
+</ul>
+</p>
+<p>
+For some signs, there is a list of alternative glyphs.
+For example, for signs with an M insertion, a bigger glyph may be chosen 
+to make more space for the inserted group. 
+From a list of glyphs,
+an implementation would choose the first for which all the required insertions are defined.
+</p>
+<p>
+A sign that is mirrored requires any insertion operators to be replaced by
+their mirrored equivalents.
+For example, if an unmirrored sign has a TS insertion, then its mirrored form
+requires a TE insertion.
+An overlay is always allowed to have TS, BS, TE, BE insertions.
+</p>
+
+<ul id='signs'>
+</ul>
+
+</body>
+</html>

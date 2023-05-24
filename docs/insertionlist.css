@@ -1,0 +1,15 @@
+span {
+	vertical-align: middle;
+	margin-left: 1em;
+	margin-right: 5px;
+}
+canvas {
+	vertical-align: middle;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+#signs li {
+	display: inline;
+	white-space: nowrap;
+}

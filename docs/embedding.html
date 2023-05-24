@@ -1,0 +1,23 @@
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Embedding editor</title>
+<script type="text/javascript" src="../src/util.js"></script>
+<script type="text/javascript" src="embedding.js"></script>
+</head>
+<body>
+
+<h1>Embedding the editor</h1>
+
+<p>
+The graphical editor can be embedded into a larger web application. The editor
+will be created in a new tab of the browser. After editing is done, the
+encoding can be saved back to the calling page, closing the editor.
+This is demonstrated below.
+</p>
+<textarea id="text-to-edit" rows="4"
+spellcheck="false">&#x13322;&#x13216;&#x13430;&#x13437;&#x133cc;&#x13430;&#x133cf;&#x13438;&#x13431;&#x133e4;&#x13431;&#x133e4;</textarea>
+<button type="button" onclick="sendEncoding();">Start editor</button>
+
+</body>
+</html>

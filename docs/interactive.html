@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Unicode interactive demo</title>
+<link rel="stylesheet" type="text/css" href="hierojax.css" />
+<script type="text/javascript" src="hierojax.js"></script>
+<script type="text/javascript" src="interactive.js"></script>
+</head>
+<body>
+
+<h1>Interactive demo</h1>
+
+<div>
+<form id="form">
+	<div style="float: left; width: 40%;">
+	<label>Direction:</label>
+	<input type="radio" id="hlr" name="dir" value="hlr" checked
+	oninput="HieroJaxInteractive.createHTML();">
+	<label for="hlr">hlr</label>
+	<input type="radio" id="hrl" name="dir" value="hrl"
+	oninput="HieroJaxInteractive.createHTML();">
+	<label for="hrl">hrl</label>
+	<input type="radio" id="vlr" name="dir" value="vlr"
+	oninput="HieroJaxInteractive.createHTML();">
+	<label for="vlr">vlr</label>
+	<input type="radio" id="vrl" name="dir" value="vrl"
+	oninput="HieroJaxInteractive.createHTML();">
+	<label for="vrl">vrl</label>
+	<br>
+
+	<label>Type:</label>
+	<input type="radio" id="dom" name="type" value="dom" checked
+	oninput="HieroJaxInteractive.createHTML();">
+	<label for="dom">dom</label>
+	<input type="radio" id="canvas" name="type" value="canvas"
+	oninput="HieroJaxInteractive.createHTML();">
+	<label for="canvas">canvas</label>
+	<input type="radio" id="svg" name="type" value="svg" checked
+	oninput="HieroJaxInteractive.createHTML();">
+	<label for="dom">svg</label>
+	<br>
+
+	<label>Sign color:</label>
+	<input type="radio" id="blacksign" name="signcolor" value="black" checked
+	oninput="HieroJaxInteractive.createHTML();">
+	<label for="blacksign">black</label>
+	<input type="radio" id="red" name="signcolor" value="red"
+	oninput="HieroJaxInteractive.createHTML();">
+	<label for="redsign">red</label>
+	<br>
+
+	<label>Bracket color:</label>
+	<input type="radio" id="blackbracket" name="bracketcolor" value="black" checked
+	oninput="HieroJaxInteractive.createHTML();">
+	<label for="blackbracket">black</label>
+	<input type="radio" id="bluebracket" name="bracketcolor" value="blue"
+	oninput="HieroJaxInteractive.createHTML();">
+	<label for="bluebracket">blue</label>
+	<br>
+
+	<label>Shade:</label>
+	<input type="radio" id="uniform" name="shadepattern" value="uniform" checked
+	oninput="HieroJaxInteractive.createHTML();">
+	<label for="uniform">uniform</label>
+	<input type="radio" id="hatching" name="shadepattern" value="hatching"
+	oninput="HieroJaxInteractive.createHTML();">
+	<label for="hatching">hatching</label>
+	<p>
+	<input type="button" value="defaults" onclick="HieroJaxInteractive.setDefaults();">
+	</div>
+	<div style="float: right; width: 40%;">
+	<label for="linesize">Line size:</label>
+	<br>
+	<input type="range" id="linesize" name="linesize" min="0.5" max="2" value="1" step="0.1" 
+	oninput="HieroJaxInteractive.createHTML();">
+	<br>
+
+	<label for="fontsize">Font size:</label>
+	<br>
+	<input type="range" id="fontsize" name="fontsize" min="10" max="100" value="40" 
+	oninput="HieroJaxInteractive.createHTML();">
+	<br>
+
+	<label for="sep">Sep:</label>
+	<br>
+	<input type="range" id="sep" name="sep" min="0.01" max="0.20" step="0.01" value="0.07" 
+	oninput="HieroJaxInteractive.createHTML();">
+	</div>
+</form>
+</div>
+<p>
+
+<div style="clear: both; float: left;">
+	<label>HTML:</label>
+	<br>
+	<textarea id="header" rows="2" cols="100" readonly>&lt;span class="hierojax"&gt;</textarea>
+	<br>
+	<textarea id="encoding" class="hierojax-source" rows="1" cols="50"
+	onchange="HieroJaxInteractive.createHTML();">𓌢𓑕𓈖𓑕𓐰[𓐷𓏌}𓐰𓏏𓐸𓐱𓏤𓐱𓏤 </textarea>
+	<textarea id="footer" rows="1" cols="20" readonly>&lt;/span&gt;</textarea>
+	<p>
+	<input type="button" value="refresh" onclick="HieroJaxInteractive.createHTML();">
+	<p>
+	<label>Rendering:</label>
+	<div id="rendering" style="font-size: 40px;">
+	</div>
+	<input type="button" id="download-svg" value="download SVG" onclick="HieroJaxInteractive.downloadSVG();">
+	<input type="button" id="download-canvas" value="download canvas" onclick="HieroJaxInteractive.downloadCanvas();">
+</div>
+
+</body>
+</html>
