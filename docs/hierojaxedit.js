@@ -1761,7 +1761,8 @@ class PrintedSVG extends PrintedAny {
 }`;
 	}
 }
-PrintedSVG.EXTERNAL_FONT = 'file:///home/mjn/Egyptian/hierojax/src/NewGardinerSMP.ttf';
+// PrintedSVG.EXTERNAL_FONT = 'file:///home/mjn/Egyptian/hierojax/src/NewGardinerSMP.ttf';
+PrintedSVG.EXTERNAL_FONT = 'NewGardinerSMP.ttf';
 
 class Group {
 	scale;
