@@ -106,6 +106,8 @@
 				onclick="Edit.doBracketOpen();">[</button>
 			<button type="button" id="bracket-close-button" class="structure-button" title="append bracket close"
 				onclick="Edit.doBracketClose();">]</button>
+		</div>
+		<div id="structure-panel">
 			<button type="button" id="overlay-button" class="structure-button" title="create overlay"
 				onclick="Edit.doOverlay();">o<span class="underline">v</span>erlay</button>
 			<button type="button" id="insert-button" class="structure-button" title="create insertion"
@@ -317,13 +319,13 @@
 					</tr>
 				</table>
 			</div>
-			<div id="blank-param" class="parameter hidden">
+			<div id="blank-param" class="parameter hidden">si<span class="underline">z</span>e:
 				<input type="radio" name="blank-size" id="blank-half"
 					onclick="Edit.adjustBlankSize('half');"><label for="black-half">half</label>
 				<input type="radio" name="blank-size" id="blank-full"
 					onclick="Edit.adjustBlankSize('full');"><label for="black-full">full</label>
 			</div>
-			<div id="lost-param" class="parameter hidden">
+			<div id="lost-param" class="parameter hidden">si<span class="underline">z</span>e:
 				<table class="grid">
 					<tr>
 					<td><input type="radio" name="lost-size" id="lost-half"

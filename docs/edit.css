@@ -144,25 +144,6 @@ h1 {
 	border-top: 2px solid blue;
 }
 
-/*
-#preview {
-	display: block;
-	padding: 5px;
-}
-#preview.hlr {
-}
-#preview.hrl {
-	margin-left: auto;
-	margin-right: 0;
-}
-#preview.vlr {
-}
-#preview.vrl {
-	margin-left: auto;
-	margin-right: 0;
-}
-*/
-
 /* Tree panel */
 
 #tree-panel {
@@ -308,14 +289,12 @@ h1 {
 /* Legend */
 
 #legend-panel {
-	/* height: 210px; */
 	display: inline-block;
 }
 
 #structure-panel {
-	/* height: 210px; */
 	margin: 5px;
-	width: 160px;
+	width: 150px;
 	float: left;
 }
 
@@ -327,8 +306,8 @@ h1 {
 }
 
 .parameter-panel {
-	/* height: 210px; */
 	margin-top: 5px;
+	margin-left: 20px;
 	margin-right: 20px;
 	float: left;
 	font-size: 14px;

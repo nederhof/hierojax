@@ -5686,13 +5686,13 @@ class Node {
 		}
 	}
 	replace(group) {
-		if (this.parent) 
+		if (this.parent)
 			this.parent.replaceChild(this, group);
 		else
 			tree.replaceTop(this.childNumber(), group);
 	}
 	replaceMult(groups) {
-		if (this.parent) 
+		if (this.parent)
 			this.parent.replaceChildMult(this, groups);
 		else
 			tree.replaceTopMult(this.childNumber(), groups);
@@ -5781,7 +5781,7 @@ class VerticalNode extends Node {
 		const oldNext = this.nodes[indexOp+1];
 		const indexPrev = this.group.groups.indexOf(oldPrev.group);
 		const subgroups = group instanceof Vertical ? group.groups : [group];
-		this.group.groups.splice(indexPrev, 1, ...subgroups); 
+		this.group.groups.splice(indexPrev, 1, ...subgroups);
 		this.removeChild(oldNext);
 	}
 	removeChild(old) {
@@ -6848,7 +6848,7 @@ class Edit {
 			case BasicNode:
 			case BlankNode:
 			case LostNode: {
-				const address = node.parent instanceof HorizontalNode ? 
+				const address = node.parent instanceof HorizontalNode ?
 					Node.advance(node.address()) : node.address().concat(2);
 				node.replace(HorizontalNode.initial([node.group, LiteralNode.initial()]));
 				tree.setFocusAddress(address);
@@ -6864,7 +6864,7 @@ class Edit {
 					const index = overlayNode.group.lits1.indexOf(node.group);
 					overlayNode.insertHorizontal(index+1, lit);
 				} else {
-					const address = node.parent instanceof HorizontalNode ? 
+					const address = node.parent instanceof HorizontalNode ?
 						Node.advance(node.address()) : node.address().concat(2);
 					node.replace(HorizontalNode.initial([node.group, lit]));
 					tree.setFocusAddress(address);
@@ -6965,7 +6965,7 @@ class Edit {
 				const index = node.childNumber();
 				const node1 = siblings[index-1];
 				const node2 = siblings[index+1];
-				return !(node1 instanceof BracketCloseNode || 
+				return !(node1 instanceof BracketCloseNode ||
 							node2 instanceof BracketOpenNode);
 			}
 			case FragmentOpNode:
@@ -7031,7 +7031,7 @@ class Edit {
 			case BasicNode:
 			case BlankNode:
 			case LostNode: {
-				const address = node.parent instanceof VerticalNode ? 
+				const address = node.parent instanceof VerticalNode ?
 					Node.advance(node.address()) : node.address().concat(2);
 				node.replace(VerticalNode.initial([node.group, LiteralNode.initial()]));
 				tree.setFocusAddress(address);
@@ -7471,7 +7471,7 @@ class Edit {
 				break;
 			}
 			case HorizontalNode: {
-				node.replaceMult(node.group.groups.filter(g => 
+				node.replaceMult(node.group.groups.filter(g =>
 					!(g instanceof BracketOpen || g instanceof BracketClose)));
 				break;
 			}
@@ -7769,6 +7769,17 @@ class Edit {
 		tree.focus.group.dim = s == 'half' ? 0.5 : 1;
 		Edit.redrawFocus();
 	}
+	static adjustBlankSizeToggle() {
+		editHistory.remember();
+		if ($('blank-half').checked) {
+			$('blank-full').checked = true;
+			tree.focus.group.dim = 1;
+		} else {
+			$('blank-half').checked = true;
+			tree.focus.group.dim = 0.5;
+		}
+		Edit.redrawFocus();
+	}
 	static adjustLostSize(s) {
 		if (!(tree.focus instanceof LostNode))
 			return;
@@ -7782,6 +7793,23 @@ class Edit {
 				tree.focus.group.width = 1; tree.focus.group.height = 0.5; break;
 			default:
 				tree.focus.group.width = 1; tree.focus.group.height = 1; break;
+		}
+		Edit.redrawFocus();
+	}
+	static adjustLostSizeToggle() {
+		editHistory.remember();
+		if ($('lost-half').checked) {
+			$('lost-wide').checked = true;
+			tree.focus.group.width = 1; tree.focus.group.height = 0.5;
+		} else if ($('lost-wide').checked) {
+			$('lost-tall').checked = true;
+			tree.focus.group.width = 0.5; tree.focus.group.height = 1;
+		} else if ($('lost-tall').checked) {
+			$('lost-full').checked = true;
+			tree.focus.group.width = 1; tree.focus.group.height = 1;
+		} else {
+			$('lost-half').checked = true;
+			tree.focus.group.width = 0.5; tree.focus.group.height = 0.5;
 		}
 		Edit.redrawFocus();
 	}
@@ -7799,6 +7827,12 @@ class Edit {
 		tree.focus.group.expand = !$('expand-check').checked;
 		$('expand-check').checked = tree.focus.group.expand;
 		Edit.redrawFocus();
+	}
+	static adjustSizeToggle() {
+		if (tree.focus instanceof LostNode)
+			Edit.adjustLostSizeToggle();
+		else (tree.focus instanceof BlankNode)
+			Edit.adjustBlankSizeToggle();
 	}
 	static redrawFocus() {
 		tree.focus.redrawToRoot();
@@ -7878,6 +7912,7 @@ class Edit {
 			case 'r': Edit.adjustRotateNext(); break;
 			case 'c': Edit.adjustPlaceNext(); break;
 			case 'x': Edit.adjustExpandToggle(); break;
+			case 'z': Edit.adjustSizeToggle(); break;
 			default: return;
 		}
 		e.preventDefault();
