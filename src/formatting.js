@@ -522,7 +522,7 @@ Shapes.REFERENCE_GLYPH = '\u{13000}'; // sitting man
 Shapes.OUTLINE = '\uE45C';
 Shapes.WALLED_OUTLINE = '\uE45D';
 Shapes.PLACEHOLDER = '\uFFFD';
-Shapes.ENCLOSURE_THICKNESS = 0.08; // EM distance between outer border of enclosure and content
+Shapes.ENCLOSURE_THICKNESS = 0.10; // EM distance between outer border of enclosure and content
 Shapes.WALLED_ENCLOSURE_THICKNESS = 0.12; // same for walled enclosure
 Shapes.MEASURE_SIZE = 150;
 Shapes.rotatedChars = {
@@ -1494,7 +1494,7 @@ class Enclosure extends Group {
 			const closeRect = { x: 0, y: 0, w: closeSize.w, h: closeSize.h };
 			const closePrinted = new PrintedCanvasWithoutExtras(measSize, closeSize.w, closeSize.h);
 			closePrinted.addSign(this.delimCloseRotated(options), this.scale, 1, 1, 0, false, closeRect, { });
-			const group = this.groups[0];
+			const group = this.groups[this.groups.length-1];
 			const groupSize = group.size(options);
 			if (Group.h(options)) {
 				group.format(measOptions,

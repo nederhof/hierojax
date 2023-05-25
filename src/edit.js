@@ -333,7 +333,7 @@ class Tree {
 		this.setFocusAddress(address);
 	}
 	replaceTopMult(index, groups) {
-		const address = [this.getFocusIndex() + groups.length * 2];
+		const address = [this.getFocusIndex() + Math.max(0, groups.length-1) * 2];
 		this.replaceTop(index, groups[groups.length-1]);
 		for (let i = groups.length-2; i >= 0; i--)
 			this.insertTop(index, groups[i]);

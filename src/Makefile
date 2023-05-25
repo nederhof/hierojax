@@ -1,4 +1,4 @@
-all: ../docs/hierojax.js ../docs/hierojaxedit.js auxiliaries
+all: ../docs/hierojax.js ../docs/hierojaxedit.js
 
 ../docs/hierojax.js: util.js syntax.js formatting.js insertions.js rotations.js main.js
 	cat util.js > hierojax.js
@@ -22,7 +22,7 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js auxiliaries
 	cat edit.js >> hierojaxedit.js
 	mv hierojaxedit.js ../docs/
 
-auxiliaries: insertions.js rotations.js util.js
+aux: insertions.js rotations.js util.js
 	cp insertions.js ../docs/
 	cp rotations.js ../docs/
 	cp util.js ../docs/
