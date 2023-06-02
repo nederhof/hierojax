@@ -17,39 +17,39 @@ END_ENCLOSURE_CHAR \uD80D\uDC3D|\uD80D\uDC3F
 
 %%
 
-[\[\({〈]	return 'BRACKET_OPEN'
-[\]\)}〉]	return 'BRACKET_CLOSE'
-[\u0FE0-\u0FE6]		return 'VS'
+[\[\({〈]	return 'BRACKET_OPEN';
+[\]\)}〉]	return 'BRACKET_CLOSE';
+[\u0FE0-\u0FE6]		return 'VS';
 /* [\u{13000}-\u{13257}|\u{1325E}-\u{13281}|\u{13283}-\u{13285}|\u{1328A}-\u{13378}|\u{1337C}-\u{1342E}]
  * converted to UTF-16 using:
  * https://www.cyberdefinitions.com/symbols/converting-hexadecimal-to-UTF-16-format-for-JavaScript.html
  */
-\uD80C[\uDC00-\uDE57|\uDE5E-\uDE81|\uDE83-\uDE85|\uDE8A-\uDF78|\uDF7C-\uDFFF]|\uD80D[\uDC00-\uDC2E]|\uFFFD return 'SIGN'
+\uD80C[\uDC00-\uDE57|\uDE5E-\uDE81|\uDE83-\uDE85|\uDE8A-\uDF78|\uDF7C-\uDFFF]|\uD80D[\uDC00-\uDC2E]|\uFFFD return 'SIGN';
 
-'\uD80D\uDC30'	return 'VER'
-'\uD80D\uDC31'	return 'HOR'
-'\uD80D\uDC32'	return 'INSERT_TS'
-'\uD80D\uDC33'	return 'INSERT_BS'
-'\uD80D\uDC34'	return 'INSERT_TE'
-'\uD80D\uDC35'	return 'INSERT_BE'
-'\uD80D\uDC36'	return 'OVERLAY'
-'\uD80D\uDC37'	return 'BEGIN_SEGMENT'
-'\uD80D\uDC38'	return 'END_SEGMENT'
-'\uD80D\uDC39'	return 'INSERT_M'
-'\uD80D\uDC3A'	return 'INSERT_T'
-'\uD80D\uDC3B'	return 'INSERT_B'
-'\uD80D\uDC40'	return 'MIRROR'
-'\uD80D\uDC41'	return 'FULL_BLANK'
-'\uD80D\uDC42'	return 'HALF_BLANK'
-'\uD80D\uDC43'	return 'FULL_LOST'
-'\uD80D\uDC44'	return 'HALF_LOST'
-'\uD80D\uDC45'	return 'TALL_LOST'
-'\uD80D\uDC46'	return 'WIDE_LOST'
+'\uD80D\uDC30'	return 'VER';
+'\uD80D\uDC31'	return 'HOR';
+'\uD80D\uDC32'	return 'INSERT_TS';
+'\uD80D\uDC33'	return 'INSERT_BS';
+'\uD80D\uDC34'	return 'INSERT_TE';
+'\uD80D\uDC35'	return 'INSERT_BE';
+'\uD80D\uDC36'	return 'OVERLAY';
+'\uD80D\uDC37'	return 'BEGIN_SEGMENT';
+'\uD80D\uDC38'	return 'END_SEGMENT';
+'\uD80D\uDC39'	return 'INSERT_M';
+'\uD80D\uDC3A'	return 'INSERT_T';
+'\uD80D\uDC3B'	return 'INSERT_B';
+'\uD80D\uDC40'	return 'MIRROR';
+'\uD80D\uDC41'	return 'FULL_BLANK';
+'\uD80D\uDC42'	return 'HALF_BLANK';
+'\uD80D\uDC43'	return 'FULL_LOST';
+'\uD80D\uDC44'	return 'HALF_LOST';
+'\uD80D\uDC45'	return 'TALL_LOST';
+'\uD80D\uDC46'	return 'WIDE_LOST';
 
-({OPENING_CHAR}{DAMAGED_CHAR}?)?{BEGIN_ENCLOSURE_CHAR}	return 'ENCLOSURE_OPENING'
-{END_ENCLOSURE_CHAR}({CLOSING_CHAR}{DAMAGED_CHAR}?)?		return 'ENCLOSURE_CLOSING'
-{OPENING_CHAR}|{CLOSING_CHAR}	return 'DELIMITER'
-{DAMAGED_CHAR}	return 'DAMAGED'
+({OPENING_CHAR}{DAMAGED_CHAR}?)?{BEGIN_ENCLOSURE_CHAR}	return 'ENCLOSURE_OPENING';
+{END_ENCLOSURE_CHAR}({CLOSING_CHAR}{DAMAGED_CHAR}?)?		return 'ENCLOSURE_CLOSING';
+{OPENING_CHAR}|{CLOSING_CHAR}	return 'DELIMITER';
+{DAMAGED_CHAR}	return 'DAMAGED';
 
 <<EOF>>		return 'EOF';
 

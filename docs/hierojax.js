@@ -754,59 +754,59 @@ options: {},
 performAction: function anonymous(yy,yy_,$avoiding_name_collisions,YY_START) {
 var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
-case 0:return 58
+case 0:return 58;
 break;
-case 1:return 59
+case 1:return 59;
 break;
-case 2:return 65
+case 2:return 65;
 break;
-case 3:return 64
+case 3:return 64;
 break;
-case 4:return 15
+case 4:return 15;
 break;
-case 5:return 29
+case 5:return 29;
 break;
-case 6:return 41
+case 6:return 41;
 break;
-case 7:return 49
+case 7:return 49;
 break;
-case 8:return 50
+case 8:return 50;
 break;
-case 9:return 51
+case 9:return 51;
 break;
-case 10:return 56
+case 10:return 56;
 break;
-case 11:return 17
+case 11:return 17;
 break;
-case 12:return 20
+case 12:return 20;
 break;
-case 13:return 52
+case 13:return 52;
 break;
-case 14:return 53
+case 14:return 53;
 break;
-case 15:return 54
+case 15:return 54;
 break;
-case 16:return 66
+case 16:return 66;
 break;
-case 17:return 67
+case 17:return 67;
 break;
-case 18:return 68
+case 18:return 68;
 break;
-case 19:return 69
+case 19:return 69;
 break;
-case 20:return 70
+case 20:return 70;
 break;
-case 21:return 71
+case 21:return 71;
 break;
-case 22:return 72
+case 22:return 72;
 break;
-case 23:return 75
+case 23:return 75;
 break;
-case 24:return 76
+case 24:return 76;
 break;
-case 25:return 78
+case 25:return 78;
 break;
-case 26:return 79
+case 26:return 79;
 break;
 case 27:return 5;
 break;
@@ -1312,7 +1312,8 @@ class Shapes {
 		if (ch in Shapes.insertions)
 			for (const alt of Shapes.insertions[ch])
 				for (const p in alt)
-					places.add(mirror ? Shapes.mirrorPlace(p) : p);
+					if (p != 'glyph')
+						places.add(mirror ? Shapes.mirrorPlace(p) : p);
 		return places;
 	}
 	static allowedRotations(ch) {
@@ -3124,7 +3125,7 @@ Shapes.insertions = {
 '\u{130BD}': [{ te: { } }],
 '\u{130BE}': [{ ts: { }, be: { } }],
 '\u{130BF}': [{ ts: { }, bs: { y: 0.7 }, be: { x: 0.8 }, te: { } }],
-'\u{130C0}': [{ ts: { } }],
+'\u{130C0}': [{ ts: { }, bs: { y: 0.6 } }],
 '\u{130C1}': [{ bs: { y: 0.8 }, be: { }, ts: { }, te: { } }],
 '\u{130C2}': [{ ts: { }, m: { x: 0.4, y: 0.6 } }],
 '\u{130D2}': [{ bs: { y: 0.7 }, te: { } }],
@@ -3245,9 +3246,9 @@ Shapes.insertions = {
 '\u{1318E}': [{ ts: { } }],
 '\u{1318F}': [{ bs: { y: 0.6 }, te: { } }],
 '\u{13190}': [{ bs: { }, te: { } }],
-'\u{13193}': [{ bs: { }, t: { } }],
-'\u{13194}': [{ bs: { }, t: { } }],
-'\u{13195}': [{ bs: { }, t: { x: 0.7 } }],
+'\u{13193}': [{ bs: { x: 0.2 }, t: { } }],
+'\u{13194}': [{ bs: { x: 0.2 }, t: { } }],
+'\u{13195}': [{ bs: { x: 0.2 }, t: { x: 0.7 } }],
 '\u{13196}': [{ t: { } }],
 '\u{13197}': [{ be: { y: 0.6 } }],
 '\u{13198}': [{ te: { y: 0.5 } }],
@@ -3267,6 +3268,7 @@ Shapes.insertions = {
 '\u{131D4}': [{ te: { } }],
 '\u{131D6}': [{ te: { } }],
 '\u{131D7}': [{ bs: { }, te: { }, be: { } }],
+'\u{131D8}': [{ ts: { }, bs: { }, te: { }, be: { } }],
 '\u{131D9}': [{ bs: { }, te: { }, be: { } }],
 '\u{131E7}': [{ te: { }, b: { x: 0.75 } }],
 '\u{131ED}': [{ b: { x: 0.4 } }, { glyph: '\u{E4A7}', m: { x: 0.4, y: 0.6 } }],

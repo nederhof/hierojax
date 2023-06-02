@@ -238,11 +238,24 @@ class Tree {
 		}
 		this.setFocusNode(node);
 	}
+	setPlaceholderAddress() {
+		const address = this.getPlaceholderAddress();
+		if (address)
+			this.setFocusAddress(address);
+	}
 	getFocusAddress() {
 		return this.focus ? this.focus.address() : [];
 	}
 	getFocusIndex() {
 		return this.focus ? this.focus.root().childNumber() : -1;
+	}
+	getPlaceholderAddress() {
+		for (let i = 0; i < this.nodes.length; i++) {
+			const addr = this.nodes[i].getPlaceholderAddress();
+			if (addr)
+				return [i].concat(addr);
+		}
+		return null;
 	}
 	moveStart() {
 		if (this.nodes.length > 0)
@@ -485,6 +498,15 @@ class Node {
 			const first = node.firstLiteralNode();
 			if (first)
 				return first;
+		}
+		return null;
+	}
+	getPlaceholderAddress() {
+		const children = this.children();
+		for (let i = 0; i < children.length; i++) {
+			const addr = children[i].getPlaceholderAddress();
+			if (addr)
+				return [i].concat(addr);
 		}
 		return null;
 	}
@@ -1196,6 +1218,9 @@ class LiteralNode extends Node {
 	firstLiteralNode() {
 		return this;
 	}
+	getPlaceholderAddress() {
+		return this.group.ch == Shapes.PLACEHOLDER ? [] : null;
+	}
 	isFlatVertical() {
 		return true;
 	}
@@ -1454,6 +1479,7 @@ class Edit {
 				}
 			}
 		}
+		tree.setPlaceholderAddress();
 		preview.update();
 	}
 	static canDoSingleton() {
@@ -1656,19 +1682,17 @@ class Edit {
 		const node = tree.focus;
 		switch (node.constructor) {
 			case HorizontalNode: {
-				const address = node.address().concat(node.group.groups.length+2);
 				const groups = node.group.groups.concat(LiteralNode.initial());
 				node.replace(HorizontalNode.initial(groups));
-				tree.setFocusAddress(address);
+				tree.setPlaceholderAddress();
 				break;
 			}
 			case FlatHorizontalNode: {
-				const address = node.address().concat(node.parent.group.lits1.length * 2);
 				const siblings = node.siblings();
 				const lits1 = node.group.groups.concat(LiteralNode.initial());
 				const lits2 = node.parent.group.lits2;
 				node.parent.replace(OverlayNode.initial(lits1, lits2));
-				tree.setFocusAddress(address);
+				tree.setPlaceholderAddress();
 				break;
 			}
 			case VerticalOpNode:
@@ -1698,10 +1722,8 @@ class Edit {
 			case BasicNode:
 			case BlankNode:
 			case LostNode: {
-				const address = node.parent instanceof HorizontalNode ?
-					Node.advance(node.address()) : node.address().concat(2);
 				node.replace(HorizontalNode.initial([node.group, LiteralNode.initial()]));
-				tree.setFocusAddress(address);
+				tree.setPlaceholderAddress();
 				break;
 			}
 			case LiteralNode: {
@@ -1714,11 +1736,9 @@ class Edit {
 					const index = overlayNode.group.lits1.indexOf(node.group);
 					overlayNode.insertHorizontal(index+1, lit);
 				} else {
-					const address = node.parent instanceof HorizontalNode ?
-						Node.advance(node.address()) : node.address().concat(2);
 					node.replace(HorizontalNode.initial([node.group, lit]));
-					tree.setFocusAddress(address);
 				}
+				tree.setPlaceholderAddress();
 				break;
 			}
 		}
@@ -1752,19 +1772,17 @@ class Edit {
 		const node = tree.focus;
 		switch (node.constructor) {
 			case HorizontalNode: {
-				const address = node.address().concat(0);
 				const groups = [LiteralNode.initial()].concat(node.group.groups);
 				node.replace(HorizontalNode.initial(groups));
-				tree.setFocusAddress(address);
+				tree.setPlaceholderAddress();
 				break;
 			}
 			case FlatHorizontalNode: {
-				const address = node.address().concat(0);
 				const siblings = node.siblings();
 				const lits1 = [LiteralNode.initial()].concat(node.group.groups);
 				const lits2 = node.parent.group.lits2;
 				node.parent.replace(OverlayNode.initial(lits1, lits2));
-				tree.setFocusAddress(address);
+				tree.setPlaceholderAddress();
 				break;
 			}
 			case VerticalNode:
@@ -1773,9 +1791,8 @@ class Edit {
 			case BlankNode:
 			case LostNode:
 			case OverlayNode: {
-				const address = node.address().concat(0);
 				node.replace(HorizontalNode.initial([LiteralNode.initial(), node.group]));
-				tree.setFocusAddress(address);
+				tree.setPlaceholderAddress();
 				break;
 			}
 			case LiteralNode: {
@@ -1788,10 +1805,9 @@ class Edit {
 					const index = overlayNode.group.lits1.indexOf(node.group);
 					overlayNode.insertHorizontal(index, lit);
 				} else {
-					const address = node.address().concat(0);
 					node.replace(HorizontalNode.initial([lit, node.group]));
-					tree.setFocusAddress(address);
 				}
+				tree.setPlaceholderAddress();
 				break;
 			}
 		}
@@ -1839,19 +1855,17 @@ class Edit {
 		const node = tree.focus;
 		switch (node.constructor) {
 			case VerticalNode: {
-				const address = node.address().concat(node.group.groups.length+2);
 				const groups = node.group.groups.concat(LiteralNode.initial());
 				node.replace(VerticalNode.initial(groups));
-				tree.setFocusAddress(address);
+				tree.setPlaceholderAddress();
 				break;
 			}
 			case FlatVerticalNode: {
-				const address = node.address().concat(node.parent.group.lits2.length * 2);
 				const siblings = node.siblings();
 				const lits1 = node.parent.group.lits1;
 				const lits2 = node.group.groups.concat(LiteralNode.initial());
 				node.parent.replace(OverlayNode.initial(lits1, lits2));
-				tree.setFocusAddress(address);
+				tree.setPlaceholderAddress();
 				break;
 			}
 			case HorizontalOpNode:
@@ -1881,10 +1895,8 @@ class Edit {
 			case BasicNode:
 			case BlankNode:
 			case LostNode: {
-				const address = node.parent instanceof VerticalNode ?
-					Node.advance(node.address()) : node.address().concat(2);
 				node.replace(VerticalNode.initial([node.group, LiteralNode.initial()]));
-				tree.setFocusAddress(address);
+				tree.setPlaceholderAddress();
 				break;
 			}
 			case LiteralNode: {
@@ -1897,11 +1909,9 @@ class Edit {
 					const index = overlayNode.group.lits2.indexOf(node.group);
 					overlayNode.insertVertical(index+1, lit);
 				} else {
-					const address = node.parent instanceof VerticalNode ?
-						Node.advance(node.address()) : node.address().concat(2);
 					node.replace(VerticalNode.initial([node.group, lit]));
-					tree.setFocusAddress(address);
 				}
+				tree.setPlaceholderAddress();
 				break;
 			}
 		}
@@ -1935,19 +1945,17 @@ class Edit {
 		const node = tree.focus;
 		switch (node.constructor) {
 			case VerticalNode: {
-				const address = node.address().concat(0);
 				const groups = [LiteralNode.initial()].concat(node.group.groups);
 				node.replace(VerticalNode.initial(groups));
-				tree.setFocusAddress(address);
+				tree.setPlaceholderAddress();
 				break;
 			}
 			case FlatVerticalNode: {
-				const address = node.address().concat(0);
 				const siblings = node.siblings();
 				const lits1 = node.parent.group.lits1;
 				const lits2 = [LiteralNode.initial()].concat(node.group.groups);
 				node.parent.replace(OverlayNode.initial(lits1, lits2));
-				tree.setFocusAddress(address);
+				tree.setPlaceholderAddress();
 				break;
 			}
 			case OverlayNode:
@@ -1956,9 +1964,8 @@ class Edit {
 			case BasicNode:
 			case BlankNode:
 			case LostNode: {
-				const address = node.address().concat(0);
 				node.replace(VerticalNode.initial([LiteralNode.initial(), node.group]));
-				tree.setFocusAddress(address);
+				tree.setPlaceholderAddress();
 				break;
 			}
 			case LiteralNode: {
@@ -1971,10 +1978,9 @@ class Edit {
 					const index = overlayNode.group.lits2.indexOf(node.group);
 					overlayNode.insertVertical(index, lit);
 				} else {
-					const address = node.address().concat(0);
 					node.replace(VerticalNode.initial([node.group, lit]));
-					tree.setFocusAddress(address);
 				}
+				tree.setPlaceholderAddress();
 				break;
 			}
 		}
@@ -2093,15 +2099,13 @@ class Edit {
 		const node = tree.focus;
 		switch (node.constructor) {
 			case HorizontalNode: {
-				const address = node.address().concat(0);
 				node.replace(OverlayNode.initial(node.group.groups, [LiteralNode.initial()]));
-				tree.setFocusAddress(address);
+				tree.setPlaceholderAddress();
 				break;
 			}
 			case VerticalNode: {
-				const address = node.address().concat(2);
 				node.replace(OverlayNode.initial([LiteralNode.initial()], node.group.groups));
-				tree.setFocusAddress(address);
+				tree.setPlaceholderAddress();
 				break;
 			}
 			case FragmentOpNode:
@@ -2126,9 +2130,8 @@ class Edit {
 				break;
 			}
 			case LiteralNode: {
-				const address = node.address().concat(2);
 				node.replace(OverlayNode.initial([node.group], [LiteralNode.initial()]));
-				tree.setFocusAddress(address);
+				tree.setPlaceholderAddress();
 				break;
 			}
 		}
@@ -2184,13 +2187,13 @@ class Edit {
 			}
 			case OverlayNode:
 			case LiteralNode: {
-				const address = node.address().concat(2);
 				node.replace(BasicNode.initial(node.group, LiteralNode.initial()));
-				tree.setFocusAddress(address);
+				tree.setPlaceholderAddress();
 				break;
 			}
 			case BasicNode: {
 				node.insertChild(LiteralNode.initial());
+				tree.setPlaceholderAddress();
 				break;
 			}
 		}

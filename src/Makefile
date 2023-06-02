@@ -1,6 +1,9 @@
 all: ../docs/hierojax.js ../docs/hierojaxedit.js
 
 ../docs/hierojax.js: util.js syntax.js formatting.js insertions.js rotations.js main.js
+	cp util.js ../docs/
+	cp insertions.js ../docs/
+	cp rotations.js ../docs/
 	cat util.js > hierojax.js
 	echo ' '  >> hierojax.js
 	cat syntax.js >> hierojax.js
@@ -16,16 +19,11 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js
 
 ../docs/hierojaxedit.js: ../docs/hierojax.js unipoints.js edit.js
 	cat ../docs/hierojax.js > hierojaxedit.js
-	echo ' '  >> hierojax.js
+	echo ' '  >> hierojaxedit.js
 	cat unipoints.js >> hierojaxedit.js
-	echo ' '  >> hierojax.js
+	echo ' '  >> hierojaxedit.js
 	cat edit.js >> hierojaxedit.js
 	mv hierojaxedit.js ../docs/
-
-aux: insertions.js rotations.js util.js
-	cp insertions.js ../docs/
-	cp rotations.js ../docs/
-	cp util.js ../docs/
 
 clean:
 	rm -f ../docs/hierojax.js

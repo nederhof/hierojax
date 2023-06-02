@@ -468,7 +468,8 @@ class Shapes {
 		if (ch in Shapes.insertions)
 			for (const alt of Shapes.insertions[ch])
 				for (const p in alt)
-					places.add(mirror ? Shapes.mirrorPlace(p) : p);
+					if (p != 'glyph')
+						places.add(mirror ? Shapes.mirrorPlace(p) : p);
 		return places;
 	}
 	static allowedRotations(ch) {
