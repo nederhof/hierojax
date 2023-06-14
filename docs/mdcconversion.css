@@ -1,0 +1,25 @@
+.hidden {
+    display: none;
+}
+
+ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0; 
+}
+
+li { 
+   margin-bottom: 5px;  
+}
+
+.hierojax {
+	cursor: copy;
+}
+
+.clicked {
+	cursor: default;
+}
+
+.danger {
+	color: red;
+}

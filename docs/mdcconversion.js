@@ -3568,3 +3568,4364 @@ class HieroJax {
 }
 
 const hierojax = new HieroJax();
+ 
+const uniGlyphs = {
+A1:0x13000,
+A2:0x13001,
+A3:0x13002,
+A4:0x13003,
+A5:0x13004,
+A5a:0x13005,
+A6:0x13006,
+A6a:0x13007,
+A6b:0x13008,
+A7:0x13009,
+A8:0x1300A,
+A9:0x1300B,
+A10:0x1300C,
+A11:0x1300D,
+A12:0x1300E,
+A13:0x1300F,
+A14:0x13010,
+A14a:0x13011,
+A15:0x13012,
+A16:0x13013,
+A17:0x13014,
+A17a:0x13015,
+A18:0x13016,
+A19:0x13017,
+A20:0x13018,
+A21:0x13019,
+A22:0x1301A,
+A23:0x1301B,
+A24:0x1301C,
+A25:0x1301D,
+A26:0x1301E,
+A27:0x1301F,
+A28:0x13020,
+A29:0x13021,
+A30:0x13022,
+A31:0x13023,
+A32:0x13024,
+A32a:0x13025,
+A33:0x13026,
+A34:0x13027,
+A35:0x13028,
+A36:0x13029,
+A37:0x1302A,
+A38:0x1302B,
+A39:0x1302C,
+A40:0x1302D,
+A40a:0x1302E,
+A41:0x1302F,
+A42:0x13030,
+A42a:0x13031,
+A43:0x13032,
+A43a:0x13033,
+A44:0x13034,
+A45:0x13035,
+A45a:0x13036,
+A46:0x13037,
+A47:0x13038,
+A48:0x13039,
+A49:0x1303A,
+A50:0x1303B,
+A51:0x1303C,
+A52:0x1303D,
+A53:0x1303E,
+A54:0x1303F,
+A55:0x13040,
+A56:0x13041,
+A57:0x13042,
+A58:0x13043,
+A59:0x13044,
+A60:0x13045,
+A61:0x13046,
+A62:0x13047,
+A63:0x13048,
+A64:0x13049,
+A65:0x1304A,
+A66:0x1304B,
+A67:0x1304C,
+A68:0x1304D,
+A69:0x1304E,
+A70:0x1304F,
+B1:0x13050,
+B2:0x13051,
+B3:0x13052,
+B4:0x13053,
+B5:0x13054,
+B5a:0x13055,
+B6:0x13056,
+B7:0x13057,
+B8:0x13058,
+B9:0x13059,
+C1:0x1305A,
+C2:0x1305B,
+C2a:0x1305C,
+C2b:0x1305D,
+C2c:0x1305E,
+C3:0x1305F,
+C4:0x13060,
+C5:0x13061,
+C6:0x13062,
+C7:0x13063,
+C8:0x13064,
+C9:0x13065,
+C10:0x13066,
+C10a:0x13067,
+C11:0x13068,
+C12:0x13069,
+C13:0x1306A,
+C14:0x1306B,
+C15:0x1306C,
+C16:0x1306D,
+C17:0x1306E,
+C18:0x1306F,
+C19:0x13070,
+C20:0x13071,
+C21:0x13072,
+C22:0x13073,
+C23:0x13074,
+C24:0x13075,
+D1:0x13076,
+D2:0x13077,
+D3:0x13078,
+D4:0x13079,
+D5:0x1307A,
+D6:0x1307B,
+D7:0x1307C,
+D8:0x1307D,
+D8a:0x1307E,
+D9:0x1307F,
+D10:0x13080,
+D11:0x13081,
+D12:0x13082,
+D13:0x13083,
+D14:0x13084,
+D15:0x13085,
+D16:0x13086,
+D17:0x13087,
+D18:0x13088,
+D19:0x13089,
+D20:0x1308A,
+D21:0x1308B,
+D22:0x1308C,
+D23:0x1308D,
+D24:0x1308E,
+D25:0x1308F,
+D26:0x13090,
+D27:0x13091,
+D27a:0x13092,
+D28:0x13093,
+D29:0x13094,
+D30:0x13095,
+D31:0x13096,
+D31a:0x13097,
+D32:0x13098,
+D33:0x13099,
+D34:0x1309A,
+D34a:0x1309B,
+D35:0x1309C,
+D36:0x1309D,
+D37:0x1309E,
+D38:0x1309F,
+D39:0x130A0,
+D40:0x130A1,
+D41:0x130A2,
+D42:0x130A3,
+D43:0x130A4,
+D44:0x130A5,
+D45:0x130A6,
+D46:0x130A7,
+D46a:0x130A8,
+D47:0x130A9,
+D48:0x130AA,
+D48a:0x130AB,
+D49:0x130AC,
+D50:0x130AD,
+D50a:0x130AE,
+D50b:0x130AF,
+D50c:0x130B0,
+D50d:0x130B1,
+D50e:0x130B2,
+D50f:0x130B3,
+D50g:0x130B4,
+D50h:0x130B5,
+D50i:0x130B6,
+D51:0x130B7,
+D52:0x130B8,
+D52a:0x130B9,
+D53:0x130BA,
+D54:0x130BB,
+D54a:0x130BC,
+D55:0x130BD,
+D56:0x130BE,
+D57:0x130BF,
+D58:0x130C0,
+D59:0x130C1,
+D60:0x130C2,
+D61:0x130C3,
+D62:0x130C4,
+D63:0x130C5,
+D64:0x130C6,
+D65:0x130C7,
+D66:0x130C8,
+D67:0x130C9,
+D67a:0x130CA,
+D67b:0x130CB,
+D67c:0x130CC,
+D67d:0x130CD,
+D67e:0x130CE,
+D67f:0x130CF,
+D67g:0x130D0,
+D67h:0x130D1,
+E1:0x130D2,
+E2:0x130D3,
+E3:0x130D4,
+E4:0x130D5,
+E5:0x130D6,
+E6:0x130D7,
+E7:0x130D8,
+E8:0x130D9,
+E8a:0x130DA,
+E9:0x130DB,
+E9a:0x130DC,
+E10:0x130DD,
+E11:0x130DE,
+E12:0x130DF,
+E13:0x130E0,
+E14:0x130E1,
+E15:0x130E2,
+E16:0x130E3,
+E16a:0x130E4,
+E17:0x130E5,
+E17a:0x130E6,
+E18:0x130E7,
+E19:0x130E8,
+E20:0x130E9,
+E20a:0x130EA,
+E21:0x130EB,
+E22:0x130EC,
+E23:0x130ED,
+E24:0x130EE,
+E25:0x130EF,
+E26:0x130F0,
+E27:0x130F1,
+E28:0x130F2,
+E28a:0x130F3,
+E29:0x130F4,
+E30:0x130F5,
+E31:0x130F6,
+E32:0x130F7,
+E33:0x130F8,
+E34:0x130F9,
+E34a:0x130FA,
+E36:0x130FB,
+E37:0x130FC,
+E38:0x130FD,
+F1:0x130FE,
+F1a:0x130FF,
+F2:0x13100,
+F3:0x13101,
+F4:0x13102,
+F5:0x13103,
+F6:0x13104,
+F7:0x13105,
+F8:0x13106,
+F9:0x13107,
+F10:0x13108,
+F11:0x13109,
+F12:0x1310A,
+F13:0x1310B,
+F13a:0x1310C,
+F14:0x1310D,
+F15:0x1310E,
+F16:0x1310F,
+F17:0x13110,
+F18:0x13111,
+F19:0x13112,
+F20:0x13113,
+F21:0x13114,
+F21a:0x13115,
+F22:0x13116,
+F23:0x13117,
+F24:0x13118,
+F25:0x13119,
+F26:0x1311A,
+F27:0x1311B,
+F28:0x1311C,
+F29:0x1311D,
+F30:0x1311E,
+F31:0x1311F,
+F31a:0x13120,
+F32:0x13121,
+F33:0x13122,
+F34:0x13123,
+F35:0x13124,
+F36:0x13125,
+F37:0x13126,
+F37a:0x13127,
+F38:0x13128,
+F38a:0x13129,
+F39:0x1312A,
+F40:0x1312B,
+F41:0x1312C,
+F42:0x1312D,
+F43:0x1312E,
+F44:0x1312F,
+F45:0x13130,
+F45a:0x13131,
+F46:0x13132,
+F46a:0x13133,
+F47:0x13134,
+F47a:0x13135,
+F48:0x13136,
+F49:0x13137,
+F50:0x13138,
+F51:0x13139,
+F51a:0x1313A,
+F51b:0x1313B,
+F51c:0x1313C,
+F52:0x1313D,
+F53:0x1313E,
+G1:0x1313F,
+G2:0x13140,
+G3:0x13141,
+G4:0x13142,
+G5:0x13143,
+G6:0x13144,
+G6a:0x13145,
+G7:0x13146,
+G7a:0x13147,
+G7b:0x13148,
+G8:0x13149,
+G9:0x1314A,
+G10:0x1314B,
+G11:0x1314C,
+G11a:0x1314D,
+G12:0x1314E,
+G13:0x1314F,
+G14:0x13150,
+G15:0x13151,
+G16:0x13152,
+G17:0x13153,
+G18:0x13154,
+G19:0x13155,
+G20:0x13156,
+G20a:0x13157,
+G21:0x13158,
+G22:0x13159,
+G23:0x1315A,
+G24:0x1315B,
+G25:0x1315C,
+G26:0x1315D,
+G26a:0x1315E,
+G27:0x1315F,
+G28:0x13160,
+G29:0x13161,
+G30:0x13162,
+G31:0x13163,
+G32:0x13164,
+G33:0x13165,
+G34:0x13166,
+G35:0x13167,
+G36:0x13168,
+G36a:0x13169,
+G37:0x1316A,
+G37a:0x1316B,
+G38:0x1316C,
+G39:0x1316D,
+G40:0x1316E,
+G41:0x1316F,
+G42:0x13170,
+G43:0x13171,
+G43a:0x13172,
+G44:0x13173,
+G45:0x13174,
+G45a:0x13175,
+G46:0x13176,
+G47:0x13177,
+G48:0x13178,
+G49:0x13179,
+G50:0x1317A,
+G51:0x1317B,
+G52:0x1317C,
+G53:0x1317D,
+G54:0x1317E,
+H1:0x1317F,
+H2:0x13180,
+H3:0x13181,
+H4:0x13182,
+H5:0x13183,
+H6:0x13184,
+H6a:0x13185,
+H7:0x13186,
+H8:0x13187,
+I1:0x13188,
+I2:0x13189,
+I3:0x1318A,
+I4:0x1318B,
+I5:0x1318C,
+I5a:0x1318D,
+I6:0x1318E,
+I7:0x1318F,
+I8:0x13190,
+I9:0x13191,
+I9a:0x13192,
+I10:0x13193,
+I10a:0x13194,
+I11:0x13195,
+I11a:0x13196,
+I12:0x13197,
+I13:0x13198,
+I14:0x13199,
+I15:0x1319A,
+K1:0x1319B,
+K2:0x1319C,
+K3:0x1319D,
+K4:0x1319E,
+K5:0x1319F,
+K6:0x131A0,
+K7:0x131A1,
+K8:0x131A2,
+L1:0x131A3,
+L2:0x131A4,
+L2a:0x131A5,
+L3:0x131A6,
+L4:0x131A7,
+L5:0x131A8,
+L6:0x131A9,
+L6a:0x131AA,
+L7:0x131AB,
+L8:0x131AC,
+M1:0x131AD,
+M1a:0x131AE,
+M1b:0x131AF,
+M2:0x131B0,
+M3:0x131B1,
+M3a:0x131B2,
+M4:0x131B3,
+M5:0x131B4,
+M6:0x131B5,
+M7:0x131B6,
+M8:0x131B7,
+M9:0x131B8,
+M10:0x131B9,
+M10a:0x131BA,
+M11:0x131BB,
+M12:0x131BC,
+M12a:0x131BD,
+M12b:0x131BE,
+M12c:0x131BF,
+M12d:0x131C0,
+M12e:0x131C1,
+M12f:0x131C2,
+M12g:0x131C3,
+M12h:0x131C4,
+M13:0x131C5,
+M14:0x131C6,
+M15:0x131C7,
+M15a:0x131C8,
+M16:0x131C9,
+M16a:0x131CA,
+M17:0x131CB,
+M17a:0x131CC,
+M18:0x131CD,
+M19:0x131CE,
+M20:0x131CF,
+M21:0x131D0,
+M22:0x131D1,
+M22a:0x131D2,
+M23:0x131D3,
+M24:0x131D4,
+M24a:0x131D5,
+M25:0x131D6,
+M26:0x131D7,
+M27:0x131D8,
+M28:0x131D9,
+M28a:0x131DA,
+M29:0x131DB,
+M30:0x131DC,
+M31:0x131DD,
+M31a:0x131DE,
+M32:0x131DF,
+M33:0x131E0,
+M33a:0x131E1,
+M33b:0x131E2,
+M34:0x131E3,
+M35:0x131E4,
+M36:0x131E5,
+M37:0x131E6,
+M38:0x131E7,
+M39:0x131E8,
+M40:0x131E9,
+M40a:0x131EA,
+M41:0x131EB,
+M42:0x131EC,
+M43:0x131ED,
+M44:0x131EE,
+N1:0x131EF,
+N2:0x131F0,
+N3:0x131F1,
+N4:0x131F2,
+N5:0x131F3,
+N6:0x131F4,
+N7:0x131F5,
+N8:0x131F6,
+N9:0x131F7,
+N10:0x131F8,
+N11:0x131F9,
+N12:0x131FA,
+N13:0x131FB,
+N14:0x131FC,
+N15:0x131FD,
+N16:0x131FE,
+N17:0x131FF,
+N18:0x13200,
+N18a:0x13201,
+N18b:0x13202,
+N19:0x13203,
+N20:0x13204,
+N21:0x13205,
+N22:0x13206,
+N23:0x13207,
+N24:0x13208,
+N25:0x13209,
+N25a:0x1320A,
+N26:0x1320B,
+N27:0x1320C,
+N28:0x1320D,
+N29:0x1320E,
+N30:0x1320F,
+N31:0x13210,
+N32:0x13211,
+N33:0x13212,
+N33a:0x13213,
+N34:0x13214,
+N34a:0x13215,
+N35:0x13216,
+N35a:0x13217,
+N36:0x13218,
+N37:0x13219,
+N37a:0x1321A,
+N38:0x1321B,
+N39:0x1321C,
+N40:0x1321D,
+N41:0x1321E,
+N42:0x1321F,
+NL1:0x13220,
+NL2:0x13221,
+NL3:0x13222,
+NL4:0x13223,
+NL5:0x13224,
+NL5a:0x13225,
+NL6:0x13226,
+NL7:0x13227,
+NL8:0x13228,
+NL9:0x13229,
+NL10:0x1322A,
+NL11:0x1322B,
+NL12:0x1322C,
+NL13:0x1322D,
+NL14:0x1322E,
+NL15:0x1322F,
+NL16:0x13230,
+NL17:0x13231,
+NL17a:0x13232,
+NL18:0x13233,
+NL19:0x13234,
+NL20:0x13235,
+NU1:0x13236,
+NU2:0x13237,
+NU3:0x13238,
+NU4:0x13239,
+NU5:0x1323A,
+NU6:0x1323B,
+NU7:0x1323C,
+NU8:0x1323D,
+NU9:0x1323E,
+NU10:0x1323F,
+NU10a:0x13240,
+NU11:0x13241,
+NU11a:0x13242,
+NU12:0x13243,
+NU13:0x13244,
+NU14:0x13245,
+NU15:0x13246,
+NU16:0x13247,
+NU17:0x13248,
+NU18:0x13249,
+NU18a:0x1324A,
+NU19:0x1324B,
+NU20:0x1324C,
+NU21:0x1324D,
+NU22:0x1324E,
+NU22a:0x1324F,
+O1:0x13250,
+O1a:0x13251,
+O2:0x13252,
+O3:0x13253,
+O4:0x13254,
+O5:0x13255,
+O5a:0x13256,
+O6:0x13257,
+O7:0x1325E,
+O8:0x1325F,
+O9:0x13260,
+O10:0x13261,
+O10a:0x13262,
+O10b:0x13263,
+O10c:0x13264,
+O11:0x13265,
+O12:0x13266,
+O13:0x13267,
+O14:0x13268,
+O15:0x13269,
+O16:0x1326A,
+O17:0x1326B,
+O18:0x1326C,
+O19:0x1326D,
+O19a:0x1326E,
+O20:0x1326F,
+O20a:0x13270,
+O21:0x13271,
+O22:0x13272,
+O23:0x13273,
+O24:0x13274,
+O24a:0x13275,
+O25:0x13276,
+O25a:0x13277,
+O26:0x13278,
+O27:0x13279,
+O28:0x1327A,
+O29:0x1327B,
+O29a:0x1327C,
+O30:0x1327D,
+O30a:0x1327E,
+O31:0x1327F,
+O32:0x13280,
+O33:0x13281,
+O34:0x13283,
+O35:0x13284,
+O36:0x13285,
+O37:0x1328A,
+O38:0x1328B,
+O39:0x1328C,
+O40:0x1328D,
+O41:0x1328E,
+O42:0x1328F,
+O43:0x13290,
+O44:0x13291,
+O45:0x13292,
+O46:0x13293,
+O47:0x13294,
+O48:0x13295,
+O49:0x13296,
+O50:0x13297,
+O50a:0x13298,
+O50b:0x13299,
+O51:0x1329A,
+P1:0x1329B,
+P1a:0x1329C,
+P2:0x1329D,
+P3:0x1329E,
+P3a:0x1329F,
+P4:0x132A0,
+P5:0x132A1,
+P6:0x132A2,
+P7:0x132A3,
+P8:0x132A4,
+P9:0x132A5,
+P10:0x132A6,
+P11:0x132A7,
+Q1:0x132A8,
+Q2:0x132A9,
+Q3:0x132AA,
+Q4:0x132AB,
+Q5:0x132AC,
+Q6:0x132AD,
+Q7:0x132AE,
+R1:0x132AF,
+R2:0x132B0,
+R2a:0x132B1,
+R3:0x132B2,
+R3a:0x132B3,
+R3b:0x132B4,
+R4:0x132B5,
+R5:0x132B6,
+R6:0x132B7,
+R7:0x132B8,
+R8:0x132B9,
+R9:0x132BA,
+R10:0x132BB,
+R10a:0x132BC,
+R11:0x132BD,
+R12:0x132BE,
+R13:0x132BF,
+R14:0x132C0,
+R15:0x132C1,
+R16:0x132C2,
+R16a:0x132C3,
+R17:0x132C4,
+R18:0x132C5,
+R19:0x132C6,
+R20:0x132C7,
+R21:0x132C8,
+R22:0x132C9,
+R23:0x132CA,
+R24:0x132CB,
+R25:0x132CC,
+R26:0x132CD,
+R27:0x132CE,
+R28:0x132CF,
+R29:0x132D0,
+S1:0x132D1,
+S2:0x132D2,
+S2a:0x132D3,
+S3:0x132D4,
+S4:0x132D5,
+S5:0x132D6,
+S6:0x132D7,
+S6a:0x132D8,
+S7:0x132D9,
+S8:0x132DA,
+S9:0x132DB,
+S10:0x132DC,
+S11:0x132DD,
+S12:0x132DE,
+S13:0x132DF,
+S14:0x132E0,
+S14a:0x132E1,
+S14b:0x132E2,
+S15:0x132E3,
+S16:0x132E4,
+S17:0x132E5,
+S17a:0x132E6,
+S18:0x132E7,
+S19:0x132E8,
+S20:0x132E9,
+S21:0x132EA,
+S22:0x132EB,
+S23:0x132EC,
+S24:0x132ED,
+S25:0x132EE,
+S26:0x132EF,
+S26a:0x132F0,
+S26b:0x132F1,
+S27:0x132F2,
+S28:0x132F3,
+S29:0x132F4,
+S30:0x132F5,
+S31:0x132F6,
+S32:0x132F7,
+S33:0x132F8,
+S34:0x132F9,
+S35:0x132FA,
+S35a:0x132FB,
+S36:0x132FC,
+S37:0x132FD,
+S38:0x132FE,
+S39:0x132FF,
+S40:0x13300,
+S41:0x13301,
+S42:0x13302,
+S43:0x13303,
+S44:0x13304,
+S45:0x13305,
+S46:0x13306,
+T1:0x13307,
+T2:0x13308,
+T3:0x13309,
+T3a:0x1330A,
+T4:0x1330B,
+T5:0x1330C,
+T6:0x1330D,
+T7:0x1330E,
+T7a:0x1330F,
+T8:0x13310,
+T8a:0x13311,
+T9:0x13312,
+T9a:0x13313,
+T10:0x13314,
+T11:0x13315,
+T11a:0x13316,
+T12:0x13317,
+T13:0x13318,
+T14:0x13319,
+T15:0x1331A,
+T16:0x1331B,
+T16a:0x1331C,
+T17:0x1331D,
+T18:0x1331E,
+T19:0x1331F,
+T20:0x13320,
+T21:0x13321,
+T22:0x13322,
+T23:0x13323,
+T24:0x13324,
+T25:0x13325,
+T26:0x13326,
+T27:0x13327,
+T28:0x13328,
+T29:0x13329,
+T30:0x1332A,
+T31:0x1332B,
+T32:0x1332C,
+T32a:0x1332D,
+T33:0x1332E,
+T33a:0x1332F,
+T34:0x13330,
+T35:0x13331,
+T36:0x13332,
+U1:0x13333,
+U2:0x13334,
+U3:0x13335,
+U4:0x13336,
+U5:0x13337,
+U6:0x13338,
+U6a:0x13339,
+U6b:0x1333A,
+U7:0x1333B,
+U8:0x1333C,
+U9:0x1333D,
+U10:0x1333E,
+U11:0x1333F,
+U12:0x13340,
+U13:0x13341,
+U14:0x13342,
+U15:0x13343,
+U16:0x13344,
+U17:0x13345,
+U18:0x13346,
+U19:0x13347,
+U20:0x13348,
+U21:0x13349,
+U22:0x1334A,
+U23:0x1334B,
+U23a:0x1334C,
+U24:0x1334D,
+U25:0x1334E,
+U26:0x1334F,
+U27:0x13350,
+U28:0x13351,
+U29:0x13352,
+U29a:0x13353,
+U30:0x13354,
+U31:0x13355,
+U32:0x13356,
+U32a:0x13357,
+U33:0x13358,
+U34:0x13359,
+U35:0x1335A,
+U36:0x1335B,
+U37:0x1335C,
+U38:0x1335D,
+U39:0x1335E,
+U40:0x1335F,
+U41:0x13360,
+U42:0x13361,
+V1:0x13362,
+V1a:0x13363,
+V1b:0x13364,
+V1c:0x13365,
+V1d:0x13366,
+V1e:0x13367,
+V1f:0x13368,
+V1g:0x13369,
+V1h:0x1336A,
+V1i:0x1336B,
+V2:0x1336C,
+V2a:0x1336D,
+V3:0x1336E,
+V4:0x1336F,
+V5:0x13370,
+V6:0x13371,
+V7:0x13372,
+V7a:0x13373,
+V7b:0x13374,
+V8:0x13375,
+V9:0x13376,
+V10:0x13377,
+V11:0x13378,
+V12:0x1337C,
+V12a:0x1337D,
+V12b:0x1337E,
+V13:0x1337F,
+V14:0x13380,
+V15:0x13381,
+V16:0x13382,
+V17:0x13383,
+V18:0x13384,
+V19:0x13385,
+V20:0x13386,
+V20a:0x13387,
+V20b:0x13388,
+V20c:0x13389,
+V20d:0x1338A,
+V20e:0x1338B,
+V20f:0x1338C,
+V20g:0x1338D,
+V20h:0x1338E,
+V20i:0x1338F,
+V20j:0x13390,
+V20k:0x13391,
+V20l:0x13392,
+V21:0x13393,
+V22:0x13394,
+V23:0x13395,
+V23a:0x13396,
+V24:0x13397,
+V25:0x13398,
+V26:0x13399,
+V27:0x1339A,
+V28:0x1339B,
+V28a:0x1339C,
+V29:0x1339D,
+V29a:0x1339E,
+V30:0x1339F,
+V30a:0x133A0,
+V31:0x133A1,
+V31a:0x133A2,
+V32:0x133A3,
+V33:0x133A4,
+V33a:0x133A5,
+V34:0x133A6,
+V35:0x133A7,
+V36:0x133A8,
+V37:0x133A9,
+V37a:0x133AA,
+V38:0x133AB,
+V39:0x133AC,
+V40:0x133AD,
+V40a:0x133AE,
+W1:0x133AF,
+W2:0x133B0,
+W3:0x133B1,
+W3a:0x133B2,
+W4:0x133B3,
+W5:0x133B4,
+W6:0x133B5,
+W7:0x133B6,
+W8:0x133B7,
+W9:0x133B8,
+W9a:0x133B9,
+W10:0x133BA,
+W10a:0x133BB,
+W11:0x133BC,
+W12:0x133BD,
+W13:0x133BE,
+W14:0x133BF,
+W14a:0x133C0,
+W15:0x133C1,
+W16:0x133C2,
+W17:0x133C3,
+W17a:0x133C4,
+W18:0x133C5,
+W18a:0x133C6,
+W19:0x133C7,
+W20:0x133C8,
+W21:0x133C9,
+W22:0x133CA,
+W23:0x133CB,
+W24:0x133CC,
+W24a:0x133CD,
+W25:0x133CE,
+X1:0x133CF,
+X2:0x133D0,
+X3:0x133D1,
+X4:0x133D2,
+X4a:0x133D3,
+X4b:0x133D4,
+X5:0x133D5,
+X6:0x133D6,
+X6a:0x133D7,
+X7:0x133D8,
+X8:0x133D9,
+X8a:0x133DA,
+Y1:0x133DB,
+Y1a:0x133DC,
+Y2:0x133DD,
+Y3:0x133DE,
+Y4:0x133DF,
+Y5:0x133E0,
+Y6:0x133E1,
+Y7:0x133E2,
+Y8:0x133E3,
+Z1:0x133E4,
+Z2:0x133E5,
+Z2a:0x133E6,
+Z2b:0x133E7,
+Z2c:0x133E8,
+Z2d:0x133E9,
+Z3:0x133EA,
+Z3a:0x133EB,
+Z3b:0x133EC,
+Z4:0x133ED,
+Z4a:0x133EE,
+Z5:0x133EF,
+Z5a:0x133F0,
+Z6:0x133F1,
+Z7:0x133F2,
+Z8:0x133F3,
+Z9:0x133F4,
+Z10:0x133F5,
+Z11:0x133F6,
+Z12:0x133F7,
+Z13:0x133F8,
+Z14:0x133F9,
+Z15:0x133FA,
+Z15a:0x133FB,
+Z15b:0x133FC,
+Z15c:0x133FD,
+Z15d:0x133FE,
+Z15e:0x133FF,
+Z15f:0x13400,
+Z15g:0x13401,
+Z15h:0x13402,
+Z15i:0x13403,
+Z16:0x13404,
+Z16a:0x13405,
+Z16b:0x13406,
+Z16c:0x13407,
+Z16d:0x13408,
+Z16e:0x13409,
+Z16f:0x1340A,
+Z16g:0x1340B,
+Z16h:0x1340C,
+Aa1:0x1340D,
+Aa2:0x1340E,
+Aa3:0x1340F,
+Aa4:0x13410,
+Aa5:0x13411,
+Aa6:0x13412,
+Aa7:0x13413,
+Aa7a:0x13414,
+Aa7b:0x13415,
+Aa8:0x13416,
+Aa9:0x13417,
+Aa10:0x13418,
+Aa11:0x13419,
+Aa12:0x1341A,
+Aa13:0x1341B,
+Aa14:0x1341C,
+Aa15:0x1341D,
+Aa16:0x1341E,
+Aa17:0x1341F,
+Aa18:0x13420,
+Aa19:0x13421,
+Aa20:0x13422,
+Aa21:0x13423,
+Aa22:0x13424,
+Aa23:0x13425,
+Aa24:0x13426,
+Aa25:0x13427,
+Aa26:0x13428,
+Aa27:0x13429,
+Aa28:0x1342A,
+Aa29:0x1342B,
+Aa30:0x1342C,
+Aa31:0x1342D,
+Aa32:0x1342E};
+
+const uniOpens = {
+O6a:0x13258,
+O6b:0x13259,
+O6c:0x1325A,
+O36a:0x13286,
+O36c:0x13288,
+V11a:0x13379,
+V11d:0x1342F};
+const uniCloses = {
+O6d:0x1325B,
+O6e:0x1325C,
+O6f:0x1325D,
+O33a:0x13282,
+O36b:0x13287,
+O36d:0x13289,
+V11b:0x1337A,
+V11c:0x1337B};
+
+const uniControls = {
+':':0x13430,
+'*':0x13431,
+'^st':0x13432,
+'^sb':0x13433,
+'^et':0x13434,
+'^eb':0x13435,
+'+':0x13436,
+'(':0x13437,
+')':0x13438};
+
+const uniMnemonics = {
+mSa:'A12',
+xr:'A15',
+Xrd:'A17',
+sr:'A21',
+mniw:'A33',
+qiz:'A38',
+iry:'A47',
+Sps:'A50',
+Spsi:'A51',
+msi:'B3',
+DHwty:'C3',
+Xnmw:'C4',
+inpw:'C6',
+stX:'C7',
+mnw:'C8',
+mAat:'C10',
+HH:'C11',
+tp:'D1',
+Hr:'D2',
+Sny:'D3',
+ir:'D4',
+rmi:'D9',
+wDAt:'D10',
+fnD:'D19',
+r:'D21',
+rA:'D21',
+spt:'D24',
+spty:'D25',
+mnD:'D27',
+kA:'D28',
+aHA:'D34',
+a:'D36',
+Dsr:'D45',
+d:'D46',
+Dba:'D50',
+mt:'D52',
+rd:'D56',
+sbq:'D56',
+gH:'D56',
+gHs:'D56',
+b:'D58',
+ab:'D59',
+wab:'D60',
+sAH:'D61',
+zzmt:'E6',
+zAb:'E17',
+mAi:'E22',
+l:'E23',
+rw:'E23',
+Aby:'E24',
+wn:'E34',
+HAt:'F4',
+SsA:'F5',
+wsr:'F12',
+wp:'F13',
+db:'F16',
+Hw:'F18',
+bH:'F18',
+ns:'F20',
+idn:'F21',
+msDr:'F21',
+sDm:'F21',
+DrD:'F21',
+pH:'F22',
+kfA:'F22',
+xpS:'F23',
+wHm:'F25',
+Xn:'F26',
+sti:'F29',
+Sd:'F30',
+ms:'F31',
+X:'F32',
+sd:'F33',
+ib:'F34',
+nfr:'F35',
+zmA:'F36',
+imAx:'F39',
+Aw:'F40',
+spr:'F42',
+iwa:'F44',
+isw:'F44',
+pXr:'F46',
+qAb:'F46',
+A:'G1',
+AA:'G2',
+tyw:'G4',
+mwt:'G14',
+nbty:'G16',
+m:'G17',
+mm:'G18',
+nH:'G21',
+Db:'G22',
+rxyt:'G23',
+Ax:'G25',
+dSr:'G27',
+gm:'G28',
+bA:'G29',
+baHi:'G32',
+aq:'G35',
+wr:'G36',
+gb:'G38',
+zA:'G39',
+pA:'G40',
+xn:'G41',
+wSA:'G42',
+w:'G43',
+ww:'G44',
+mAw:'G46',
+TA:'G47',
+snD:'G54',
+wSm:'H2',
+pq:'H2',
+pAq:'H3',
+nr:'H4',
+Sw:'H6',
+aSA:'I1',
+Styw:'I2',
+mzH:'I3',
+sbk:'I4',
+sAq:'I5',
+km:'I6',
+Hfn:'I8',
+f:'I9',
+D:'I10',
+DD:'I11',
+in:'K1',
+ad:'K3',
+XA:'K4',
+bz:'K5',
+nSmt:'K6',
+xpr:'L1',
+bit:'L2',
+srqt:'L7',
+iAm:'M1',
+Hn:'M2',
+xt:'M3',
+rnp:'M4',
+tr:'M6',
+SA:'M8',
+zSn:'M9',
+wdn:'M11',
+xA:'M12',
+wAD:'M13',
+HA:'M16',
+i:'M17',
+ii:'M18',
+sxt:'M20',
+sm:'M21',
+sw:'M23',
+rsw:'M24',
+Sma:'M26',
+nDm:'M29',
+bnr:'M30',
+bdt:'M34',
+Dr:'M36',
+iz:'M40',
+pt:'N1',
+iAdt:'N4',
+idt:'N4',
+ra:'N5',
+zw:'N5',
+hrw:'N5',
+Hnmmt:'N8',
+pzD:'N9',
+Abd:'N11',
+iaH:'N11',
+sbA:'N14',
+dwA:'N14',
+dwAt:'N15',
+tA:'N16',
+iw:'N18',
+wDb:'N20',
+spAt:'N24',
+xAst:'N25',
+Dw:'N26',
+Axt:'N27',
+xa:'N28',
+q:'N29',
+iAt:'N30',
+n:'N35',
+mw:'N35a',
+S:'N37',
+Sm:'N40',
+id:'N41',
+pr:'O1',
+h:'O4',
+Hwt:'O6',
+aH:'O11',
+wsxt:'O15',
+kAr:'O18',
+zH:'O22',
+txn:'O25',
+iwn:'O28',
+aA:'O29',
+zxnt:'O30',
+z:'O34',
+zb:'O35',
+inb:'O36',
+Szp:'O42',
+ipt:'O45',
+nxn:'O47',
+niwt:'O49',
+zp:'O50',
+Snwt:'O51',
+wHa:'P4',
+nfw:'P5',
+TAw:'P5',
+aHa:'P6',
+xrw:'P8',
+st:'Q1',
+wz:'Q2',
+p:'Q3',
+qrsw:'Q6',
+xAwt:'R1',
+xAt:'R1',
+Htp:'R4',
+kAp:'R5',
+kp:'R5',
+snTr:'R7',
+nTr:'R8',
+bd:'R9',
+dd:'R11',
+Dd:'R11',
+imnt:'R14',
+iAb:'R15',
+wx:'R16',
+xm:'R22',
+HDt:'S1',
+dSrt:'S3',
+N:'S3',
+sxmty:'S6',
+xprS:'S7',
+Atf:'S8',
+Swty:'S9',
+mDH:'S10',
+wsx:'S11',
+nbw:'S12',
+tHn:'S15',
+THn:'S15',
+mnit:'S18',
+sDAw:'S19',
+xtm:'S20',
+sT:'S22',
+dmD:'S23',
+Tz:'S24',
+Sndyt:'S26',
+mnxt:'S27',
+s:'S29',
+sf:'S30',
+siA:'S32',
+Tb:'S33',
+anx:'S34',
+Swt:'S35',
+xw:'S37',
+HqA:'S38',
+awt:'S39',
+wAs:'S40',
+Dam:'S41',
+abA:'S42',
+xrp:'S42',
+sxm:'S42',
+md:'S43',
+Ams:'S44',
+nxxw:'S45',
+HD:'T3',
+HDD:'T6',
+pd:'T9',
+pD:'T10',
+zin:'T11',
+zwn:'T11',
+sXr:'T11',
+Ai:'T12',
+Ar:'T12',
+rwd:'T12',
+rwD:'T12',
+rs:'T13',
+qmA:'T14',
+wrrt:'T17',
+Sms:'T18',
+qs:'T19',
+sn:'T22',
+iH:'T24',
+DbA:'T25',
+Xr:'T28',
+nmt:'T29',
+sSm:'T31',
+nm:'T34',
+mA:'U1',
+mr:'U6',
+it:'U10',
+HqAt:'U11',
+hb:'U13',
+Sna:'U13',
+tm:'U15',
+biA:'U16',
+grg:'U17',
+stp:'U21',
+mnx:'U22',
+Ab:'U23',
+Hmt:'U24',
+wbA:'U26',
+DA:'U28',
+rtH:'U31',
+zmn:'U32',
+ti:'U33',
+xsf:'U34',
+Hm:'U36',
+mxAt:'U38',
+'100':'V1',
+sTA:'V2',
+sTAw:'V3',
+wA:'V4',
+snT:'V5',
+Ss:'V6',
+Sn:'V7',
+arq:'V12',
+T:'V13',
+iTi:'V15',
+mDt:'V19',
+XAr:'V19',
+TmA:'V19',
+'10':'V20',
+mD:'V20',
+mH:'V22',
+wD:'V24',
+aD:'V26',
+H:'V28',
+wAH:'V29',
+sk:'V29',
+nb:'V30',
+k:'V31',
+msn:'V32',
+sSr:'V33',
+idr:'V37',
+bAs:'W2',
+Hb:'W3',
+Xnm:'W9',
+iab:'W10',
+nzt:'W11',
+g:'W11',
+Hz:'W14',
+xnt:'W17',
+mi:'W19',
+Hnqt:'W22',
+nw:'W24',
+ini:'W25',
+t:'X1',
+rdi:'X8',
+di:'X8',
+mDAt:'Y1',
+mnhd:'Y3',
+zS:'Y3',
+mn:'Y5',
+ibA:'Y6',
+zSSt:'Y8',
+y:'Z4',
+W:'Z7',
+imi:'Z11',
+x:'Aa1',
+Hp:'Aa5',
+qn:'Aa8',
+mAa:'Aa11',
+im:'Aa13',
+gs:'Aa13',
+M:'Aa13',
+sA:'Aa17',
+apr:'Aa20',
+wDa:'Aa21',
+nD:'Aa27',
+qd:'Aa28',
+Xkr:'Aa30'};
+
+const uniGlyphsByShape = {
+tall: [
+"M40","Aa28","Aa29","P11","D16","T34","T35","U28",
+"U29","U32","U33","S43","U36","T8","T8a","M13","M17",
+"H6","H6a","M4","M12","S29","M29","M30","S37","R14",
+"R15","R16","R17","P6","S40","R19","S41","F10",
+"F11","F12","S38","S39","T14","T15","T13","Aa26",
+"O30","Aa21","U39","F45","O44","Aa27","R8","R9",
+"T7a","T3","T4","V24","V25","U23","S42",
+"U34","S36","F28","U26","U27","U24","U25","Y8",
+"F35","F36","U41","W19","P8","T22","T23","Z11",
+"S44","Aa25","M44","V38","Aa31","Aa30","Aa20","V36",
+"F31","M32","L7","V17","V18","S34","V39","Q7",
+"T18","T19","T20","R21","R11","O28","O11","O36",
+"Aa32","V28","V29"],
+broad: [
+"N1","N37","N38","N39","S32","N18","X4","X5",
+"N17","N16","N20","Aa10","Aa11","Aa12","Aa13","Aa14",
+"Aa15","N35","Aa8","Aa9","V26","V27","R24","W8",
+"V32","Y1","Y2","R4","N11","N12","F42","D24",
+"D25","D13","D15","F20","Z6","F33","T2","T7",
+"F30","V22","V23","R5","R6","O34","V2","V3",
+"S24","R22","R23","T11","O29","T1","T21","U20",
+"U19","U21","D17","U31","T9","T9a","T10","F32",
+"V13","V14","F46","F47","F48","F49","M11","U17",
+"U18","U14","Aa7","F18","D51","U15","U16","Aa24",
+"N31","O31","N36","D14","D21","D22","T30","T31",
+"T33","D48","V30","V31","W3","S12","N30","O42",
+"O43","V16"],
+narrow: [
+"Q3","O39","Z8","O47","N22","N21","N23","N29",
+"X7","O45","O46","Y6","M35","X3","X2","X1",
+"N28","Aa17","I6","W10","W10a","Aa4","R7","M39",
+"M36","F43","F41","N34","U30","W11","W12","W13",
+"T28","N41","N42","V37","M31","F34","W6","W7",
+"W21","W20","V6","V33","V34","V7","V8","S20",
+"V20","V19","Aa19","Aa2","Aa3","N32","F52","V35",
+"H8","M41","F51","D11","K6","L6","F21","D26",
+"N33","D12","S21","N5","N9","N10","Aa1","O50",
+"O49","O48","X6","V9","S10","N6","N8","S11",
+"N15","M42","F38","V1","Z7","Aa16","Z9","Z10"]};
+
+const uniCategories = ['A','B','C','D','E','F','G','H','I',
+'K','L','M','N','NL','NU','O','P','Q','R','S','T','U','V',
+'W','X','Y','Z','Aa'];
+const uniShapes = Object.keys(uniGlyphsByShape);
+const uniCategoriesAndShapes = uniCategories.concat(uniShapes);
+
+const uniNameStructure = /([A-I]|[K-Z]|(?:Aa)|(?:NL)|(?:NU))([1-9](?:[0-9][0-9]?)?)([a-z]?)/;
+const uniMnemonicStructure = /[a-zA-Z]+/;
+const uniControlStructure = /:|\*|\^st|\^sb|\^et|\^sb|\+|\(|\)/;
+const uniAllStructure = /([A-I]|[K-Z]|(?:Aa)|(?:NL)|(?:NU))([1-9](?:[0-9][0-9]?)?)([a-z]?)|[a-zA-Z]+|:|\*|\^st|\^sb|\^et|\^sb|\+|\(|\)/g;
+const uniDamageCharBase = 0x13446;
+
+class UniHiero {
+	catToTexts;
+	constructor() {
+		this.catToTexts = {};
+		this.glyphToText = {};
+		this.pointToText = {};
+		for (const glyph in uniGlyphs) {
+			this.glyphToText[String.fromCodePoint(uniGlyphs[glyph])] = glyph;
+			this.pointToText[String.fromCodePoint(uniGlyphs[glyph])] = glyph;
+			const parts = uniNameStructure.exec(glyph);
+			const cat = parts[1];
+			if (!(cat in this.catToTexts))
+				this.catToTexts[cat] = [];
+			this.catToTexts[cat].push(glyph);
+		}
+		for (const control in uniControls) {
+			this.pointToText[String.fromCodePoint(uniControls[control])] = control;
+		}
+	}
+
+	nameToTexts(name) {
+		return Array.from(name).filter(c => c in this.glyphToText).map(c => this.glyphToText[c]);
+	}
+
+	nameToText(name) {
+		return Array.from(name).map(c => c in this.pointToText ? this.pointToText[c] : '').join('');
+	}
+
+	textToName(text) {
+		const matches = text.match(uniAllStructure);
+		return matches ? matches.map(s =>
+			s in uniGlyphs ? String.fromCodePoint(uniGlyphs[s]) :
+			s in uniControls ? String.fromCodePoint(uniControls[s]) :
+			s in uniMnemonics ? String.fromCodePoint(uniGlyphs[uniMnemonics[s]]) :
+			'').join('') : '';
+	}
+
+	static cmpText(name1, name2) {
+		const parts1 = uniNameStructure.exec(name1);
+		const parts2 = uniNameStructure.exec(name2);
+		const cat1 = parts1[1];
+		const cat2 = parts2[1];
+		const num1 = parseInt(parts1[2]);
+		const num2 = parseInt(parts2[2]);
+		const suf1 = parts1[3];
+		const suf2 = parts2[3];
+		if (cat1 === cat2) {
+			if (num1 < num2)
+				return -1;
+			else if (num1 > num2)
+				return 1;
+			else if (suf1 < suf2)
+				return -1;
+			else if (suf1 > suf2)
+				return 1;
+			else
+				return 0;
+		} else {
+			return uniCategories.indexOf(cat1) - uniCategories.indexOf(cat2);
+		}
+	}
+
+	static cmpTexts(names1, names2) {
+		if (names1.length == 0) {
+			if (names2.length == 0)
+				return 0;
+			else
+				return -1;
+		} else {
+			if (names2.length == 0)
+				return 1;
+			else if (names1[0] < names2[0])
+				return -1;
+			else if (names1[0] > names2[0])
+				return 1;
+			else return UniHiero.cmpText(names1.slice(1), names2.slice(1));
+		}
+	}
+}
+ 
+const mdcNames = {
+'A133': { str: '\u{13007}', kind: 'literal' },
+'US1A6BEXTU': { str: '\u{13008}', kind: 'literal' },
+'A32F': { str: '\u{13025}', kind: 'literal' },
+'A43D': { str: '\u{13033}', kind: 'literal' },
+'A45B': { str: '\u{13075}', kind: 'literal' },
+'A58B': { str: '\u{13043}', kind: 'literal' },
+'A116': { str: '\u{13049}', kind: 'literal' },
+'A469': { str: '\u{1304A}', kind: 'literal' },
+'A239': { str: '\u{1304B}', kind: 'literal' },
+'A282': { str: '\u{1304C}', kind: 'literal' },
+'A199A': { str: '\u{1304D}', kind: 'literal' },
+'A73': { str: '\u{1304F}', kind: 'literal' },
+'B104': { str: '\u{13055}', kind: 'literal' },
+'B47': { str: '\u{13059}', kind: 'literal' },
+'US1C2BEXTU': { str: '\u{1305D}', kind: 'literal' },
+'US1C2CEXTU': { str: '\u{1305E}', kind: 'literal' },
+'US1C13EXTU': { str: '\u{1306A}', kind: 'literal' },
+'US1C15EXTU': { str: '\u{1306C}', kind: 'literal' },
+'C33': { str: '\u{13072}', kind: 'literal' },
+'C49B': { str: '\u{13073}', kind: 'literal' },
+'C165': { str: '\u{13074}', kind: 'literal' },
+'US1D50AEXTU': { str: '\u{130AE}', kind: 'literal' },
+'US1D50BEXTU': { str: '\u{130AF}', kind: 'literal' },
+'US1D50CEXTU': { str: '\u{130B0}', kind: 'literal' },
+'US1D50DEXTU': { str: '\u{130B1}', kind: 'literal' },
+'US1D50EEXTU': { str: '\u{130B2}', kind: 'literal' },
+'US1D50FEXTU': { str: '\u{130B3}', kind: 'literal' },
+'US1D50GEXTU': { str: '\u{130B4}', kind: 'literal' },
+'US1D50HEXTU': { str: '\u{130B5}', kind: 'literal' },
+'US1D50IEXTU': { str: '\u{130B6}', kind: 'literal' },
+'S125': { str: '\u{130B9}', kind: 'literal' },
+'D271': { str: '\u{130C6}', kind: 'literal' },
+'D132': { str: '\u{130C7}', kind: 'literal' },
+'N33': { str: '\u{130C9}', kind: 'literal' },
+'US1D67AEXTU': { str: '\u{130CA}', kind: 'literal' },
+'US1D67BEXTU': { str: '\u{130CB}', kind: 'literal' },
+'US1D67CEXTU': { str: '\u{130CC}', kind: 'literal' },
+'US1D67DEXTU': { str: '\u{130CD}', kind: 'literal' },
+'US1D67EEXTU': { str: '\u{130CE}', kind: 'literal' },
+'US1D67FEXTU': { str: '\u{130CF}', kind: 'literal' },
+'US1D67GEXTU': { str: '\u{130D0}', kind: 'literal' },
+'US1D67HEXTU': { str: '\u{130D1}', kind: 'literal' },
+'E100': { str: '\u{130DC}', kind: 'literal' },
+'E16AEXTU': { str: '\u{130E4}', kind: 'literal' },
+'E141': { str: '\u{130E6}', kind: 'literal' },
+'E147': { str: '\u{130EA}', kind: 'literal' },
+'US1E28AEXTU': { str: '\u{130F3}', kind: 'literal' },
+'E34': { str: '\u{130FA}', kind: 'literal' },
+'E35': { str: '\u{130FB}', kind: 'literal' },
+'E45': { str: '\u{130FC}', kind: 'literal' },
+'E92': { str: '\u{130FD}', kind: 'literal' },
+'F63': { str: '\u{130FF}', kind: 'literal' },
+'Ff4': { str: '\u{13115}', kind: 'literal' },
+'US22F31AEXTU': { str: '\u{13120}', kind: 'literal' },
+'F37B': { str: '\u{13127}', kind: 'literal' },
+'F38C': { str: '\u{13129}', kind: 'literal' },
+'Aa56': { str: '\u{13131}', kind: 'literal' },
+'US1F51AEXTU': { str: '\u{1313A}', kind: 'literal' },
+'US1F51BEXTU': { str: '\u{1313B}', kind: 'literal' },
+'F51A': { str: '\u{1313C}', kind: 'literal' },
+'F59': { str: '\u{1313E}', kind: 'literal' },
+'G139': { str: '\u{13145}', kind: 'literal' },
+'G90': { str: '\u{13157}', kind: 'literal' },
+'G36': { str: '\u{13169}', kind: 'literal' },
+'G37': { str: '\u{1316B}', kind: 'literal' },
+'US1G43AEXTU': { str: '\u{13172}', kind: 'literal' },
+'G247': { str: '\u{13175}', kind: 'literal' },
+'I24': { str: '\u{13192}', kind: 'literal' },
+'I31': { str: '\u{13194}', kind: 'literal' },
+'US1I11AEXTU': { str: '\u{13196}', kind: 'literal' },
+'K13': { str: '\u{131A2}', kind: 'literal' },
+'US1L2AEXTU': { str: '\u{131A5}', kind: 'literal' },
+'US1L3EXTU': { str: '\u{131A6}', kind: 'literal' },
+'US1L6AEXTU': { str: '\u{131AA}', kind: 'literal' },
+'M1E': { str: '\u{131AF}', kind: 'literal' },
+'M72': { str: '\u{131BA}', kind: 'literal' },
+'US1M12AEXTU': { str: '\u{131BD}', kind: 'literal' },
+'US1M12BEXTU': { str: '\u{131BE}', kind: 'literal' },
+'US1M12CEXTU': { str: '\u{131BF}', kind: 'literal' },
+'US1M12DEXTU': { str: '\u{131C0}', kind: 'literal' },
+'US1M12EEXTU': { str: '\u{131C1}', kind: 'literal' },
+'US1M12FEXTU': { str: '\u{131C2}', kind: 'literal' },
+'US1M12GEXTU': { str: '\u{131C3}', kind: 'literal' },
+'US1M12HEXTU': { str: '\u{131C4}', kind: 'literal' },
+'M139': { str: '\u{131C8}', kind: 'literal' },
+'M139B': { str: '\u{131CA}', kind: 'literal' },
+'US1M17AEXTU': { str: '\u{131CC}', kind: 'literal' },
+'nn': { str: '\u{131D2}', kind: 'literal' },
+'M127': { str: '\u{131D5}', kind: 'literal' },
+'M140B': { str: '\u{131DA}', kind: 'literal' },
+'US1M31AEXTU': { str: '\u{131DE}', kind: 'literal' },
+'US1M33BEXTU': { str: '\u{131E2}', kind: 'literal' },
+'US1M40AEXTU': { str: '\u{131EA}', kind: 'literal' },
+'N102': { str: '\u{13201}', kind: 'literal' },
+'O239': { str: '\u{13202}', kind: 'literal' },
+'xAst': { str: '\u{1320A}', kind: 'literal' },
+'N34': { str: '\u{13215}', kind: 'literal' },
+'O54': { str: '\u{13251}', kind: 'literal' },
+'O5U': { str: '\u{13256}', kind: 'literal' },
+'US1O6AEXTU': { str: '\u{13258}', kind: 'singleton' },
+'US1O6BEXTU': { str: '\u{13259}', kind: 'singleton' },
+'US1O6CEXTU': { str: '\u{1325A}', kind: 'singleton' },
+'US1O6DEXTU': { str: '\u{1325B}', kind: 'singleton' },
+'US1O6EEXTU': { str: '\u{1325C}', kind: 'singleton' },
+'US1O6FEXTU': { str: '\u{1325D}', kind: 'singleton' },
+'US1O10BEXTU': { str: '\u{13263}', kind: 'literal' },
+'US248O10CEXTU': { str: '\u{13264}', kind: 'literal' },
+'O190': { str: '\u{13277}', kind: 'literal' },
+'O29v': { str: '\u{1327C}', kind: 'literal' },
+'US1O30AEXTU': { str: '\u{1327E}', kind: 'literal' },
+'US1O33AEXTU': { str: '\u{13282}', kind: 'singleton' },
+'US1O36AEXTU': { str: '\u{13286}', kind: 'singleton' },
+'US1O36BEXTU': { str: '\u{13287}', kind: 'singleton' },
+'US1O36CEXTU': { str: '\u{13288}', kind: 'singleton' },
+'US1O36DEXTU': { str: '\u{13289}', kind: 'singleton' },
+'Ff8': { str: '\u{13298}', kind: 'literal' },
+'Ff8A': { str: '\u{13299}', kind: 'literal' },
+'US1P3AEXTU': { str: '\u{1329F}', kind: 'literal' },
+'R1h': { str: '\u{132B1}', kind: 'literal' },
+'R3P': { str: '\u{132B3}', kind: 'literal' },
+'R3PA': { str: '\u{132B4}', kind: 'literal' },
+'R50': { str: '\u{132BC}', kind: 'literal' },
+'R16B': { str: '\u{132C3}', kind: 'literal' },
+'T63B': { str: '\u{132CE}', kind: 'literal' },
+'R129': { str: '\u{132CF}', kind: 'literal' },
+'O196': { str: '\u{132D0}', kind: 'literal' },
+'S48': { str: '\u{132D3}', kind: 'literal' },
+'S50': { str: '\u{132D8}', kind: 'literal' },
+'US1S14BEXTU': { str: '\u{132E2}', kind: 'literal' },
+'S197': { str: '\u{132E6}', kind: 'literal' },
+'iw': { str: '\u{132F0}', kind: 'literal' },
+'US1S26BEXTU': { str: '\u{132F1}', kind: 'literal' },
+'US1S35ABEXTU': { str: '\u{132FB}', kind: 'literal' },
+'S56': { str: '\u{13306}', kind: 'literal' },
+'T43': { str: '\u{1330A}', kind: 'literal' },
+'T60': { str: '\u{13316}', kind: 'literal' },
+'S123': { str: '\u{1332D}', kind: 'literal' },
+'US1T33AEXTU': { str: '\u{1332F}', kind: 'literal' },
+'US1U6AEXTU': { str: '\u{13339}', kind: 'literal' },
+'US1U6BEXTU': { str: '\u{1333A}', kind: 'literal' },
+'Ff7': { str: '\u{13357}', kind: 'literal' },
+'O30U': { str: '\u{13361}', kind: 'literal' },
+'200': { str: '\u{13363}', kind: 'literal' },
+'300': { str: '\u{13364}', kind: 'literal' },
+'400': { str: '\u{13365}', kind: 'literal' },
+'US1V1DEXTU': { str: '\u{13366}', kind: 'literal' },
+'US1V1EEXTU': { str: '\u{13367}', kind: 'literal' },
+'US1V1FEXTU': { str: '\u{13368}', kind: 'literal' },
+'US1V1GEXTU': { str: '\u{13369}', kind: 'literal' },
+'US1V1HEXTU': { str: '\u{1336A}', kind: 'literal' },
+'500': { str: '\u{1336B}', kind: 'literal' },
+'Ff6': { str: '\u{1336D}', kind: 'literal' },
+'V60': { str: '\u{13373}', kind: 'literal' },
+'V49A': { str: '\u{13374}', kind: 'literal' },
+'US1V11AEXTU': { str: '\u{13379}', kind: 'singleton' },
+'US1V11BEXTU': { str: '\u{1337A}', kind: 'singleton' },
+'US1V11CEXTU': { str: '\u{1337B}', kind: 'singleton' },
+'H27': { str: '\u{1337D}', kind: 'literal' },
+'US1V12BEXTU': { str: '\u{1337E}', kind: 'literal' },
+'US1V20AEXTU': { str: '\u{13387}', kind: 'literal' },
+'US1V20BEXTU': { str: '\u{13388}', kind: 'literal' },
+'US1V20CEXTU': { str: '\u{13389}', kind: 'literal' },
+'US1V20DEXTU': { str: '\u{1338A}', kind: 'literal' },
+'US1V20EEXTU': { str: '\u{1338B}', kind: 'literal' },
+'US1V20FEXTU': { str: '\u{1338C}', kind: 'literal' },
+'US1V20GEXTU': { str: '\u{1338D}', kind: 'literal' },
+'US1V20HEXTU': { str: '\u{1338E}', kind: 'literal' },
+'20': { str: '\u{1338F}', kind: 'literal' },
+'30': { str: '\u{13390}', kind: 'literal' },
+'40': { str: '\u{13391}', kind: 'literal' },
+'50': { str: '\u{13392}', kind: 'literal' },
+'V71': { str: '\u{1339C}', kind: 'literal' },
+'V81': { str: '\u{1339E}', kind: 'literal' },
+'nb': { str: '\u{133A0}', kind: 'literal' },
+'US1V33AEXTU': { str: '\u{133A5}', kind: 'literal' },
+'F143A': { str: '\u{133AA}', kind: 'literal' },
+'V20h': { str: '\u{133AD}', kind: 'literal' },
+'US1V40AEXTU': { str: '\u{133AE}', kind: 'literal' },
+'W3': { str: '\u{133B2}', kind: 'literal' },
+'W9R': { str: '\u{133B9}', kind: 'literal' },
+'US1W14AEXTU': { str: '\u{133C0}', kind: 'literal' },
+'US22W17BVARE': { str: '\u{133C4}', kind: 'literal' },
+'US22W17BVARD': { str: '\u{133C6}', kind: 'literal' },
+'US1W24AEXTU': { str: '\u{133CD}', kind: 'literal' },
+'N18': { str: '\u{133D4}', kind: 'literal' },
+'US1X6AEXTU': { str: '\u{133D7}', kind: 'literal' },
+'M44': { str: '\u{133DA}', kind: 'literal' },
+'Y1v': { str: '\u{133DB}\u0FE2', kind: 'group' },
+'US1Z2AEXTU': { str: '\u{133E6}', kind: 'literal' },
+'N33A': { str: '\u{133E7}', kind: 'literal' },
+'Z2A': { str: '\u{133E8}', kind: 'literal' },
+'Z2B': { str: '\u{133E9}', kind: 'literal' },
+'N33AV': { str: '\u{133EC}', kind: 'literal' },
+'Ff203': { str: '\u{133F0}', kind: 'literal' },
+'US1Z13EXTU': { str: '\u{133F8}', kind: 'literal' },
+'Ff1': { str: '\u{133F9}', kind: 'literal' },
+'Ff301': { str: '\u{133FA}', kind: 'literal' },
+'Ff302': { str: '\u{133FB}', kind: 'literal' },
+'Ff303': { str: '\u{133FC}', kind: 'literal' },
+'Ff304': { str: '\u{133FD}', kind: 'literal' },
+'US1Z15DEXTU': { str: '\u{133FE}', kind: 'literal' },
+'US1Z15EEXTU': { str: '\u{133FF}', kind: 'literal' },
+'US1Z15FEXTU': { str: '\u{13400}', kind: 'literal' },
+'US1Z15GEXTU': { str: '\u{13401}', kind: 'literal' },
+'US1Z15HEXTU': { str: '\u{13402}', kind: 'literal' },
+'5': { str: '\u{13403}', kind: 'literal' },
+'Z1A': { str: '\u{13404}', kind: 'literal' },
+'Z4B': { str: '\u{13405}', kind: 'literal' },
+'US1Z16BEXTU': { str: '\u{13406}', kind: 'literal' },
+'US1Z16CEXTU': { str: '\u{13407}', kind: 'literal' },
+'US1Z16DEXTU': { str: '\u{13408}', kind: 'literal' },
+'US1Z16EEXTU': { str: '\u{13409}', kind: 'literal' },
+'US1Z16FEXTU': { str: '\u{1340A}', kind: 'literal' },
+'US1Z16GEXTU': { str: '\u{1340B}', kind: 'literal' },
+'US1Z16HEXTU': { str: '\u{1340C}', kind: 'literal' },
+'US1Aa7AEXTU': { str: '\u{13414}', kind: 'literal' },
+'F51B': { str: '\u{13139}\u0fe0\u{13440}', kind: 'group' },
+'G20A': { str: '\uFFFD', kind: 'literal' },
+'P8h': { str: '\u{132A4}\u0FE2', kind: 'group' },
+'nTrw': { str: '\u{132b9}\u{13431}\u{132b9}\u{13431}\u{132b9}', kind: 'group' },
+};
+ 
+const mdcMnemonics = {
+'M': "Aa15",
+'mw': "N35a",
+'id': "N42",
+'aAv': "O29a",
+'qrs': "Q6",
+'wa': "T21",
+'St': "V1",
+'Snt': "V1",
+'100': "V1",
+'10': "V20",
+'nst': "W11",
+'1': "Z1",
+'2': "Z4a",
+'3': "Z2a",
+'4': "Z15c",
+'5': "Z15d",
+'20': "V20a",
+'30': "V20b",
+'40': "V20c",
+'50': "V20d",
+'200': "V1a",
+'300': "V1b",
+'400': "V1c",
+'500': "V1d",
+'wnm': "Z11",
+'`': "Z14",
+'K': "S46",
+};
+ 
+const MdcLigatures = {
+'D21&Q3&D36': '𓂋𓐰𓂝𓐺𓊪',
+'G26&X1&Z4': '𓅝𓐳𓏏𓐵𓏭',
+'G36&X1&D21': '𓅨𓐴𓏏𓐰𓂋',
+'I10&S43&S3': '𓆓𓐳𓐷𓌃𓐱𓋔𓐸',
+'I10&S43&S43&S43': '𓆓𓐳𓐷𓌃𓐱𓌃𓐱𓌃𓐸',
+'I10&S43&Z1': '𓌃𓐱𓆓𓐳𓏤',
+'I10&X1&Z1': '𓆓𓐳𓐷𓏏𓐱𓏤𓐸',
+'M17&M17': '𓇋𓐱𓇋𓇋',
+'M27&X1&Z1': '𓇘𓐳𓏏𓐵𓏤',
+'V28&D58&T28': '𓎛𓐱𓃀𓐳𓌨',
+'R8&M17&X1': '𓊹𓐱𓇋𓐳𓏏',
+'U21&N35&N5': '𓍉𓐴𓇳𓐰𓈖',
+'Z1&Z1': '𓏤𓐱𓏤',
+};
+
+const MdcLigatureOne = {
+'A17': 'be',
+'D17': 'te',
+'D36': 't',
+'E1': 'te',
+'E6': 'te',
+'E9': 'te',
+'E10': 'te',
+'E11': 'te',
+'F5': 'te',
+'F20': 'b',
+'F30': 'b',
+'F39': 'bs',
+'G1': 'te',
+'G2': 'te',
+'G4': 'te',
+'G5': 'te',
+'G14': 'te',
+'G17': 'te',
+'G20': 'te',
+'G21': 'te',
+'G22': 'te',
+'G23': 'te',
+'G25': 'te',
+'G29': 'te',
+'G30': 'te',
+'G33': 'te',
+'G35': 'te',
+'G36': 'te',
+'G37': 'te',
+'G38': 'te',
+'G39': 'te',
+'G43': 'te',
+'G47': 'te',
+'G53': 'te',
+'I8': 'bs',
+'I10': 'bs',
+'R8': 'bs',
+'T5': 'te',
+'U21': 'te',
+};
+
+const MdcLigaturePairTwo = {
+'A1': 'bs',
+'A14': 'bs',
+'D28': 't',
+'D54': 'ts',
+'D58': 'bs',
+'F4': 'ts',
+'G1': 'bs',
+'G2': 'bs',
+'G4': 'bs',
+'G5': 'bs',
+'G6': 'bs',
+'G9': 'bs',
+'G14': 'bs',
+'G15': 'bs',
+'G17': 'bs',
+'G18': 'bs',
+'G21': 'bs',
+'G25': 'bs',
+'G26a': 'bs',
+'G33': 'bs',
+'G43': 'bs',
+'G44': 'bs',
+'I1': 'bs',
+'U1': 'ts',
+'R8': 'bs',
+'U2': 'ts',
+};
+
+const MdcLigatureTripleTwo = {
+'G1': ['bs', 'te'],
+'G43': ['bs', 'te'],
+};
+
+const MdcLigatureFlatTall = [
+'S29',
+'V28',
+];
+
+const MdcLigatureFlatWide = [
+'D36',
+'D52',
+];
+
+function MdcLigatureIsFlat(g) {
+	return MdcLigatureFlatTall.includes(g) || MdcLigatureFlatWide.includes(g);
+}
+
+const mdcComplex = {
+A17: { zone1: 'ts', zone2: 'be' },
+A28: { zone1: 'bs', zone2: 'be' },
+A30: { zone1: 'bs', zone2: 'be' },
+A42: { zone1: 'bs', zone2: 'te' },
+A42a: { zone1: 'bs', zone2: 'te' },
+D28: { zone1: 't', zone2: 't' },
+D36: { zone1: 't', zone2: 't' },
+D37: { zone1: 't', zone2: 't' },
+D38: { zone1: 't', zone2: 't' },
+D39: { zone1: 't', zone2: 't' },
+D40: { zone1: 't', zone2: 't' },
+D43: { zone1: 't', zone2: 't' },
+D44: { zone1: 't', zone2: 't' },
+D58: { zone1: 'bs', zone2: 'ts' },
+E15: { zone1: 'bs', zone2: 'te' },
+F20: { zone1: 'te', zone2: 'bs' },
+F30: { zone1: 'b', zone2: 'b' },
+F39: { zone1: 'b', zone2: 'b' },
+F40: { zone1: 'b', zone2: 'b' },
+G1: { zone1: 'bs', zone2: 'te' },
+G2: { zone1: 'bs', zone2: 'te' },
+G4: { zone1: 'bs', zone2: 'te' },
+G5: { zone1: 'bs', zone2: 'te' },
+G9: { zone1: 'bs', zone2: 'te' },
+G14: { zone1: 'bs', zone2: 'te' },
+G17: { zone1: 'bs', zone2: 'te' },
+G21: { zone1: 'bs', zone2: 'te' },
+G22: { zone1: 'bs', zone2: 'te' },
+G23: { zone1: 'bs', zone2: 'te' },
+G24: { zone1: 'bs', zone2: 'te' },
+G25: { zone1: 'bs', zone2: 'te' },
+G26: { zone1: 'bs', zone2: 'te' },
+G26a: { zone1: 'bs', zone2: 'te' },
+G27: { zone1: 'bs', zone2: 'te' },
+G28: { zone1: 'bs', zone2: 'te' },
+G29: { zone1: 'bs', zone2: 'te' },
+G30: { zone1: 'bs', zone2: 'te' },
+G31: { zone1: 'bs', zone2: 'te' },
+G32: { zone1: 'bs', zone2: 'te' },
+G33: { zone1: 'bs', zone2: 'te' },
+G34: { zone1: 'bs', zone2: 'te' },
+G35: { zone1: 'bs', zone2: 'te' },
+G36: { zone1: 'bs', zone2: 'te' },
+G37: { zone1: 'bs', zone2: 'te' },
+G38: { zone1: 'bs', zone2: 'te' },
+G39: { zone1: 'bs', zone2: 'te' },
+G40: { zone1: 'bs', zone2: 'te' },
+G41: { zone1: 'bs', zone2: 'te' },
+G42: { zone1: 'bs', zone2: 'te' },
+G43: { zone1: 'bs', zone2: 'te' },
+G44: { zone1: 'bs', zone2: 'te' },
+G45: { zone1: 'bs', zone2: 'te' },
+G46: { zone1: 'bs', zone2: 'te' },
+G47: { zone1: 'bs', zone2: 'te' },
+I1: { zone1: 'te', zone2: 'bs' },
+I10: { zone1: 'te', zone2: 'bs' },
+I10a: { zone1: 'te', zone2: 'bs' },
+I11: { zone1: 'te', zone2: 'bs' },
+M4: { zone1: 'be', zone2: 'be' },
+O1: { zone1: 'm', zone2: 'm' },
+R8: { zone1: 'bs', zone2: 'bs' },
+S38: { zone1: 'bs', zone2: 'be' },
+U1: { zone1: 'te', zone2: 'ts' },
+U19: { zone1: 'bs', zone2: 'te' },
+V12: { zone1: 'b', zone2: 'b' },
+V22: { zone1: 'b', zone2: 'b' },
+};
+ 
+class MdcLine {
+	parts;
+	constructor(items) {
+		const parts = [];
+		var fragment = new MdcFragment([]);
+		var text = new MdcText('');
+		function flushFragment() {
+			if (fragment.groups.length > 0) {
+				parts.push(fragment);
+				fragment = new MdcFragment([]);
+			}
+		}
+		function flushText() {
+			if (text.text.length > 0) {
+				parts.push(text);
+				text = new MdcText('');
+			}
+		}
+		items.forEach(item => {
+			switch (item.constructor) {
+				case MdcText:
+					flushFragment();
+					text.append(item.text);
+					break;
+				case MdcBreak:
+					flushFragment();
+					break;
+				case MdcBracketOpen:
+					flushFragment();
+					text.append(item.text);
+					break;
+				case MdcBracketClose:
+					flushFragment();
+					text.append(item.text);
+					break;
+				case MdcLineNumber:
+					flushFragment();
+					flushText();
+					parts.push(item);
+					break;
+				case MdcToggle:
+					if (!item.isEmpty()) {
+						flushText();
+						fragment.add(item);
+					}
+					break;
+				default:
+					flushText();
+					fragment.add(item);
+					break;
+			}
+		});
+		flushText();
+		flushFragment();
+		this.parts = parts;
+		this.propagateToggles();
+		this.propagateGroupShading();
+		this.splitByColor();
+	}
+	propagateToggles() {
+		var state = new MdcState();
+		var pruned = [];
+		for (let i = 0; i < this.parts.length; i++) {
+			const part = this.parts[i];
+			if (part instanceof MdcFragment) {
+				state = part.propagateToggles(state);
+				if (part.groups.length > 0)
+					pruned.push(part);
+			} else {
+				pruned.push(part);
+			}
+		}
+		this.parts = pruned;
+	}
+	propagateGroupShading() {
+		for (let i = 0; i < this.parts.length; i++) {
+			const part = this.parts[i];
+			if (part instanceof MdcFragment)
+				part.propagateGroupShading();
+		}
+	}
+	splitByColor() {
+		let i = 0;
+		for (let i = 0; i < this.parts.length; i++) {
+			const part = this.parts[i];
+			if (part instanceof MdcFragment) {
+				const parts = part.splitByColor();
+				if (parts.length > 1) {
+					this.parts.splice(i, 1, ...parts);
+				}
+			}
+		}
+	}
+}
+
+class MdcFragment {
+	groups;
+	constructor(groups) {
+		this.groups = groups;
+	}
+	add(group) {
+		this.groups.push(group);
+	}
+	toString() {
+		var groups = this.groups.map(g => g.toGroup()).filter(g => g);
+		for (let i = groups.length-1; i >= 0; i--) {
+			const group = groups[i];
+			if (group instanceof BracketOpen) {
+				if (i < groups.length-1 && MdcFragment.canAddOpen(groups[i+1]))
+					groups.splice(i, 2, MdcFragment.addOpen(group, groups[i+1]));
+				else
+					groups.splice(i, 1);
+			} else if (group instanceof BracketClose) {
+				if (i > 0 && MdcFragment.canAddClose(groups[i-1]))
+					groups.splice(i-1, 2, MdcFragment.addClose(groups[i-1], group));
+				else
+					groups.splice(i, 1);
+			}
+		}
+		return groups.map(g => g.toString()).join('');
+	}
+	static canAddOpen(group) {
+		if (group instanceof Singleton)
+			return false;
+		else if (group instanceof Horizontal)
+			return !(group.groups[0] instanceof BracketOpen);
+		else
+			return true;
+	}
+	static canAddClose(group) {
+		if (group instanceof Singleton)
+			return false;
+		else if (group instanceof Horizontal)
+			return !(group.groups[group.groups.length-1] instanceof BracketClose);
+		else
+			return true;
+	}
+	static addOpen(open, group) {
+		if (group instanceof Horizontal)
+			return new Horizontal([open].concat(group.groups));
+		else
+			return new Horizontal([open, group]);
+	}
+	static addClose(group, close) {
+		if (group instanceof Horizontal)
+			return new Horizontal(group.groups.concat(close));
+		else
+			return new Horizontal([group, close]);
+	}
+	propagateToggles(state) {
+		var groups = [];
+		this.groups.forEach(g => {
+			state = g.propagateToggles(state);
+			if (!(g instanceof MdcToggle))
+				groups.push(g);
+		});
+		this.groups = groups;
+		return state;
+	}
+	propagateGroupShading() {
+		this.groups.forEach(g => {
+			if (g instanceof MdcQuadrat)
+				g.propagateGroupShading(null);
+		});
+	}
+	isRed() {
+		return this.groups[0].isRed();
+	}
+	splitByColor() {
+		var red = this.groups[0].isRed();
+		for (let i = 1; i < this.groups.length; i++) {
+			if (this.groups[i].isRed() != red) {
+				return [new MdcFragment(this.groups.slice(0, i)),
+						new MdcFragment(this.groups.slice(i))];
+			}
+		}
+		return [this];
+	}
+	static strToGroup(str) {
+		return syntax.parse(str).groups[0];
+	}
+}
+
+class MdcPart {
+	nColor() {
+		return { black: 0, red: 0 };
+	}
+	propagateGroupShading(corners) {
+		this.quadratCorners = corners;
+	}
+	propagateToggles(state) {
+		this.state = state;
+		return state;
+	}
+	static cornersToShading(corners) {
+		var shading = 0;
+		if (corners.ts)
+			shading |= 1;
+		if (corners.bs)
+			shading |= 2;
+		if (corners.te)
+			shading |= 4;
+		if (corners.be)
+			shading |= 8;
+		return shading;
+	}
+	static startCorners(corners) {
+		return {
+			ts: corners.ts,
+			te: corners.ts,
+			bs: corners.bs,
+			be: corners.bs,
+		};
+	}
+	static endCorners(corners) {
+		return {
+			ts: corners.te,
+			te: corners.te,
+			bs: corners.be,
+			be: corners.be,
+		};
+	}
+	static topCorners(corners) {
+		return {
+			ts: corners.ts,
+			bs: corners.ts,
+			te: corners.te,
+			be: corners.te,
+		};
+	}
+	static bottomCorners(corners) {
+		return {
+			ts: corners.bs,
+			bs: corners.bs,
+			te: corners.be,
+			be: corners.be,
+		};
+	}
+	static topStartCorners(corners) {
+		return {
+			ts: corners.ts,
+			bs: corners.ts,
+			te: corners.ts,
+			be: corners.ts,
+		};
+	}
+	static bottomStartCorners(corners) {
+		return {
+			ts: corners.bs,
+			bs: corners.bs,
+			te: corners.bs,
+			be: corners.bs,
+		};
+	}
+	static topEndCorners(corners) {
+		return {
+			ts: corners.te,
+			bs: corners.te,
+			te: corners.te,
+			be: corners.te,
+		};
+	}
+	static bottomEndCorners(corners) {
+		return {
+			ts: corners.be,
+			bs: corners.be,
+			te: corners.be,
+			be: corners.be,
+		};
+	}
+	static placeCorners(corners, place) {
+		switch (place) {
+			case 'ts':
+				return MdcPart.topStartCorners(corners);
+			case 'bs':
+				return MdcPart.bottomStartCorners(corners);
+			case 'te':
+				return MdcPart.topEndCorners(corners);
+			case 'be':
+				return MdcPart.bottomEndCorners(corners);
+			case 't':
+				return MdcPart.topCorners(corners);
+			case 'b':
+				return MdcPart.bottomCorners(corners);
+			default:
+				return corners;
+		}
+	}
+	static addCorners(corners1, corners2) {
+		return {
+			ts: corners1.ts || corners2.ts,
+			bs: corners1.bs || corners2.bs,
+			te: corners1.te || corners2.te,
+			be: corners1.be || corners2.be,
+		};
+	}
+	static completeCorners(corners, global) {
+		return {
+			ts: corners.ts || global,
+			bs: corners.bs || global,
+			te: corners.te || global,
+			be: corners.be || global,
+		};
+	}
+	shadingOf(corners) {
+		const cornersAny = MdcPart.completeCorners(corners, this.state.shade);
+		return MdcPart.cornersToShading(cornersAny);
+	}
+	shadingAny() {
+		if (this.shade)
+			return this.shadingOf(MdcPart.addCorners(this.shade, this.quadratCorners));
+		else
+			return this.shadingOf(this.quadratCorners);
+	}
+	toGroup() {
+		return null;
+	}
+}
+
+class MdcBreak extends MdcPart {
+	text;
+	constructor(text) {
+		super();
+		this.text = text;
+	}
+}
+
+class MdcText extends MdcPart {
+	text;
+	constructor(text) {
+		super();
+		this.text = text;
+	}
+	append(text) {
+		if (this.text != '')
+			this.text += '\n';
+		this.text += text;
+		return this;
+	}
+	toString() {
+		return this.text.replace(/^\+[a-z]/, '')
+	}
+}
+
+class MdcLineNumber extends MdcPart {
+	text;
+	constructor(text) {
+		super();
+		this.text = text;
+	}
+	toString() {
+		return this.text.substr(1);
+	}
+}
+
+class MdcQuadrat extends MdcPart {
+	group;
+	shading;
+	constructor(group, shading) {
+		super();
+		this.group = group;
+		this.shading = shading;
+	}
+	chainedLeaf() {
+		return this.group.chainedLeaf();
+	}
+	nColor() {
+		return this.group.nColor();
+	}
+	isRed() {
+		const color = this.nColor();
+		return color.red > color.black;
+	}
+	propagateToggles(state) {
+		return this.group.propagateToggles(state);
+	}
+	propagateGroupShading(corners) {
+		const combinedCorners = {
+				ts: this.shading.indexOf('1') >= 0 || (corners && corners.ts),
+				te: this.shading.indexOf('2') >= 0 || (corners && corners.te),
+				bs: this.shading.indexOf('3') >= 0 || (corners && corners.bs),
+				be: this.shading.indexOf('4') >= 0 || (corners && corners.be)};
+		this.group.propagateGroupShading(combinedCorners);
+	}
+	toGroup() {
+		const group = this.group.toGroup();
+		return group ? group : null;
+	}
+}
+
+class MdcVertical extends MdcPart {
+	groups;
+	constructor(groups) {
+		super();
+		this.groups = groups;
+	}
+	add(group) {
+		this.groups.push(group);
+		return this;
+	}
+	propagateToggles(state) {
+		var groups = [];
+		this.groups.forEach(g => {
+			state = g.propagateToggles(state);
+			if (!(g instanceof MdcToggle))
+				groups.push(g);
+		});
+		this.groups = groups;
+		return state;
+	}
+	propagateGroupShading(corners) {
+		const topCorners = MdcPart.topCorners(corners);
+		const bottomCorners = MdcPart.bottomCorners(corners);
+		for (let i = 0; i < (this.groups.length-1) / 2; i++) {
+			this.groups[i].propagateGroupShading(topCorners);
+			this.groups[this.groups.length-1-i].propagateGroupShading(bottomCorners);
+		}
+		if (this.groups.length % 2 == 1) {
+			const middle = Math.round((this.groups.length-1)/2);
+			this.groups[middle].propagateGroupShading(corners);
+		}
+	}
+	nColor() {
+		var black = 0;
+		var red = 0;
+		this.groups.forEach(g => {
+			const color = g.nColor();
+			black += color.black;
+			red += color.red;
+		});
+		return { black, red };
+	}
+	toGroup() {
+		if (this.groups.length > 2) {
+			const first = this.groups[0].chainedLeaf();
+			const last = this.groups[this.groups.length-1].chainedLeaf();
+			if (first instanceof MdcBracketOpen && last instanceof MdcBracketClose) {
+				const innerGroups = this.innerSubgroups();
+				if (innerGroups.length) {
+					const open = first.toGroup();
+					const close = last.toGroup();
+					return new Horizontal([open].concat(innerGroups, close));
+				} else {
+					return MdcSign.errorLiteral();
+				}
+			}
+		}
+		const groups = MdcVertical.expand(this.subgroups());
+		if (groups.length >= 2) {
+			const groupsProper = groups.filter(g =>
+				!(g instanceof BracketOpen || g instanceof BracketClose));
+			if (groupsProper.length >= 2)
+				return new Vertical(groupsProper);
+			else if (groupsProper.length == 1)
+				return groupsProper[0];
+			else
+				return null;
+		} else if (groups.length == 1) {
+			return groups[0];
+		} else {
+			return null;
+		}
+	}
+	static isSubgroup(group) {
+		switch (group.constructor) {
+			case Horizontal:
+			case Enclosure:
+			case Basic:
+			case Overlay:
+			case Literal:
+			case Blank:
+			case Lost:
+			case BracketOpen:
+			case BracketClose:
+			case Vertical:
+				return true;
+			default:
+				return false;
+		}
+	}
+	subgroups() {
+		return this.groups.map(g => g.toGroup()).
+			filter(g => g).filter(g => MdcVertical.isSubgroup(g));
+	}
+	innerSubgroups() {
+		return this.groups.slice(1, this.groups.length-1).
+			map(g => g.toGroup()).filter(g => g).filter(g => MdcHorizontal.isSubgroup(g));
+	}
+	chainedLeaf() {
+		return this.groups.length == 1 ? this.groups[0].chainedLeaf() : null;
+	}
+	static expand(groups) {
+		return groups.map(g => g instanceof Vertical ? g.groups : [g]).flat();
+	}
+}
+
+class MdcHorizontal extends MdcPart {
+	groups;
+	constructor(groups) {
+		super();
+		this.groups = groups;
+	}
+	add(group) {
+		this.groups.push(group);
+		return this;
+	}
+	propagateToggles(state) {
+		var groups = [];
+		this.groups.forEach(g => {
+			state = g.propagateToggles(state);
+			if (!(g instanceof MdcToggle))
+				groups.push(g);
+		});
+		this.groups = groups;
+		return state;
+	}
+	propagateGroupShading(corners) {
+		const startCorners = MdcPart.startCorners(corners);
+		const endCorners = MdcPart.endCorners(corners);
+		for (let i = 0; i < (this.groups.length-1) / 2; i++) {
+			this.groups[i].propagateGroupShading(startCorners);
+			this.groups[this.groups.length-1-i].propagateGroupShading(endCorners);
+		}
+		if (this.groups.length % 2 == 1) {
+			const middle = Math.round((this.groups.length-1)/2);
+			this.groups[middle].propagateGroupShading(corners);
+		}
+	}
+	nColor() {
+		var black = 0;
+		var red = 0;
+		this.groups.forEach(g => {
+			const color = g.nColor();
+			black += color.black;
+			red += color.red;
+		});
+		return { black, red };
+	}
+	toGroup() {
+		const groups = MdcHorizontal.expand(this.subgroups());
+		if (this.groups.length > 2) {
+			const first = this.groups[0].chainedLeaf();
+			const last = this.groups[this.groups.length-1].chainedLeaf();
+			if (first instanceof MdcBracketOpen && last instanceof MdcBracketClose) {
+				const innerGroups = this.innerSubgroups();
+				if (innerGroups.length) {
+					const open = first.toGroup();
+					const close = last.toGroup();
+					return new Horizontal([open].concat(innerGroups, close));
+				} else {
+					return MdcSign.errorLiteral();
+				}
+			}
+		}
+		if (groups.length >= 2) {
+			const groupsProper = groups.filter(g =>
+				!(g instanceof BracketOpen || g instanceof BracketClose));
+			if (groupsProper.length >= 2)
+				return new Horizontal(groupsProper);
+			else if (groupsProper.length == 1)
+				return groupsProper[0];
+			return null;
+		} else if (groups.length == 1)
+			return groups[0];
+		else
+			return null;
+	}
+	static isSubgroup(group) {
+		switch (group.constructor) {
+			case Horizontal:
+			case Enclosure:
+			case Basic:
+			case Overlay:
+			case Literal:
+			case Blank:
+			case Lost:
+			case BracketOpen:
+			case BracketClose:
+			case Vertical:
+				return true;
+			default:
+				return false;
+		}
+	}
+	subgroups() {
+		return this.groups.map(g => g.toGroup()).
+			filter(g => g).filter(g => MdcHorizontal.isSubgroup(g));
+	}
+	innerSubgroups() {
+		return this.groups.slice(1, this.groups.length-1).
+			map(g => g.toGroup()).filter(g => g).filter(g => MdcHorizontal.isSubgroup(g));
+	}
+	chainedLeaf() {
+		return this.groups.length == 1 ? this.groups[0].chainedLeaf() : null;
+	}
+	static expand(groups) {
+		return groups.map(g => g instanceof Horizontal ? g.groups : [g]).flat();
+	}
+}
+
+class MdcComplex extends MdcPart {
+	group1;
+	hieroglyph;
+	group2;
+	constructor(group1, hieroglyph, group2) {
+		super();
+		this.group1 = group1;
+		this.hieroglyph = hieroglyph;
+		this.group2 = group2;
+	}
+	toGroup() {
+		if (this.hieroglyph instanceof MdcSign) {
+			const core = this.hieroglyph.toGroup();
+			const name = this.hieroglyph.name ? MdcSign.resolveName(this.hieroglyph.name) : '';
+			if (core && MdcComplex.canBeCore(core)) {
+				const places = Shapes.allowedPlaces(core.ch);
+				if (name in mdcComplex) {
+					var placesPre = [mdcComplex[name]['zone1']];
+					var placesPost = [mdcComplex[name]['zone2']];
+				} else {
+					var placesPre = ['ts', 'bs'].filter(p => places.has(p));
+					var placesPost = ['te', 'be'].filter(p => places.has(p));
+				}
+				var g1 = this.group1 ? this.group1.toGroup() : null;
+				var g2 = this.group2 ? this.group2.toGroup() : null;
+				if (g1 && !MdcComplex.canBeInsertion(g1))
+					g1 = MdcSign.errorLiteral();
+				if (g2 && !MdcComplex.canBeInsertion(g2))
+					g2 = MdcSign.errorLiteral();
+				if (!g1 && !g2)
+					return core;
+				var insertions = {};
+				if (g1) {
+					const place1 = placesPre.length ? placesPre[0] : 'ts';
+					insertions[place1] = g1;
+				}
+				if (g2) {
+					const place2 = placesPost.length ? placesPost[0] : 'te';
+					insertions[place2] = g2;
+				}
+				return new Basic(core, insertions);
+			}
+		}
+		return MdcSign.errorLiteral();
+	}
+	propagateToggles(state) {
+		super.propagateToggles(state);
+		if (this.group1)
+			state = this.group1.propagateToggles(state);
+		state = this.hieroglyph.propagateToggles(state);
+		return this.group2 ? this.group2.propagateToggles(state) : state;
+	}
+	propagateGroupShading(corners) {
+		if (this.group1)
+			this.group1.propagateGroupShading(MdcPart.startCorners(corners));
+		this.hieroglyph.propagateGroupShading(corners);
+		if (this.group2)
+			this.group2.propagateGroupShading(MdcPart.endCorners(corners));
+	}
+	chainedLeaf() {
+		return null;
+	}
+	nColor() {
+		const color = this.hieroglyph.nColor();
+		var black = color.black;
+		var red = color.red;
+		if (this.group1) {
+			const color1 = this.group1.nColor();
+			black += color1.black;
+			red += color1.red;
+		}
+		if (this.group2) {
+			const color2 = this.group2.nColor();
+			black += color2.black;
+			red += color2.red;
+		}
+		return { black, red };
+	}
+	static canBeCore(group) {
+		return group instanceof Literal ||
+			group instanceof Overlay;
+	}
+	static canBeInsertion(group) {
+		return group instanceof Vertical ||
+			group instanceof Horizontal ||
+			group instanceof Basic ||
+			group instanceof Overlay ||
+			group instanceof Literal ||
+			group instanceof Blank ||
+			group instanceof Enclosure ||
+			group instanceof Lost;
+	}
+}
+
+class MdcOverlay extends MdcPart {
+	hieroglyph1;
+	hieroglyph2;
+	constructor(hieroglyph1, hieroglyph2) {
+		super();
+		this.hieroglyph1 = hieroglyph1;
+		this.hieroglyph2 = hieroglyph2;
+	}
+	propagateToggles(state) {
+		super.propagateToggles(state);
+		return this.hieroglyph2.propagateToggles(this.hieroglyph1.propagateToggles(state));
+	}
+	propagateGroupShading(corners) {
+		super.propagateGroupShading(corners);
+		this.hieroglyph1.propagateGroupShading(corners);
+		this.hieroglyph2.propagateGroupShading(corners);
+	}
+	chainedLeaf() {
+		return null;
+	}
+	nColor() {
+		const color1 = this.hieroglyph1.nColor();
+		const color2 = this.hieroglyph2.nColor();
+		const black = color1.black + color2.block;
+		const red = color1.red + color2.red;
+		return { black, red };
+	}
+	toGroup() {
+		const shade = this.shadingAny();
+		var lits1 = [MdcSign.errorLiteral()];
+		var lits2 = [MdcSign.errorLiteral()];
+		if (this.hieroglyph1 instanceof MdcSign) {
+			const name1 = MdcSign.resolveName(this.hieroglyph1.name);
+			const c1 = MdcSign.nameToChar(name1);
+			if (c1)
+				lits1 = [new Literal(c1, 0, false, shade)];
+		}
+		if (this.hieroglyph2 instanceof MdcSign) {
+			const name2 = MdcSign.resolveName(this.hieroglyph2.name);
+			const c2 = MdcSign.nameToChar(name2);
+			if (c2)
+				lits2 = [new Literal(c2, 0, false, shade)];
+		}
+		return new Overlay(lits1, lits2);
+	}
+}
+
+class MdcLigature extends MdcPart {
+	hieroglyphs;
+	constructor(hieroglyph1, hieroglyph2) {
+		super();
+		this.hieroglyphs = [hieroglyph1, hieroglyph2];
+	}
+	add(hieroglyph) {
+		this.hieroglyphs.push(hieroglyph);
+		return this;
+	}
+	propagateToggles(state) {
+		super.propagateToggles(state);
+		this.hieroglyphs.forEach(h => {
+			state = h.propagateToggles(state);
+		});
+		return state;
+	}
+	propagateGroupShading(corners) {
+		super.propagateGroupShading(corners);
+		this.hieroglyphs.forEach(h => { h.propagateGroupShading(corners); });
+	}
+	chainedLeaf() {
+		return null;
+	}
+	nColor() {
+		var black = 0;
+		var red = 0;
+		this.hieroglyphs.forEach(h => {
+			const color = h.nColor();
+			black += color.black;
+			red += color.red;
+		});
+		return { black, red };
+	}
+	toGroup() {
+		const shade = this.shadingAny();
+		const names = this.hieroglyphs.map(h => {
+			if (h instanceof MdcSign) {
+				const name = MdcSign.resolveName(h.name);
+				if (MdcSign.nameToChar(name))
+					return [name];
+			}
+			return [];
+		}).flat();
+		const composed = names.join('&');
+		if (composed in MdcLigatures)
+			return MdcFragment.strToGroup(MdcLigatures[composed]);
+		if (names.length == 0)
+			return null;
+		if (names.length == 1)
+			return this.subLiteral(names[0], null);
+		if (names.every(n => MdcLigatureIsFlat(n))) {
+			const namesHor = names.filter(n => MdcLigatureFlatTall.includes(n));
+			const namesVer = names.filter(n => MdcLigatureFlatWide.includes(n));
+			if (namesHor.length > 0 && namesVer.length > 0) {
+				const litsHor = namesHor.map(n => this.subLiteral(n, null));
+				const litsVer = namesVer.map(n => this.subLiteral(n, null));
+				return new Overlay(litsHor, litsVer);
+			}
+		}
+		if (names.length == 2 && names[1] in MdcLigaturePairTwo) {
+			const place = MdcLigaturePairTwo[names[1]];
+			var insertions = {};
+			insertions[place] = this.subLiteral(names[0], place);
+			return new Basic(this.subLiteral(names[1], null), insertions);
+		}
+		if (names.length == 3 && names[1] in MdcLigatureTripleTwo) {
+			const places = MdcLigatureTripleTwo[names[1]];
+			var insertions = {};
+			insertions[places[0]] = this.subLiteral(names[0], places[0]);
+			insertions[places[1]] = this.subLiteral(names[2], places[1]);
+			return new Basic(this.subLiteral(names[1], null), insertions);
+		}
+		const places = Shapes.allowedPlaces(MdcSign.nameToChar(names[0]));
+		const place = names[0] in MdcLigatureOne ? MdcLigatureOne[names[0]] :
+				places.size > 0 ? places.values().next().value : 'ts';
+		if (names.length == 2) {
+			var insertions = {};
+			insertions[place] = this.subLiteral(names[1], place);
+			return new Basic(this.subLiteral(names[0], null), insertions);
+		}
+		var insertions = {};
+		insertions[place] = new Vertical(names.slice(1).map(n => this.subLiteral(n, place)));
+		return new Basic(this.subLiteral(names[0], null), insertions);
+	}
+	subLiteral(name, place) {
+		const corners = place ? MdcPart.placeCorners(this.quadratCorners, place) : this.quadratCorners;
+		const shade = this.shadingOf(corners);
+		return new Literal(MdcSign.nameToChar(name), 0, false, shade);
+	}
+}
+
+class MdcAbsolute extends MdcPart {
+	hieroglyphs;
+	constructor(hieroglyph1, hieroglyph2) {
+		super();
+		this.hieroglyphs = [hieroglyph1, hieroglyph2];
+	}
+	add(hieroglyph) {
+		this.hieroglyphs.push(hieroglyph);
+		return this;
+	}
+	propagateToggles(state) {
+		super.propagateToggles(state);
+		this.hieroglyphs.forEach(h => {
+			state = h.propagateToggles(state);
+		});
+		return state;
+	}
+	propagateGroupShading(corners) {
+		super.propagateGroupShading(corners);
+		this.hieroglyphs.forEach(h => { h.propagateGroupShading(corners); });
+	}
+	chainedLeaf() {
+		return null;
+	}
+	nColor() {
+		var black = 0;
+		var red = 0;
+		this.hieroglyphs.forEach(h => {
+			const color = h.nColor();
+			black += color.black;
+			red += color.red;
+		});
+		return { black, red };
+	}
+	toGroup() {
+		const shade = this.shadingAny();
+		var parts = [];
+		this.hieroglyphs.forEach(h => {
+			if (h instanceof MdcSign) {
+				const name = MdcSign.resolveName(h.name);
+				const c = MdcSign.nameToChar(name);
+				if (c)
+					parts.push({ 
+						ch: c, 
+						mirror: h.mirror,
+						scale: MdcAbsolute.sizeOfAbsolute(h.placement),
+						place: MdcAbsolute.placeOfAbsolute(h.placement) });
+			}
+		});
+		if (parts.length == 0)
+			return MdcSign.errorLiteral();
+		if (parts.length == 1)
+			return new Literal(parts[0].ch, 0, parts[0].mirror, shade);
+		const biggest = Math.max(...parts.map(p => p.scale));
+		const j = parts.findIndex(p => p.scale == biggest);
+		const core = new Literal(parts[j].ch, 0, parts[j].mirror, shade);
+		const placesFirst = Shapes.allowedPlaces(parts[j].ch);
+		const placeFirst = placesFirst.size > 0 ? placesFirst.values().next().value : 'ts';
+		var placeToChar = { };
+		for (let i = 0; i < parts.length; i++) {
+			if (i != j) {
+				const pl = parts[i].place;
+				if (pl in placeToChar)
+					placeToChar[pl].push(parts[i].ch);
+				else
+					placeToChar[pl] = [parts[i].ch];
+			}
+		}
+		var insertions = {};
+		for (let place in placeToChar) {
+			const cs = placeToChar[place];
+			if (cs.length == 1) {
+				insertions[place] = this.subLiteral(cs[0], place);
+			} else {
+				const groups = cs.map(c => this.subLiteral(c, place));
+				insertions[place] = new Vertical(groups);
+			}
+		}
+		return new Basic(core, insertions);
+	}
+	static placeOfAbsolute(placement) {
+		if (!placement)
+			return 'ts';
+		const x = placement.x;
+		const y = placement.y;
+		if (x < 350) {
+			if (y < 350)
+				return 'ts';
+			else
+				return 'bs';
+		} else {
+			if (y < 350)
+				return 'te';
+			else
+				return 'be';
+		}
+	}
+	static sizeOfAbsolute(placement) {
+		return !placement ? 100 : placement.s;
+	}
+	subLiteral(c, place) {
+		const corners = place ? MdcPart.placeCorners(this.quadratCorners, place) : this.quadratCorners;
+		const shade = this.shadingOf(corners);
+		return new Literal(c, 0, false, shade);
+	}
+}
+
+class MdcHieroglyph extends MdcPart {
+	placement;
+	constructor() {
+		super();
+	}
+	addModifiers(mods) {
+		if ('shade' in mods)
+			this.shade = mods.shade;
+		if ('color' in mods)
+			this.color = mods.color;
+		if ('mirror' in mods)
+			this.mirror = mods.mirror;
+		if ('rotate' in mods)
+			this.rotate = mods.rotate;
+		return this;
+	}
+	addPlacement(placement) {
+		this.placement = placement;
+		return this;
+	}
+	propagateToggles(state) {
+		super.propagateToggles(state);
+		return state;
+	}
+	chainedLeaf() {
+		return this;
+	}
+	isRed() {
+		return this.color == 'red' || this.state.color == 'red';
+	}
+	nColor() {
+		return this.isRed() ? { black: 0, red: 1 } : { black: 1, red: 0 };
+	}
+}
+
+class MdcSign extends MdcHieroglyph {
+	name;
+	state;
+	constructor(name) {
+		super();
+		this.name = name;
+	}
+	toGroup() {
+		const mdcName = mdcNames[this.name];
+		var vs = 0;
+		if ('rotate' in this) {
+			var rounded = Math.round(this.rotate % 360 / 45) * 45;
+			vs = Group.rotateToNum(rounded);
+		}
+		const shade = this.shadingAny();
+		const mirror = 'mirror' in this ? this.mirror : false;
+		if (mdcName) {
+			if (mdcName.kind == 'literal')
+				return new Literal(mdcName.str, vs, mirror, shade);
+			else if (mdcName.kind == 'singleton')
+				return new Singleton(mdcName.str, shade);
+			else
+				return MdcFragment.strToGroup(mdcName.str);
+		} else {
+			return new Literal(MdcSign.nameToChar(this.name), vs, mirror, shade);
+		}
+	}
+	static nameToChar(name) {
+		var uniName = name;
+		if (name in mdcMnemonics)
+			uniName = mdcMnemonics[name];
+		else if (name in uniMnemonics)
+			uniName = uniMnemonics[name];
+		else if (name.match(/(Aa|NL|NU|[A-IK-Z])([0-9]{1,3})[A-Z]/))
+			uniName = name.slice(0, -1) + name[name.length-1].toLowerCase();
+		if (uniName in uniGlyphs)
+			return String.fromCodePoint(uniGlyphs[uniName]);
+		else
+			return Shapes.PLACEHOLDER;
+	}
+	static resolveName(name) {
+		if (name in mdcMnemonics)
+			return mdcMnemonics[name];
+		else if (name in uniMnemonics)
+			return uniMnemonics[name];
+		else if (name.match(/(Aa|NL|NU|[A-IK-Z])([0-9]{1,3})[A-Z]/))
+			return name.slice(0, -1) + name[name.length-1].toLowerCase();
+		else
+			return name;
+	}
+	static errorLiteral() {
+		return new Literal(Shapes.PLACEHOLDER, 0, false, 0);
+	}
+}
+
+class MdcBlank extends MdcHieroglyph {
+	size;
+	constructor(size) {
+		super();
+		this.size = size;
+	}
+	toGroup() {
+		return this.shadingAny() ? new Lost(this.size, this.size, true) : new Blank(this.size);
+	}
+}
+
+class MdcLost extends MdcHieroglyph {
+	w;
+	h;
+	constructor(w, h) {
+		super();
+		this.w = w;
+		this.h = h;
+	}
+	toGroup() {
+		return new Lost(this.w, this.h, false);
+	}
+}
+
+class MdcBracketOpen extends MdcHieroglyph {
+	ch;
+	constructor(ch) {
+		super();
+		this.ch = ch;
+	}
+	toGroup() {
+		return new BracketOpen(this.toString());
+	}
+	toString() {
+		switch (this.ch) {
+            case '[&': return '\u2329';
+            case '[{': return '{';
+            case '[[': return '[';
+            case '[\\': return '[';
+            case '["': return '[';
+            case '[\'': return '[';
+            case '[(': return '(';
+            case '[?': return '[';
+            default: return '[';
+        }
+	}
+}
+
+class MdcBracketClose extends MdcHieroglyph {
+	ch;
+	constructor(ch) {
+		super();
+		this.ch = ch;
+	}
+	toGroup() {
+		return new BracketClose(this.toString());
+	}
+	toString() {
+		switch (this.ch) {
+            case '&]': return '\u232A';
+            case '}]': return '}';
+            case ']]': return ']';
+            case '\\]': return ']';
+            case '"]': return ']';
+            case '\']': return ']';
+            case ')]': return ')';
+            case '?]': return ']';
+            default: return ']';
+        }
+	}
+}
+
+class MdcEnclosure extends MdcHieroglyph {
+	begin;
+	groups;
+	end;
+	state;
+	constructor(begin, groups, end) {
+		super();
+		this.begin = begin;
+		this.groups = groups;
+		this.end = end;
+	}
+	propagateToggles(state) {
+		super.propagateToggles(state);
+		var groups = [];
+		this.groups.forEach(g => {
+			state = g.propagateToggles(state);
+			if (!(g instanceof MdcToggle))
+				groups.push(g);
+		});
+		this.groups = groups;
+		return state;
+	}
+	propagateGroupShading(corners) {
+		super.propagateGroupShading(corners);
+		this.startCorners = MdcPart.startCorners(corners);
+		this.endCorners = MdcPart.endCorners(corners);
+		for (let i = 0; i < (this.groups.length-1) / 2; i++) {
+			this.groups[i].propagateGroupShading(this.startCorners);
+			this.groups[this.groups.length-1-i].propagateGroupShading(this.endCorners);
+		}
+		if (this.groups.length % 2 == 1) {
+			const middle = Math.round((this.groups.length-1)/2);
+			this.groups[middle].propagateGroupShading(corners);
+		}
+	}
+	isRed() {
+		return this.color == 'red' || this.state.color == 'red';
+	}
+	nColor() {
+		var black = this.isRed() ? 0 : 1;
+		var red = this.isRed() ? 1 : 0;
+		this.groups.forEach(g => {
+			const color = g.nColor();
+			black += color.black;
+			red += color.red;
+		});
+		return { black, red };
+	}
+	toGroup() {
+		const groups = [];
+		this.groups.forEach(g => {
+			const group = g.toGroup();
+			if (group)
+				groups.push(group);
+		});
+		var type = 'plain';
+		var delimOpen = '\u{13379}';
+		var delimClose = '\u{1337A}';
+		if (this.begin == '' && this.end == '') {
+		} else if (this.begin == 'S' && this.end == '') {
+			delimOpen = '\u{13258}';
+			delimClose = '\u{13282}';
+		} else if (this.begin == 'H' && this.end == '') {
+			delimOpen = '\u{13258}';
+			delimClose = '\u{1325C}';
+		} else if (this.begin == 'F' && this.end == '') {
+			type = 'walled';
+			delimOpen = '\u{13288}';
+			delimClose = '\u{13289}';
+		} else {
+			if (this.begin == '0')
+				delimOpen = null;
+			else if (this.begin == '1')
+				;
+			else if (this.begin == '2')
+				delimOpen = '\u{1342F}';
+			else if (this.begin == 'h0')
+				delimOpen = null;
+			else if (this.begin == 'h1')
+				delimOpen = '\u{13258}';
+			else if (this.begin == 'h2')
+				delimOpen = '\u{13259}';
+			else if (this.begin == 'h3')
+				delimOpen = '\u{1325A}';
+			else if (this.begin == 's0')
+				delimOpen = null;
+			else if (this.begin == 's1')
+				delimOpen = '\u{13258}';
+			else if (this.begin == 's2')
+				delimOpen = '\u{13258}';
+			else if (this.begin == 's3')
+				delimOpen = '\u{13258}';
+			else if (this.begin == 'f0') {
+				type = 'walled';
+				delimOpen = null;
+			} else if (this.begin == 'f1') {
+				type = 'walled';
+				delimOpen = '\u{13288}';
+			}
+			if (this.end == '0')
+				delimClose = null;
+			else if (this.end == '1')
+				delimClose = '\u{1337B}';
+			else if (this.end == '2')
+				;
+			else if (this.end == 'h0')
+				delimClose = null;
+			else if (this.end == 'h1')
+				delimClose = '\u{1325D}';
+			else if (this.end == 'h2')
+				delimClose = '\u{1325C}';
+			else if (this.end == 'h3')
+				delimClose = '\u{1325B}';
+			else if (this.end == 's0')
+				delimClose = null;
+			else if (this.end == 's1')
+				delimClose = '\u{1325D}';
+			else if (this.end == 's2')
+				delimClose = '\u{13282}';
+			else if (this.end == 's3')
+				delimClose = '\u{1325D}';
+			else if (this.end == 'f0')
+				delimClose = null;
+			else if (this.end == 'f1')
+				delimClose = '\u{13289}';
+		}
+		const shadeOpen = MdcPart.cornersToShading(
+			MdcPart.completeCorners(this.startCorners, this.state.shade));
+		const shadeClose = MdcPart.cornersToShading(
+			MdcPart.completeCorners(this.endCorners, this.state.shade));
+		return new Enclosure(type, groups, delimOpen, shadeOpen, delimClose, shadeClose);
+	}
+	toString() {
+		return this.begin + this.groups.map(g => g.toString()) + this.end;
+	}
+}
+
+class MdcModifier {
+	constructor() {
+	}
+	extend(mod) {
+		for (let key in mod)
+			this[key] = mod[key];
+		return this;
+	}
+}
+
+class MdcState {
+	color;
+	shade;
+	constructor() {
+		this.color = 'black';
+		this.shade = false;
+	}
+	updated(toggle) {
+		var next = new MdcState();
+		switch (toggle.shade) {
+			case 'toggle':
+				next.shade = !this.shade;
+				break;
+			case 'on':
+				next.shade = true;
+				break;
+			case 'off':
+				next.shade = false;
+				break;
+			default:
+				next.shade = this.shade;
+		}
+		switch (toggle.color) {
+			case 'toggle':
+				next.color = this.color == 'black' ? 'red' : 'black';
+				break;
+			case 'red':
+			case 'black':
+				next.color = toggle.color;
+				break;
+			default:
+				next.color = this.color;
+		}
+		return next;
+	}
+}
+
+class MdcToggle {
+	constructor() {
+	}
+	propagateToggles(state) {
+		return state.updated(this);
+	}
+	extend(mods) {
+		if ('shade' in mods)
+			this.shade = mods.shade;
+		if ('color' in mods)
+			this.color = mods.color;
+		return this;
+	}
+	isEmpty() {
+		return !('shade' in this || 'color' in this);
+	}
+}
+ 
+/* parser generated by jison 0.4.18 */
+/*
+  Returns a Parser object of the following structure:
+
+  Parser: {
+    yy: {}
+  }
+
+  Parser.prototype: {
+    yy: {},
+    trace: function(),
+    symbols_: {associative list: name ==> number},
+    terminals_: {associative list: number ==> name},
+    productions_: [...],
+    performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate, $$, _$),
+    table: [...],
+    defaultActions: {...},
+    parseError: function(str, hash),
+    parse: function(input),
+
+    lexer: {
+        EOF: 1,
+        parseError: function(str, hash),
+        setInput: function(input),
+        input: function(),
+        unput: function(str),
+        more: function(),
+        less: function(n),
+        pastInput: function(),
+        upcomingInput: function(),
+        showPosition: function(),
+        test_match: function(regex_match_array, rule_index),
+        next: function(),
+        lex: function(),
+        begin: function(condition),
+        popState: function(),
+        _currentRules: function(),
+        topState: function(),
+        pushState: function(condition),
+
+        options: {
+            ranges: boolean           (optional: true ==> token location info will include a .range[] member)
+            flex: boolean             (optional: true ==> flex-like lexing behaviour where the rules are tested exhaustively to find the longest match)
+            backtrack_lexer: boolean  (optional: true ==> lexer regexes are tested in order and for each matching regex the action code is invoked; the lexer terminates the scan when a token is returned by the action code)
+        },
+
+        performAction: function(yy, yy_, $avoiding_name_collisions, YY_START),
+        rules: [...],
+        conditions: {associative list: name ==> set},
+    }
+  }
+
+
+  token location info (@$, _$, etc.): {
+    first_line: n,
+    last_line: n,
+    first_column: n,
+    last_column: n,
+    range: [start_number, end_number]       (where the numbers are indexes into the input string, regular zero-based)
+  }
+
+
+  the parseError function receives a 'hash' object with these members for lexer and parser errors: {
+    text:        (matched text)
+    token:       (the produced terminal token, if any)
+    line:        (yylineno)
+  }
+  while parser (grammar) errors will also provide these members, i.e. parser errors deliver a superset of attributes: {
+    loc:         (yylloc)
+    expected:    (string describing the set of expected tokens)
+    recoverable: (boolean: TRUE when the parser has a error recovery rule available for this particular error)
+  }
+*/
+var mdcsyntax = (function(){
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[6,10,12,13,14,15,16,17,18,19,36,47,48,49,50,51,52,53,54,55,57,60,79,80,81,82,83,84],$V1=[2,41],$V2=[1,3],$V3=[2,4],$V4=[6,10,12,13,14,15,16,17,18,19,24,26,28,30,32,36,37,38,39,40,47,48,49,50,51,52,53,54,55,57,60,61,79,80,81,82,83,84],$V5=[47,48,49,50,51,52,53,54,55],$V6=[2,54],$V7=[1,8],$V8=[1,9],$V9=[1,10],$Va=[1,11],$Vb=[1,12],$Vc=[1,13],$Vd=[1,14],$Ve=[1,15],$Vf=[1,25],$Vg=[1,28],$Vh=[1,30],$Vi=[6,12,13,14,15,16,17,18,19,36,37,47,48,49,50,51,52,53,54,55,57,60,61],$Vj=[1,32],$Vk=[1,34],$Vl=[1,35],$Vm=[1,36],$Vn=[1,37],$Vo=[1,38],$Vp=[1,39],$Vq=[6,10,12,13,14,15,16,17,18,19,36,37,47,48,49,50,51,52,53,54,55,57,60,61,79,80,81,82,83,84],$Vr=[6,10,12,13,14,15,16,17,18,19,24,26,36,37,47,48,49,50,51,52,53,54,55,57,60,61,79,80,81,82,83,84],$Vs=[1,45],$Vt=[6,10,12,13,14,15,16,17,18,19,24,26,28,36,37,47,48,49,50,51,52,53,54,55,57,60,61,79,80,81,82,83,84],$Vu=[6,10,12,13,14,15,16,17,18,19,24,26,28,30,36,37,47,48,49,50,51,52,53,54,55,57,60,61,79,80,81,82,83,84],$Vv=[2,29],$Vw=[1,48],$Vx=[1,49],$Vy=[1,50],$Vz=[6,10,12,13,14,15,16,17,18,19,24,26,28,30,32,36,37,38,39,40,46,47,48,49,50,51,52,53,54,55,56,57,60,61,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84],$VA=[2,59],$VB=[10,12,13,14,15,16,17,18,19,36,47,48,49,50,51,52,53,54,55,57,60,61,79,80,81,82,83,84],$VC=[6,10,12,13,14,15,16,17,18,19,24,26,28,30,32,36,37,38,39,40,46,47,48,49,50,51,52,53,54,55,57,60,61,79,80,81,82,83,84],$VD=[2,52],$VE=[1,81],$VF=[1,82],$VG=[1,83],$VH=[1,84],$VI=[1,85],$VJ=[1,86],$VK=[1,87],$VL=[1,88],$VM=[1,89],$VN=[1,90],$VO=[1,91],$VP=[1,92],$VQ=[1,93],$VR=[1,94],$VS=[1,95],$VT=[1,96],$VU=[1,97],$VV=[6,10,12,13,14,15,16,17,18,19,24,26,28,30,36,37,39,47,48,49,50,51,52,53,54,55,57,60,61,79,80,81,82,83,84],$VW=[6,10,12,13,14,15,16,17,18,19,24,26,28,30,36,37,40,47,48,49,50,51,52,53,54,55,57,60,61,79,80,81,82,83,84];
+var parser = {trace: function trace () { },
+yy: {},
+symbols_: {"error":2,"mdc":3,"space":4,"top_items":5,"EOF":6,"seps":7,"top_item":8,"sep":9,"SEP":10,"toggle":11,"BREAK":12,"TEXT":13,"LINE-NUMBER":14,"ARROW":15,"TAB":16,"LACUNA":17,"OMIT":18,"ZONE":19,"quadrat":20,"vertical_group":21,"group_shading":22,"quadrat_shade":23,"QUADRAT-SHADE":24,"horizontal_group":25,"COLON":26,"horizontal_element":27,"ASTERISK":28,"inner_group":29,"ZONE-PRE":30,"hieroglyph":31,"ZONE-POST":32,"overlay":33,"ligature":34,"absolute":35,"OPEN":36,"CLOSE":37,"OVERLAY":38,"LIGATURE":39,"ABSOLUTE-CONTINUATION":40,"grammar":41,"sign":42,"modifiers":43,"placement":44,"enclosure":45,"SPACE":46,"SIGN":47,"FULL-BLANK":48,"HALF-BLANK":49,"LOST":50,"HALF-LOST":51,"TALL-LOST":52,"WIDE-LOST":53,"BRACKET-OPEN":54,"BRACKET-CLOSE":55,"ABSOLUTE":56,"EQUALS":57,"begin_enclosure":58,"end_enclosure":59,"BEGIN-ENCLOSURE":60,"END-ENCLOSURE":61,"modifier":62,"MIRROR":63,"ROTATE-90":64,"ROTATE-180":65,"ROTATE-270":66,"ROTATE-360":67,"ROTATE-90-MIRROR":68,"ROTATE-180-MIRROR":69,"ROTATE-270-MIRROR":70,"ROTATE-360-MIRROR":71,"ROTATE-DEGREES":72,"SCALE-PERCENTAGE":73,"RED-GLYPH":74,"GRAY-GLYPH":75,"ELONGATE-GLYPH":76,"GLYPH-SHADE":77,"IGNORED-MODIFIER":78,"COLOR-TOGGLE":79,"RED":80,"BLACK":81,"SHADE-TOGGLE":82,"SHADE-ON":83,"SHADE-OFF":84,"$accept":0,"$end":1},
+terminals_: {2:"error",6:"EOF",10:"SEP",12:"BREAK",13:"TEXT",14:"LINE-NUMBER",15:"ARROW",16:"TAB",17:"LACUNA",18:"OMIT",19:"ZONE",24:"QUADRAT-SHADE",26:"COLON",28:"ASTERISK",30:"ZONE-PRE",32:"ZONE-POST",36:"OPEN",37:"CLOSE",38:"OVERLAY",39:"LIGATURE",40:"ABSOLUTE-CONTINUATION",46:"SPACE",47:"SIGN",48:"FULL-BLANK",49:"HALF-BLANK",50:"LOST",51:"HALF-LOST",52:"TALL-LOST",53:"WIDE-LOST",54:"BRACKET-OPEN",55:"BRACKET-CLOSE",56:"ABSOLUTE",57:"EQUALS",60:"BEGIN-ENCLOSURE",61:"END-ENCLOSURE",63:"MIRROR",64:"ROTATE-90",65:"ROTATE-180",66:"ROTATE-270",67:"ROTATE-360",68:"ROTATE-90-MIRROR",69:"ROTATE-180-MIRROR",70:"ROTATE-270-MIRROR",71:"ROTATE-360-MIRROR",72:"ROTATE-DEGREES",73:"SCALE-PERCENTAGE",74:"RED-GLYPH",75:"GRAY-GLYPH",76:"ELONGATE-GLYPH",77:"GLYPH-SHADE",78:"IGNORED-MODIFIER",79:"COLOR-TOGGLE",80:"RED",81:"BLACK",82:"SHADE-TOGGLE",83:"SHADE-ON",84:"SHADE-OFF"},
+productions_: [0,[3,3],[5,1],[5,3],[7,0],[7,2],[9,1],[9,1],[8,1],[8,1],[8,1],[8,1],[8,1],[8,1],[8,1],[8,1],[8,1],[20,2],[22,0],[22,2],[23,1],[21,1],[21,3],[25,1],[25,3],[27,5],[27,3],[27,3],[27,1],[29,1],[29,1],[29,1],[29,1],[29,4],[33,3],[34,3],[34,3],[35,3],[35,3],[31,5],[31,4],[4,0],[4,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[44,0],[44,1],[41,0],[41,1],[45,3],[58,1],[59,1],[43,0],[43,2],[62,1],[62,1],[62,1],[62,1],[62,1],[62,1],[62,1],[62,1],[62,1],[62,1],[62,1],[62,1],[62,1],[62,1],[62,1],[62,1],[11,1],[11,1],[11,1],[11,1],[11,1],[11,1]],
+performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
+/* this == yyval */
+
+var $0 = $$.length - 1;
+switch (yystate) {
+case 1:
+return new MdcLine($$[$0-1]);
+break;
+case 2:
+this.$ = [$$[$0]];
+break;
+case 3:
+this.$ = $$[$0-2].concat($$[$0-1], $$[$0]);
+break;
+case 4:
+this.$ = new MdcToggle();
+break;
+case 5: case 60:
+this.$ = $$[$0-1].extend($$[$0]);
+break;
+case 6: case 65: case 71: case 73: case 74: case 76:
+this.$ = { };
+break;
+case 7: case 16: case 28: case 29: case 30: case 31: case 32:
+this.$ = $$[$0];
+break;
+case 8:
+this.$ = new MdcBreak(yytext);
+break;
+case 9:
+this.$ = new MdcText(yytext);
+break;
+case 10:
+this.$ = new MdcLineNumber(yytext);
+break;
+case 11: case 12: case 13: case 14: case 15:
+this.$ = [];
+break;
+case 17:
+this.$ = new MdcQuadrat($$[$0-1], $$[$0]);
+break;
+case 18:
+this.$ = '';
+break;
+case 19:
+this.$ = $$[$0-1];
+break;
+case 20:
+this.$ = yytext;
+break;
+case 21:
+this.$ = new MdcVertical([$$[$0]]);
+break;
+case 22: case 24: case 36: case 38:
+this.$ = $$[$0-2].add($$[$0]);
+break;
+case 23:
+this.$ = new MdcHorizontal([$$[$0]]);
+break;
+case 25:
+this.$ = new MdcComplex($$[$0-4], $$[$0-2], $$[$0]);
+break;
+case 26:
+this.$ = new MdcComplex($$[$0-2], $$[$0], null);
+break;
+case 27:
+this.$ = new MdcComplex(null, $$[$0-2], $$[$0]);
+break;
+case 33:
+this.$ = new MdcVertical($$[$0-2]);
+break;
+case 34:
+this.$ = new MdcOverlay($$[$0-2], $$[$0]);
+break;
+case 35:
+this.$ = new MdcLigature($$[$0-2], $$[$0]);
+break;
+case 37:
+this.$ = new MdcAbsolute($$[$0-2], $$[$0]);
+break;
+case 39: case 40:
+this.$ = $$[$0-3].addModifiers($$[$0-2]).addPlacement($$[$0-1]);
+break;
+case 43:
+this.$ = new MdcSign(yytext);
+break;
+case 44:
+this.$ = new MdcBlank(1);
+break;
+case 45:
+this.$ = new MdcBlank(0.5);
+break;
+case 46:
+this.$ = new MdcLost(1, 1);
+break;
+case 47:
+this.$ = new MdcLost(0.5, 0.5);
+break;
+case 48:
+this.$ = new MdcLost(0.5, 1);
+break;
+case 49:
+this.$ = new MdcLost(1, 0.5);
+break;
+case 50:
+this.$ = new MdcBracketOpen(yytext);
+break;
+case 51:
+this.$ = new MdcBracketClose(yytext);
+break;
+case 52:
+this.$ = null;
+break;
+case 53:
+this.$ = MdcParse.absolute(yytext);
+break;
+case 56:
+this.$ = new MdcEnclosure($$[$0-2], $$[$0-1], $$[$0]);
+break;
+case 57: case 58:
+this.$ = yytext.substring(1, yytext.length-1);
+break;
+case 59:
+this.$ = new MdcModifier();
+break;
+case 61: case 69:
+this.$ = { mirror: true };
+break;
+case 62:
+this.$ = { rotate: 90 };
+break;
+case 63:
+this.$ = { rotate: 180 };
+break;
+case 64:
+this.$ = { rotate: 270 };
+break;
+case 66:
+this.$ = { rotate: 90, mirror: true };
+break;
+case 67:
+this.$ = { rotate: 180, mirror: true };
+break;
+case 68:
+this.$ = { rotate: 270, mirror: true };
+break;
+case 70:
+this.$ = { rotate: parseInt(yytext.substring(2)) };
+break;
+case 72: case 78:
+this.$ = { color: 'red' };
+break;
+case 75:
+this.$ = { shade: MdcParse.corners(yytext) };
+break;
+case 77:
+this.$ = { color: 'toggle' };
+break;
+case 79:
+this.$ = { color: 'black' };
+break;
+case 80:
+this.$ = { shade: 'toggle' };
+break;
+case 81:
+this.$ = { shade: 'on' };
+break;
+case 82:
+this.$ = { shade: 'off' };
+break;
+}
+},
+table: [o($V0,$V1,{3:1,4:2,46:$V2}),{1:[3]},o($V0,$V3,{5:4,7:5}),o($V4,[2,42]),o($V5,$V6,{8:7,20:16,21:17,25:18,27:19,29:20,31:21,33:22,34:23,35:24,41:26,45:27,58:29,6:[1,6],12:$V7,13:$V8,14:$V9,15:$Va,16:$Vb,17:$Vc,18:$Vd,19:$Ve,36:$Vf,57:$Vg,60:$Vh}),o($Vi,[2,2],{9:31,11:33,10:$Vj,79:$Vk,80:$Vl,81:$Vm,82:$Vn,83:$Vo,84:$Vp}),{1:[2,1]},o($Vq,$V3,{7:40}),o($Vq,[2,8]),o($Vq,[2,9]),o($Vq,[2,10]),o($Vq,[2,11]),o($Vq,[2,12]),o($Vq,[2,13]),o($Vq,[2,14]),o($Vq,[2,15]),o($Vq,[2,16]),o($Vq,[2,18],{22:41,23:43,24:[1,44],26:[1,42]}),o($Vr,[2,21],{28:$Vs}),o($Vt,[2,23]),o($Vt,[2,28],{30:[1,46]}),o($Vu,$Vv,{32:[1,47],38:$Vw,39:$Vx,40:$Vy}),o($Vu,[2,30]),o($Vu,[2,31],{39:[1,51]}),o($Vu,[2,32],{40:[1,52]}),o([10,12,13,14,15,16,17,18,19,36,37,47,48,49,50,51,52,53,54,55,57,60,79,80,81,82,83,84],$V3,{7:5,5:53}),{42:54,47:[1,55],48:[1,56],49:[1,57],50:[1,58],51:[1,59],52:[1,60],53:[1,61],54:[1,62],55:[1,63]},o($Vz,$VA,{43:64}),o($V5,[2,55]),o($VB,$V3,{7:5,5:65}),o($VB,[2,57]),o($Vq,[2,5]),o($Vq,[2,6]),o($Vq,[2,7]),o($Vq,[2,77]),o($Vq,[2,78]),o($Vq,[2,79]),o($Vq,[2,80]),o($Vq,[2,81]),o($Vq,[2,82]),o($Vi,[2,3],{9:31,11:33,10:$Vj,79:$Vk,80:$Vl,81:$Vm,82:$Vn,83:$Vo,84:$Vp}),o($Vq,[2,17]),o($V5,$V6,{27:19,29:20,31:21,33:22,34:23,35:24,41:26,45:27,58:29,25:66,36:$Vf,57:$Vg,60:$Vh}),o($Vq,$V1,{4:67,46:$V2}),o([6,10,12,13,14,15,16,17,18,19,36,37,46,47,48,49,50,51,52,53,54,55,57,60,61,79,80,81,82,83,84],[2,20]),o($V5,$V6,{29:20,31:21,33:22,34:23,35:24,41:26,45:27,58:29,27:68,36:$Vf,57:$Vg,60:$Vh}),o($V5,$V6,{41:26,45:27,58:29,31:69,57:$Vg,60:$Vh}),o($V5,$V6,{33:22,34:23,35:24,41:26,45:27,58:29,29:70,31:71,36:$Vf,57:$Vg,60:$Vh}),o($V5,$V6,{41:26,45:27,58:29,31:72,57:$Vg,60:$Vh}),o($V5,$V6,{41:26,45:27,58:29,31:73,57:$Vg,60:$Vh}),o($V5,$V6,{41:26,45:27,58:29,31:74,57:$Vg,60:$Vh}),o($V5,$V6,{41:26,45:27,58:29,31:75,57:$Vg,60:$Vh}),o($V5,$V6,{41:26,45:27,58:29,31:76,57:$Vg,60:$Vh}),o($V5,$V6,{8:7,20:16,21:17,25:18,27:19,29:20,31:21,33:22,34:23,35:24,41:26,45:27,58:29,12:$V7,13:$V8,14:$V9,15:$Va,16:$Vb,17:$Vc,18:$Vd,19:$Ve,36:$Vf,37:[1,77],57:$Vg,60:$Vh}),o($Vz,$VA,{43:78}),o($Vz,[2,43]),o($Vz,[2,44]),o($Vz,[2,45]),o($Vz,[2,46]),o($Vz,[2,47]),o($Vz,[2,48]),o($Vz,[2,49]),o($Vz,[2,50]),o($Vz,[2,51]),o($VC,$VD,{44:79,62:80,56:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,73:$VP,74:$VQ,75:$VR,76:$VS,77:$VT,78:$VU}),o($V5,$V6,{8:7,20:16,21:17,25:18,27:19,29:20,31:21,33:22,34:23,35:24,41:26,45:27,58:29,59:98,12:$V7,13:$V8,14:$V9,15:$Va,16:$Vb,17:$Vc,18:$Vd,19:$Ve,36:$Vf,57:$Vg,60:$Vh,61:[1,99]}),o($Vr,[2,22],{28:$Vs}),o($Vq,[2,19]),o($Vt,[2,24]),o($Vt,[2,26],{32:[1,100]}),o($Vt,[2,27]),o($Vt,$Vv,{38:$Vw,39:$Vx,40:$Vy}),o($Vu,[2,34]),o($VV,[2,35]),o($VW,[2,37]),o($VV,[2,36]),o($VW,[2,38]),o($Vu,$V1,{4:101,46:$V2}),o($VC,$VD,{62:80,44:102,56:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,73:$VP,74:$VQ,75:$VR,76:$VS,77:$VT,78:$VU}),o($V4,$V1,{4:103,46:$V2}),o($Vz,[2,60]),o($VC,[2,53]),o($Vz,[2,61]),o($Vz,[2,62]),o($Vz,[2,63]),o($Vz,[2,64]),o($Vz,[2,65]),o($Vz,[2,66]),o($Vz,[2,67]),o($Vz,[2,68]),o($Vz,[2,69]),o($Vz,[2,70]),o($Vz,[2,71]),o($Vz,[2,72]),o($Vz,[2,73]),o($Vz,[2,74]),o($Vz,[2,75]),o($Vz,[2,76]),o($Vz,[2,56]),o($Vz,[2,58]),o($V5,$V6,{33:22,34:23,35:24,41:26,45:27,58:29,31:71,29:104,36:$Vf,57:$Vg,60:$Vh}),o($Vu,[2,33]),o($V4,$V1,{4:105,46:$V2}),o($V4,[2,40]),o($Vt,[2,25]),o($V4,[2,39])],
+defaultActions: {6:[2,1]},
+parseError: function parseError (str, hash) {
+    if (hash.recoverable) {
+        this.trace(str);
+    } else {
+        var error = new Error(str);
+        error.hash = hash;
+        throw error;
+    }
+},
+parse: function parse(input) {
+    var self = this, stack = [0], tstack = [], vstack = [null], lstack = [], table = this.table, yytext = '', yylineno = 0, yyleng = 0, recovering = 0, TERROR = 2, EOF = 1;
+    var args = lstack.slice.call(arguments, 1);
+    var lexer = Object.create(this.lexer);
+    var sharedState = { yy: {} };
+    for (var k in this.yy) {
+        if (Object.prototype.hasOwnProperty.call(this.yy, k)) {
+            sharedState.yy[k] = this.yy[k];
+        }
+    }
+    lexer.setInput(input, sharedState.yy);
+    sharedState.yy.lexer = lexer;
+    sharedState.yy.parser = this;
+    if (typeof lexer.yylloc == 'undefined') {
+        lexer.yylloc = {};
+    }
+    var yyloc = lexer.yylloc;
+    lstack.push(yyloc);
+    var ranges = lexer.options && lexer.options.ranges;
+    if (typeof sharedState.yy.parseError === 'function') {
+        this.parseError = sharedState.yy.parseError;
+    } else {
+        this.parseError = Object.getPrototypeOf(this).parseError;
+    }
+    function popStack(n) {
+        stack.length = stack.length - 2 * n;
+        vstack.length = vstack.length - n;
+        lstack.length = lstack.length - n;
+    }
+    _token_stack:
+        var lex = function () {
+            var token;
+            token = lexer.lex() || EOF;
+            if (typeof token !== 'number') {
+                token = self.symbols_[token] || token;
+            }
+            return token;
+        };
+    var symbol, preErrorSymbol, state, action, a, r, yyval = {}, p, len, newState, expected;
+    while (true) {
+        state = stack[stack.length - 1];
+        if (this.defaultActions[state]) {
+            action = this.defaultActions[state];
+        } else {
+            if (symbol === null || typeof symbol == 'undefined') {
+                symbol = lex();
+            }
+            action = table[state] && table[state][symbol];
+        }
+                    if (typeof action === 'undefined' || !action.length || !action[0]) {
+                var errStr = '';
+                expected = [];
+                for (p in table[state]) {
+                    if (this.terminals_[p] && p > TERROR) {
+                        expected.push('\'' + this.terminals_[p] + '\'');
+                    }
+                }
+                if (lexer.showPosition) {
+                    errStr = 'Parse error on line ' + (yylineno + 1) + ':\n' + lexer.showPosition() + '\nExpecting ' + expected.join(', ') + ', got \'' + (this.terminals_[symbol] || symbol) + '\'';
+                } else {
+                    errStr = 'Parse error on line ' + (yylineno + 1) + ': Unexpected ' + (symbol == EOF ? 'end of input' : '\'' + (this.terminals_[symbol] || symbol) + '\'');
+                }
+                this.parseError(errStr, {
+                    text: lexer.match,
+                    token: this.terminals_[symbol] || symbol,
+                    line: lexer.yylineno,
+                    loc: yyloc,
+                    expected: expected
+                });
+            }
+        if (action[0] instanceof Array && action.length > 1) {
+            throw new Error('Parse Error: multiple actions possible at state: ' + state + ', token: ' + symbol);
+        }
+        switch (action[0]) {
+        case 1:
+            stack.push(symbol);
+            vstack.push(lexer.yytext);
+            lstack.push(lexer.yylloc);
+            stack.push(action[1]);
+            symbol = null;
+            if (!preErrorSymbol) {
+                yyleng = lexer.yyleng;
+                yytext = lexer.yytext;
+                yylineno = lexer.yylineno;
+                yyloc = lexer.yylloc;
+                if (recovering > 0) {
+                    recovering--;
+                }
+            } else {
+                symbol = preErrorSymbol;
+                preErrorSymbol = null;
+            }
+            break;
+        case 2:
+            len = this.productions_[action[1]][1];
+            yyval.$ = vstack[vstack.length - len];
+            yyval._$ = {
+                first_line: lstack[lstack.length - (len || 1)].first_line,
+                last_line: lstack[lstack.length - 1].last_line,
+                first_column: lstack[lstack.length - (len || 1)].first_column,
+                last_column: lstack[lstack.length - 1].last_column
+            };
+            if (ranges) {
+                yyval._$.range = [
+                    lstack[lstack.length - (len || 1)].range[0],
+                    lstack[lstack.length - 1].range[1]
+                ];
+            }
+            r = this.performAction.apply(yyval, [
+                yytext,
+                yyleng,
+                yylineno,
+                sharedState.yy,
+                action[1],
+                vstack,
+                lstack
+            ].concat(args));
+            if (typeof r !== 'undefined') {
+                return r;
+            }
+            if (len) {
+                stack = stack.slice(0, -1 * len * 2);
+                vstack = vstack.slice(0, -1 * len);
+                lstack = lstack.slice(0, -1 * len);
+            }
+            stack.push(this.productions_[action[1]][0]);
+            vstack.push(yyval.$);
+            lstack.push(yyval._$);
+            newState = table[stack[stack.length - 2]][stack[stack.length - 1]];
+            stack.push(newState);
+            break;
+        case 3:
+            return true;
+        }
+    }
+    return true;
+}};
+
+
+class MdcParse {
+	static absolute(s) {
+		const matched = s.match(/^{{([0-9]+),([0-9]+),([0-9]+)}}$/);
+		if (matched)
+			return { x: parseInt(matched[1]), y: parseInt(matched[2]), s: parseInt(matched[3]) };
+		else
+			return null;
+	}
+	static corners(s) {
+		return { 
+			ts: s.indexOf('1') >= 0,
+			te: s.indexOf('2') >= 0,
+			bs: s.indexOf('3') >= 0,
+			be: s.indexOf('4') >= 0,
+		};
+	}
+}
+/* generated by jison-lex 0.3.4 */
+var lexer = (function(){
+var lexer = ({
+
+EOF:1,
+
+parseError:function parseError(str, hash) {
+        if (this.yy.parser) {
+            this.yy.parser.parseError(str, hash);
+        } else {
+            throw new Error(str);
+        }
+    },
+
+// resets the lexer, sets new input
+setInput:function (input, yy) {
+        this.yy = yy || this.yy || {};
+        this._input = input;
+        this._more = this._backtrack = this.done = false;
+        this.yylineno = this.yyleng = 0;
+        this.yytext = this.matched = this.match = '';
+        this.conditionStack = ['INITIAL'];
+        this.yylloc = {
+            first_line: 1,
+            first_column: 0,
+            last_line: 1,
+            last_column: 0
+        };
+        if (this.options.ranges) {
+            this.yylloc.range = [0,0];
+        }
+        this.offset = 0;
+        return this;
+    },
+
+// consumes and returns one char from the input
+input:function () {
+        var ch = this._input[0];
+        this.yytext += ch;
+        this.yyleng++;
+        this.offset++;
+        this.match += ch;
+        this.matched += ch;
+        var lines = ch.match(/(?:\r\n?|\n).*/g);
+        if (lines) {
+            this.yylineno++;
+            this.yylloc.last_line++;
+        } else {
+            this.yylloc.last_column++;
+        }
+        if (this.options.ranges) {
+            this.yylloc.range[1]++;
+        }
+
+        this._input = this._input.slice(1);
+        return ch;
+    },
+
+// unshifts one char (or a string) into the input
+unput:function (ch) {
+        var len = ch.length;
+        var lines = ch.split(/(?:\r\n?|\n)/g);
+
+        this._input = ch + this._input;
+        this.yytext = this.yytext.substr(0, this.yytext.length - len);
+        //this.yyleng -= len;
+        this.offset -= len;
+        var oldLines = this.match.split(/(?:\r\n?|\n)/g);
+        this.match = this.match.substr(0, this.match.length - 1);
+        this.matched = this.matched.substr(0, this.matched.length - 1);
+
+        if (lines.length - 1) {
+            this.yylineno -= lines.length - 1;
+        }
+        var r = this.yylloc.range;
+
+        this.yylloc = {
+            first_line: this.yylloc.first_line,
+            last_line: this.yylineno + 1,
+            first_column: this.yylloc.first_column,
+            last_column: lines ?
+                (lines.length === oldLines.length ? this.yylloc.first_column : 0)
+                 + oldLines[oldLines.length - lines.length].length - lines[0].length :
+              this.yylloc.first_column - len
+        };
+
+        if (this.options.ranges) {
+            this.yylloc.range = [r[0], r[0] + this.yyleng - len];
+        }
+        this.yyleng = this.yytext.length;
+        return this;
+    },
+
+// When called from action, caches matched text and appends it on next action
+more:function () {
+        this._more = true;
+        return this;
+    },
+
+// When called from action, signals the lexer that this rule fails to match the input, so the next matching rule (regex) should be tested instead.
+reject:function () {
+        if (this.options.backtrack_lexer) {
+            this._backtrack = true;
+        } else {
+            return this.parseError('Lexical error on line ' + (this.yylineno + 1) + '. You can only invoke reject() in the lexer when the lexer is of the backtracking persuasion (options.backtrack_lexer = true).\n' + this.showPosition(), {
+                text: "",
+                token: null,
+                line: this.yylineno
+            });
+
+        }
+        return this;
+    },
+
+// retain first n characters of the match
+less:function (n) {
+        this.unput(this.match.slice(n));
+    },
+
+// displays already matched input, i.e. for error messages
+pastInput:function () {
+        var past = this.matched.substr(0, this.matched.length - this.match.length);
+        return (past.length > 20 ? '...':'') + past.substr(-20).replace(/\n/g, "");
+    },
+
+// displays upcoming input, i.e. for error messages
+upcomingInput:function () {
+        var next = this.match;
+        if (next.length < 20) {
+            next += this._input.substr(0, 20-next.length);
+        }
+        return (next.substr(0,20) + (next.length > 20 ? '...' : '')).replace(/\n/g, "");
+    },
+
+// displays the character position where the lexing error occurred, i.e. for error messages
+showPosition:function () {
+        var pre = this.pastInput();
+        var c = new Array(pre.length + 1).join("-");
+        return pre + this.upcomingInput() + "\n" + c + "^";
+    },
+
+// test the lexed token: return FALSE when not a match, otherwise return token
+test_match:function(match, indexed_rule) {
+        var token,
+            lines,
+            backup;
+
+        if (this.options.backtrack_lexer) {
+            // save context
+            backup = {
+                yylineno: this.yylineno,
+                yylloc: {
+                    first_line: this.yylloc.first_line,
+                    last_line: this.last_line,
+                    first_column: this.yylloc.first_column,
+                    last_column: this.yylloc.last_column
+                },
+                yytext: this.yytext,
+                match: this.match,
+                matches: this.matches,
+                matched: this.matched,
+                yyleng: this.yyleng,
+                offset: this.offset,
+                _more: this._more,
+                _input: this._input,
+                yy: this.yy,
+                conditionStack: this.conditionStack.slice(0),
+                done: this.done
+            };
+            if (this.options.ranges) {
+                backup.yylloc.range = this.yylloc.range.slice(0);
+            }
+        }
+
+        lines = match[0].match(/(?:\r\n?|\n).*/g);
+        if (lines) {
+            this.yylineno += lines.length;
+        }
+        this.yylloc = {
+            first_line: this.yylloc.last_line,
+            last_line: this.yylineno + 1,
+            first_column: this.yylloc.last_column,
+            last_column: lines ?
+                         lines[lines.length - 1].length - lines[lines.length - 1].match(/\r?\n?/)[0].length :
+                         this.yylloc.last_column + match[0].length
+        };
+        this.yytext += match[0];
+        this.match += match[0];
+        this.matches = match;
+        this.yyleng = this.yytext.length;
+        if (this.options.ranges) {
+            this.yylloc.range = [this.offset, this.offset += this.yyleng];
+        }
+        this._more = false;
+        this._backtrack = false;
+        this._input = this._input.slice(match[0].length);
+        this.matched += match[0];
+        token = this.performAction.call(this, this.yy, this, indexed_rule, this.conditionStack[this.conditionStack.length - 1]);
+        if (this.done && this._input) {
+            this.done = false;
+        }
+        if (token) {
+            return token;
+        } else if (this._backtrack) {
+            // recover context
+            for (var k in backup) {
+                this[k] = backup[k];
+            }
+            return false; // rule action called reject() implying the next rule should be tested instead.
+        }
+        return false;
+    },
+
+// return next match in input
+next:function () {
+        if (this.done) {
+            return this.EOF;
+        }
+        if (!this._input) {
+            this.done = true;
+        }
+
+        var token,
+            match,
+            tempMatch,
+            index;
+        if (!this._more) {
+            this.yytext = '';
+            this.match = '';
+        }
+        var rules = this._currentRules();
+        for (var i = 0; i < rules.length; i++) {
+            tempMatch = this._input.match(this.rules[rules[i]]);
+            if (tempMatch && (!match || tempMatch[0].length > match[0].length)) {
+                match = tempMatch;
+                index = i;
+                if (this.options.backtrack_lexer) {
+                    token = this.test_match(tempMatch, rules[i]);
+                    if (token !== false) {
+                        return token;
+                    } else if (this._backtrack) {
+                        match = false;
+                        continue; // rule action called reject() implying a rule MISmatch.
+                    } else {
+                        // else: this is a lexer rule which consumes input without producing a token (e.g. whitespace)
+                        return false;
+                    }
+                } else if (!this.options.flex) {
+                    break;
+                }
+            }
+        }
+        if (match) {
+            token = this.test_match(match, rules[index]);
+            if (token !== false) {
+                return token;
+            }
+            // else: this is a lexer rule which consumes input without producing a token (e.g. whitespace)
+            return false;
+        }
+        if (this._input === "") {
+            return this.EOF;
+        } else {
+            return this.parseError('Lexical error on line ' + (this.yylineno + 1) + '. Unrecognized text.\n' + this.showPosition(), {
+                text: "",
+                token: null,
+                line: this.yylineno
+            });
+        }
+    },
+
+// return next match that has a token
+lex:function lex () {
+        var r = this.next();
+        if (r) {
+            return r;
+        } else {
+            return this.lex();
+        }
+    },
+
+// activates a new lexer condition state (pushes the new lexer condition state onto the condition stack)
+begin:function begin (condition) {
+        this.conditionStack.push(condition);
+    },
+
+// pop the previously active lexer condition state off the condition stack
+popState:function popState () {
+        var n = this.conditionStack.length - 1;
+        if (n > 0) {
+            return this.conditionStack.pop();
+        } else {
+            return this.conditionStack[0];
+        }
+    },
+
+// produce the lexer rule set which is active for the currently active lexer condition state
+_currentRules:function _currentRules () {
+        if (this.conditionStack.length && this.conditionStack[this.conditionStack.length - 1]) {
+            return this.conditions[this.conditionStack[this.conditionStack.length - 1]].rules;
+        } else {
+            return this.conditions["INITIAL"].rules;
+        }
+    },
+
+// return the currently active lexer condition state; when an index argument is provided it produces the N-th previous condition state, if available
+topState:function topState (n) {
+        n = this.conditionStack.length - 1 - Math.abs(n || 0);
+        if (n >= 0) {
+            return this.conditionStack[n];
+        } else {
+            return "INITIAL";
+        }
+    },
+
+// alias for begin(condition)
+pushState:function pushState (condition) {
+        this.begin(condition);
+    },
+
+// return the number of states currently on the stack
+stateStackSize:function stateStackSize() {
+        return this.conditionStack.length;
+    },
+options: {},
+performAction: function anonymous(yy,yy_,$avoiding_name_collisions,YY_START) {
+var YYSTATE=YY_START;
+switch($avoiding_name_collisions) {
+case 0:return 54;
+break;
+case 1:return 55;
+break;
+case 2:return 54;
+break;
+case 3:return 55;
+break;
+case 4:return 54;
+break;
+case 5:return 55;
+break;
+case 6:return 54;
+break;
+case 7:return 55;
+break;
+case 8:return 54;
+break;
+case 9:return 55;
+break;
+case 10:return 54;
+break;
+case 11:return 55;
+break;
+case 12:return 54;
+break;
+case 13:return 55;
+break;
+case 14:return 54;
+break;
+case 15:return 55;
+break;
+case 16:return 12;
+break;
+case 17:return 12;
+break;
+case 18:return 12;
+break;
+case 19:return 13;
+break;
+case 20:return 14;
+break;
+case 21:return 12;
+break;
+case 22:return 16;
+break;
+case 23:return 16;
+break;
+case 24:return 16;
+break;
+case 25:return 19;
+break;
+case 26:return 53;
+break;
+case 27:return 52;
+break;
+case 28:return 15;
+break;
+case 29:return 47;
+break;
+case 30:return 57;
+break;
+case 31:return 30;
+break;
+case 32:return 30;
+break;
+case 33:return 32;
+break;
+case 34:return 32;
+break;
+case 35:return 56;
+break;
+case 36:return 40;
+break;
+case 37:return 18;
+break;
+case 38:return 64;
+break;
+case 39:return 65;
+break;
+case 40:return 66;
+break;
+case 41:return 67;
+break;
+case 42:return 68;
+break;
+case 43:return 69;
+break;
+case 44:return 70;
+break;
+case 45:return 71;
+break;
+case 46:return 72;
+break;
+case 47:return 73;
+break;
+case 48:return 74;
+break;
+case 49:return 75;
+break;
+case 50:return 76;
+break;
+case 51:return 77;
+break;
+case 52:return 78;
+break;
+case 53:return 63;
+break;
+case 54:return 48;
+break;
+case 55:return 49;
+break;
+case 56:return 50;
+break;
+case 57:return 51;
+break;
+case 58:return 24;
+break;
+case 59:return 83;
+break;
+case 60:return 84;
+break;
+case 61:return 38;
+break;
+case 62:return 38;
+break;
+case 63:return 80;
+break;
+case 64:return 81;
+break;
+case 65:return 79;
+break;
+case 66:return 82;
+break;
+case 67:return 60;
+break;
+case 68:return 61;
+break;
+case 69:return 10;
+break;
+case 70:return 46;
+break;
+case 71:return 17;
+break;
+case 72:return 17;
+break;
+case 73:return 39;
+break;
+case 74:return 26;
+break;
+case 75:return 28;
+break;
+case 76:return 36;
+break;
+case 77:return 37;
+break;
+case 78:return 6;
+break;
+}
+},
+rules: [/^(?:\[&)/,/^(?:&\])/,/^(?:\[\{)/,/^(?:\}\])/,/^(?:\[\[)/,/^(?:\]\])/,/^(?:\[\\)/,/^(?:\\\])/,/^(?:\[")/,/^(?:"\])/,/^(?:\[')/,/^(?:'\])/,/^(?:\[\()/,/^(?:\)\])/,/^(?:\[\?)/,/^(?:\?\])/,/^(?:!![ \t\n\r\f_]*)/,/^(?:(\+s-)?!(=([0-9]+)%)?[ \t\n\r\f_]*)/,/^(?:\+s[ \t\n\r\f_]*)/,/^(?:\+[a-rt-z+](\\\+|[^+])*)/,/^(?:\|[^|-]*)/,/^(?:\{[lL]([0-9]+),([0-9]+)\})/,/^(?:\?([0-9]+))/,/^(?:%clear\b)/,/^(?:%\{[^}]*\})/,/^(?:zone\{[^}]*\})/,/^(?:h\/)/,/^(?:v\/)/,/^(?:PF[0-9]-)/,/^(?:([A-Z]|Aa|Ff|NL|NU)[0-9]+[A-Za-z]*|[a-zA-Z]+|US[0-9A-Z]*|[0-9]+|"[^\"]+"|`)/,/^(?:=)/,/^(?:\^\^\^)/,/^(?:\^\^)/,/^(?:&&&)/,/^(?:&&)/,/^(?:\{\{[0-9]+,[0-9]+,[0-9]+\}\})/,/^(?:\*\*)/,/^(?:\^)/,/^(?:\\r1\b)/,/^(?:\\r2\b)/,/^(?:\\r3\b)/,/^(?:\\r4\b)/,/^(?:\\t1\b)/,/^(?:\\t2\b)/,/^(?:\\t3\b)/,/^(?:\\t4\b)/,/^(?:\\R([0-9]+))/,/^(?:\\([0-9]+))/,/^(?:\\red\b)/,/^(?:\\i\b)/,/^(?:\\l\b)/,/^(?:\\shading[1234]+)/,/^(?:\\[a-zA-Z]+[0-9]*)/,/^(?:\\)/,/^(?:\.\.)/,/^(?:\.)/,/^(?:\/\/)/,/^(?:\/)/,/^(?:#[1234]+)/,/^(?:-?#b\b)/,/^(?:-?#e\b)/,/^(?:##)/,/^(?:#)/,/^(?:\$r\b)/,/^(?:\$b\b)/,/^(?:\$)/,/^(?:-?#)/,/^(?:<[SFHsfh]?[bme]?[0123]?-)/,/^(?:-[SFHsfh]?[0123]?>)/,/^(?:-[ \t\n\r\f_]*)/,/^(?:[ \t\n\r\f_]+)/,/^(?:\?\?)/,/^(?:\?)/,/^(?:&)/,/^(?::)/,/^(?:\*)/,/^(?:\()/,/^(?:\))/,/^(?:$)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78],"inclusive":true}}
+});
+return lexer;
+})();
+parser.lexer = lexer;
+function Parser () {
+  this.yy = {};
+}
+Parser.prototype = parser;parser.Parser = Parser;
+return new Parser;
+})();
+
+
+if (typeof require !== 'undefined' && typeof exports !== 'undefined') {
+exports.parser = mdcsyntax;
+exports.Parser = mdcsyntax.Parser;
+exports.parse = function () { return mdcsyntax.parse.apply(mdcsyntax, arguments); };
+exports.main = function commonjsMain (args) {
+    if (!args[1]) {
+        console.log('Usage: '+args[0]+' FILE');
+        process.exit(1);
+    }
+    var source = require('fs').readFileSync(require('path').normalize(args[1]), "utf8");
+    return exports.parser.parse(source);
+};
+if (typeof module !== 'undefined' && require.main === module) {
+  exports.main(process.argv.slice(1));
+}
+} 
+function clearInputs() {
+	$('input-file').value = '';
+	$('input-text').value = '';
+	$('error-results').classList.add('hidden');
+	$('parse-results').classList.add('hidden');
+	$('download').classList.add('hidden');
+}
+
+function processFile() {
+	const fileList = event.target.files;
+	if (fileList.length > 0)
+		convertFile(fileList[0]);
+}
+
+function processInput() {
+	$('input-file').value = '';
+	convert($('input-text').value);
+}
+
+function convertFile(file) {
+	$('input-text').value = '';
+	const reader = new FileReader();
+	reader.addEventListener('load', (e) => {
+		convert(e.target.result);
+		$('download').classList.remove('hidden');
+	});
+	reader.readAsText(file);
+}
+
+var downloadable = [];
+
+function convert(s) {
+	$('error-results').classList.add('hidden');
+	$('parse-results').classList.add('hidden');
+	const ul = $('outputs');
+	removeChildren(ul);
+	downloadable = [];
+	const lines = s.split('\n').map(line => line + '\n');
+	var items = [];
+	try {
+		var i;
+		for (i = 0; i < lines.length; i++) {
+			const line = mdcsyntax.parse(lines[i]);
+			items.push(...line.parts);
+		}
+	} catch (err) {
+		console.log(err);
+		console.log("error in line", i, lines[i]);
+		$('error-text').value = err;
+		$('error-results').classList.remove('hidden');
+		return;
+	}
+	for (let item of items) {
+		const li = document.createElement('li');
+		if (item instanceof MdcText) {
+			const text = item.toString();
+			li.innerText = text;
+			downloadable.push({ type: 'text', string: text });
+		} else if (item instanceof MdcLineNumber) {
+			const num = item.toString();
+			const b = document.createElement('b');
+			b.innerText = num;
+			li.appendChild(b);
+			downloadable.push({ type: 'linenumber', string: num });
+		} else {
+			const encoding = item.toString();
+			const red = item.isRed();
+			const span = document.createElement('span');
+			span.className = 'hierojax';
+			span.setAttribute('data-fontsize', 30);
+			if (red)
+				span.setAttribute('data-signcolor', 'red');
+			span.setAttribute('data-bracketcolor', 'blue');
+			span.innerText = encoding;
+			span.addEventListener('click', function() {
+				navigator.clipboard.writeText(encoding);
+				span.classList.add('clicked');
+				setTimeout(() => span.classList.remove('clicked'), 2000);
+			});
+			li.appendChild(span);
+			hierojax.processFragment(span);
+			const t = red ? 'red' : 'black';
+			downloadable.push({ type: t, string: encoding });
+		}
+		ul.appendChild(li);
+	}
+	$('parse-results').classList.remove('hidden');
+}
+
+function download() {
+	const blob = new Blob([JSON.stringify(downloadable)], { type: "text/json" });
+	const downloadLink = document.createElement("a");
+	downloadLink.href = URL.createObjectURL(blob);
+	downloadLink.download = 'converted.json';
+	downloadLink.click();
+}

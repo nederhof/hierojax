@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>MDC to Unicode conversion</title>
+<link rel="stylesheet" type="text/css" href="hierojax.css" />
+<link rel="stylesheet" type="text/css" href="mdcconversion.css" />
+<script type="text/javascript" src="mdcconversion.js"></script>
+</head>
+<body>
+
+<h1>Conversion from MdC to Unicode</h1>
+
+<h2>Select a MdC file or enter MdC text</h2>
+
+<input id="input-file" type="file" id="mdc-selector" accept=".gly, .hie" onchange="processFile(event);">
+<p>
+<textarea id="input-text" rows="6" cols="80" onchange="processInput();"></textarea>
+<input type="button" value="Process" onclick="processInput();">
+<input type="button" value="Clear" class="danger" onclick="clearInputs();">
+
+<div id="error-results" class="hidden">
+<h2>Errors</h2>
+
+<textarea id="error-text" rows="6" cols="80" spellcheck="false" readonly></textarea>
+</div>
+
+<div id="parse-results" class="hidden">
+<h2>Output</h2>
+
+<ul id="outputs">
+</ul>
+<input id="download" class="hidden" type="button" value="Download" onclick="download();">
+<p>
+Click on a fragment of hieroglyphic to copy it to the clipboard.
+</p>
+</div>
+
+</body>
+</html>

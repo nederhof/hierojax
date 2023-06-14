@@ -30,18 +30,22 @@ pixelization. For most applications, SVG seems to be the best choice.
 
 <ul>
 <li><a href="demo.html">Demo</a> with fine-tuning of parameters</li>
+<li><a href="texts/index.html">Ancient Egyptian texts</a> in Unicode
 <li><a href="interactive.html">Interactive demo</a> of fine-tuning of parameters</li>
 <li><a href="testsuite.html">Testsuite</a> with stress test of special cases</li>
 <li><a href="insertionlist.html">Insertions</a> that are implemented</li>
 <li><a href="rotationlist.html">Rotations</a> that are implemented</li>
 <li><a href="edit.html">Graphical editor</a> for editing encodings</li>
 <li><a href="embedding.html">Demo how to embed graphical editor</a> into a larger web application</li>
+<li><a href="mdcconversion.html">Automatic conversion from MdC</a> to Unicode</li>
 </ul>
 
 All the relevant files can be found on <a
 href="https://github.com/nederhof/hierojax">GitHub</a>.
 
-<h2>How to use hieroglyphic encoding in web pages</h2>
+<h2>Instructions</h2>
+
+<h3>Use hieroglyphic encoding in web pages</h3>
 
 Copy 
 <a href="hierojax.js">hierojax.js</a>, 
@@ -60,16 +64,24 @@ pages. In the header of a web page with hieroglyphic, include:
 In your web page, represent fragments of hieroglyphic as exemplified
 in <a href="demo.html">demo.html</a>.
 
-<h2>How to invoke the graphical editor off-line</h2>
+<h3>Invoke the graphical editor off-line</h3>
 
 Copy 
-<a href="hierojax.js">hierojaxedit.js</a>, 
+<a href="edit.html">edit.html</a>, 
+<a href="help.html">help.html</a>, 
+<a href="hierojaxedit.js">hierojaxedit.js</a>, 
 <a href="hierojax.css">hierojax.css</a>, 
-<a href="hierojax.css">edit.html</a>, 
-<a href="hierojax.css">help.html</a>, 
-<a href="hierojax.css">edit.css</a>, and 
+<a href="edit.css">edit.css</a>, and 
 <a href="NewGardinerSMP.ttf">NewGardinerSMP.ttf</a> 
 to a local folder. Open <tt>edit.html</tt> in your browser.
+
+<h3>Run MdC-to-Unicode conversion off-line</h3>
+Copy 
+<a href="mdcconversion.html">mdcconversion.html</a>, 
+<a href="mdcconversion.js">mdcconversion.js</a>, 
+<a href="mdcconversion.css">mdcconversion.css</a>, 
+<a href="NewGardinerSMP.ttf">NewGardinerSMP.ttf</a> 
+to a local folder. Open <tt>mdcconversion.html</tt> in your browser.
 
 </body>
 </html>

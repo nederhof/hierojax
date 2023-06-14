@@ -13,6 +13,11 @@ class HieroJaxInteractive {
 		HieroJaxInteractive.allowDownload();
 	}
 
+	static clearHTML() {
+		$('encoding').value = '';
+		HieroJaxInteractive.createHTML();
+	}
+
 	static getParameters() {
 		const formData = new FormData($('form'));
 		var html = '<span class="hierojax"';

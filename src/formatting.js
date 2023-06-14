@@ -523,8 +523,8 @@ Shapes.REFERENCE_GLYPH = '\u{13000}'; // sitting man
 Shapes.OUTLINE = '\uE45C';
 Shapes.WALLED_OUTLINE = '\uE45D';
 Shapes.PLACEHOLDER = '\uFFFD';
-Shapes.ENCLOSURE_THICKNESS = 0.10; // EM distance between outer border of enclosure and content
-Shapes.WALLED_ENCLOSURE_THICKNESS = 0.12; // same for walled enclosure
+Shapes.ENCLOSURE_THICKNESS = 0.11; // EM distance between outer border of enclosure and content
+Shapes.WALLED_ENCLOSURE_THICKNESS = 0.13; // same for walled enclosure
 Shapes.MEASURE_SIZE = 150;
 Shapes.rotatedChars = {
 '\uE45C': '\uE462',
@@ -1293,11 +1293,11 @@ class Horizontal extends Group {
 			const first = this.groups[0];
 			const last = this.groups[this.groups.length-1];
 			if (first instanceof BracketOpen) {
-				first.format(options, x0, y1, x1-x0, y2-y1);
+				first.format(options, x0, y0, x1-x0, y3-y0);
 				x0 = x1;
 			}
 			if (last instanceof BracketClose) {
-				last.format(options, x2, y1, x3-x2, y2-y1);
+				last.format(options, x2, y0, x3-x2, y3-y0);
 				x3 = x2;
 			}
 			properGroups[0].format(options, x0, x1, x2, x3, y0, y1, y2, y3);
@@ -1307,14 +1307,14 @@ class Horizontal extends Group {
 			for (let i = 0; i < this.groups.length; i++) {
 				const group = this.groups[i];
 				if (group instanceof BracketOpen) {
-					group.format(options, x0, y1, x1-x0, y2-y1);
+					group.format(options, x0, y0, x1-x0, y3-y0);
 					x0 = x1;
 				} else if (!(group instanceof BracketClose)) {
 					if (i < this.groups.length-1) {
 						var x4 = x1 + group.size(options).w;
 						const next = this.groups[i+1];
 						if (next instanceof BracketClose) {
-							next.format(options, x4, y1, buf / 2, y2-y1);
+							next.format(options, x4, y0, buf / 2, y3-y0);
 							var x5 = x4;
 							var x6 = x5 + buf / 2;
 						} else {
@@ -1518,70 +1518,78 @@ class Enclosure extends Group {
 		return this.scale * (this.type == 'walled' ?
 			Shapes.WALLED_ENCLOSURE_THICKNESS : Shapes.ENCLOSURE_THICKNESS);
 	}
-	format(options, x0, x1, x2, x3, y0, y1, y2, y3) {
+	format(options, x0Encl, x1Encl, x2Encl, x3Encl, y0Encl, y1Encl, y2Encl, y3Encl) {
 		const size = this.size(options);
-		const bufX = ((x2-x1) - size.w) / 2;
-		const bufY = ((y2-y1) - size.h) / 2;
+		const bufX = ((x2Encl-x1Encl) - size.w) / 2;
+		const bufY = ((y2Encl-y1Encl) - size.h) / 2;
 		const inner = this.innerSize(options);
 		const open = this.openSize(options);
 		const close = this.closeSize(options);
 		const outline = this.outlineSize(options);
 		this.areas = [];
-		this.delimOpenRect = { x: x1 + bufX, y: y1 + bufY, w: open.w, h: open.h };
+		this.delimOpenRect = { x: x1Encl + bufX, y: y1Encl + bufY, w: open.w, h: open.h };
 		if (Group.h(options)) {
-			this.delimCloseRect = { x: x2 - bufX - close.w, y: y1 + bufY,
+			this.delimCloseRect = { x: x2Encl - bufX - close.w, y: y1Encl + bufY,
 				w: close.w, h: close.h };
 			if (this.damageOpen) {
 				const shadeOpenWidth = this.delimOpenRect.w + this.kernOpenSize();
 				this.areas.push(...Group.damageAreas(this.damageOpen,
-						x0, this.delimOpenRect.x + shadeOpenWidth / 2,
+						x0Encl, this.delimOpenRect.x + shadeOpenWidth / 2,
 							this.delimOpenRect.x + shadeOpenWidth,
-						y0, this.delimOpenRect.y + this.delimOpenRect.h / 2, y3));
+						y0Encl, this.delimOpenRect.y + this.delimOpenRect.h / 2, y3Encl));
 			}
 			if (this.damageClose) {
 				const shadeCloseWidth = this.delimCloseRect.w + this.kernCloseSize();
 				this.areas.push(...Group.damageAreas(this.damageClose,
 						this.delimCloseRect.x - this.kernCloseSize(),
-						this.delimCloseRect.x + this.delimCloseRect.w - shadeCloseWidth / 2, x3,
-						y0, this.delimCloseRect.y + this.delimCloseRect.h / 2, y3));
+						this.delimCloseRect.x + this.delimCloseRect.w - shadeCloseWidth / 2, x3Encl,
+						y0Encl, this.delimCloseRect.y + this.delimCloseRect.h / 2, y3Encl));
 			}
 			var x0 = this.delimOpenRect.x + this.delimOpenRect.w + this.kernOpenSize();
 			var x1 = x0 + this.scale * options.sep / 2;
+			if (!this.delimOpen)
+				x0 = x0Encl;
 			for (let i = 0; i < this.groups.length; i++) {
 				const group = this.groups[i];
 				var x2 = x1 + group.size(options).w;
-				var x3 = i < this.groups.length-1 ? x2 + this.scale * options.sep / 2 : this.delimCloseRect.x;
-				group.format(options, x0, x1, x2, x3, y0,
-					y1 + bufY + this.thickness(),
-					y2 - bufY - this.thickness(), y3);
+				var x3 = !this.delimClose ? x3Encl :
+					i < this.groups.length-1 ? x2 + this.scale * options.sep / 2 : 
+					this.delimCloseRect.x - this.kernCloseSize();
+				group.format(options, x0, x1, x2, x3, y0Encl,
+					y1Encl + bufY + this.thickness(),
+					y2Encl - bufY - this.thickness(), y3Encl);
 				x0 = x3;
 				x1 = x2 + this.scale * options.sep;
 			}
 		} else {
-			this.delimCloseRect = { x: x1 + bufX, y: y2 - bufY - close.h, w: close.w, h: close.h };
+			this.delimCloseRect = { x: x1Encl + bufX, y: y2Encl - bufY - close.h, w: close.w, h: close.h };
 			if (this.damageOpen) {
 				const shadeOpenHeight = this.delimOpenRect.h + this.kernOpenSize();
 				this.areas.push(...Group.damageAreas(this.damageOpen,
-						x0, this.delimOpenRect.x + this.delimOpenRect.w / 2, x3,
-						y0, this.delimOpenRect.y + shadeOpenHeight / 2,
+						x0Encl, this.delimOpenRect.x + this.delimOpenRect.w / 2, x3Encl,
+						y0Encl, this.delimOpenRect.y + shadeOpenHeight / 2,
 							this.delimOpenRect.y + shadeOpenHeight));
 			}
 			if (this.damageClose) {
 				const shadeCloseHeight = this.delimCloseRect.h + this.kernCloseSize();
 				this.areas.push(...Group.damageAreas(this.damageClose,
-						x0, this.delimCloseRect.x + this.delimCloseRect.w / 2, x3,
+						x0Encl, this.delimCloseRect.x + this.delimCloseRect.w / 2, x3Encl,
 						this.delimCloseRect.y - this.kernCloseSize(),
-						this.delimCloseRect.y + this.delimCloseRect.h - shadeCloseHeight / 2, y3));
+						this.delimCloseRect.y + this.delimCloseRect.h - shadeCloseHeight / 2, y3Encl));
 			}
 			var y0 = this.delimOpenRect.y + this.delimOpenRect.h + this.kernOpenSize();
 			var y1 = y0 + this.scale * options.sep / 2;
+			if (!this.delimOpen)
+				y0 = y0Encl;
 			for (let i = 0; i < this.groups.length; i++) {
 				const group = this.groups[i];
 				var y2 = y1 + group.size(options).h;
-				var y3 = i < this.groups.length-1 ? y2 + this.scale * options.sep / 2 : this.delimCloseRect.y;
-				group.format(options, x0,
-					x1 + bufX + this.thickness(),
-					x2 - bufX - this.thickness(), x3, y0, y1, y2, y3);
+				var y3 = !this.delimClose ? y3Encl :
+					i < this.groups.length-1 ? y2 + this.scale * options.sep / 2 : 
+					this.delimCloseRect.y - this.kernCloseSize();
+				group.format(options, x0Encl,
+					x1Encl + bufX + this.thickness(),
+					x2Encl - bufX - this.thickness(), x3Encl, y0, y1, y2, y3);
 				y0 = y3;
 				y1 = y2 + this.scale * options.sep;
 			}
