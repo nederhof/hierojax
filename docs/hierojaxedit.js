@@ -1907,7 +1907,7 @@ class Fragment extends Group {
 			for (let i = 0; i < this.groups.length; i++) {
 				const group = this.groups[i];
 				var x1 = x + group.size(options).w;
-				if (i < this.groups.length-1 && !options.separated)
+				if (i < this.groups.length-1 || options.separated)
 					var x2 = x1 + options.sep / 2;
 				else
 					var x2 = this.size(options).w + options.sep;
@@ -1928,7 +1928,7 @@ class Fragment extends Group {
 			for (let i = 0; i < this.groups.length; i++) {
 				const group = this.groups[i];
 				var y1 = y + group.size(options).h;
-				if (i < this.groups.length-1 && !options.separated)
+				if (i < this.groups.length-1 || options.separated)
 					var y2 = y1 + options.sep / 2;
 				else
 					var y2 = this.size(options).h + options.sep;
