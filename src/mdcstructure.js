@@ -55,7 +55,7 @@ class MdcLine {
 		this.parts = parts;
 		this.propagateToggles();
 		this.propagateGroupShading();
-		this.splitByColor();
+		// this.splitByColor();
 	}
 	propagateToggles() {
 		var state = new MdcState();
@@ -79,6 +79,7 @@ class MdcLine {
 				part.propagateGroupShading();
 		}
 	}
+/*
 	splitByColor() {
 		let i = 0;
 		for (let i = 0; i < this.parts.length; i++) {
@@ -91,6 +92,7 @@ class MdcLine {
 			}
 		}
 	}
+*/
 }
 
 class MdcFragment {
@@ -166,7 +168,20 @@ class MdcFragment {
 	isRed() {
 		return this.groups[0].isRed();
 	}
-	splitByColor() {
+	cutByColor() {
+		if (this.groups.length == 0)
+			return [];
+		var fragments = [];
+		var j = 0;
+		for (let i = 1; i < this.groups.length; i++) {
+			if (this.groups[i].isRed() != this.groups[j].isRed()) {
+				fragments.push(new MdcFragment(this.groups.slice(j, i)));
+				j = i;
+			}
+		}
+		fragments.push(new MdcFragment(this.groups.slice(j)));
+		return fragments;
+/*
 		var red = this.groups[0].isRed();
 		for (let i = 1; i < this.groups.length; i++) {
 			if (this.groups[i].isRed() != red) {
@@ -175,6 +190,7 @@ class MdcFragment {
 			}
 		}
 		return [this];
+*/
 	}
 	static strToGroup(str) {
 		return syntax.parse(str).groups[0];
@@ -629,7 +645,7 @@ class MdcComplex extends MdcPart {
 					g2 = MdcSign.errorLiteral();
 				if (!g1 && !g2)
 					return core;
-				var insertions = {};
+				var insertions = { };
 				if (g1) {
 					const place1 = placesPre.length ? placesPre[0] : 'ts';
 					insertions[place1] = g1;
@@ -801,13 +817,13 @@ class MdcLigature extends MdcPart {
 		}
 		if (names.length == 2 && names[1] in MdcLigaturePairTwo) {
 			const place = MdcLigaturePairTwo[names[1]];
-			var insertions = {};
+			var insertions = { };
 			insertions[place] = this.subLiteral(names[0], place);
 			return new Basic(this.subLiteral(names[1], null), insertions);
 		}
 		if (names.length == 3 && names[1] in MdcLigatureTripleTwo) {
 			const places = MdcLigatureTripleTwo[names[1]];
-			var insertions = {};
+			var insertions = { };
 			insertions[places[0]] = this.subLiteral(names[0], places[0]);
 			insertions[places[1]] = this.subLiteral(names[2], places[1]);
 			return new Basic(this.subLiteral(names[1], null), insertions);
@@ -816,11 +832,11 @@ class MdcLigature extends MdcPart {
 		const place = names[0] in MdcLigatureOne ? MdcLigatureOne[names[0]] :
 				places.size > 0 ? places.values().next().value : 'ts';
 		if (names.length == 2) {
-			var insertions = {};
+			var insertions = { };
 			insertions[place] = this.subLiteral(names[1], place);
 			return new Basic(this.subLiteral(names[0], null), insertions);
 		}
-		var insertions = {};
+		var insertions = { };
 		insertions[place] = new Vertical(names.slice(1).map(n => this.subLiteral(n, place)));
 		return new Basic(this.subLiteral(names[0], null), insertions);
 	}
@@ -889,7 +905,7 @@ class MdcAbsolute extends MdcPart {
 		const core = new Literal(parts[j].ch, 0, parts[j].mirror, shade);
 		const placesFirst = Shapes.allowedPlaces(parts[j].ch);
 		const placeFirst = placesFirst.size > 0 ? placesFirst.values().next().value : 'ts';
-		var placeToChar = { };
+		var placeToChar = {};
 		for (let i = 0; i < parts.length; i++) {
 			if (i != j) {
 				const pl = parts[i].place;
@@ -899,7 +915,7 @@ class MdcAbsolute extends MdcPart {
 					placeToChar[pl] = [parts[i].ch];
 			}
 		}
-		var insertions = {};
+		var insertions = { };
 		for (let place in placeToChar) {
 			const cs = placeToChar[place];
 			if (cs.length == 1) {
@@ -984,7 +1000,7 @@ class MdcSign extends MdcHieroglyph {
 		const mdcName = mdcNames[this.name];
 		var vs = 0;
 		if ('rotate' in this) {
-			var rounded = Math.round(this.rotate % 360 / 45) * 45;
+			const rounded = Math.round(this.rotate % 360 / 45) * 45;
 			vs = Group.rotateToNum(rounded);
 		}
 		const shade = this.shadingAny();
@@ -1063,16 +1079,16 @@ class MdcBracketOpen extends MdcHieroglyph {
 	}
 	toString() {
 		switch (this.ch) {
-            case '[&': return '\u2329';
-            case '[{': return '{';
-            case '[[': return '[';
-            case '[\\': return '[';
-            case '["': return '[';
-            case '[\'': return '[';
-            case '[(': return '(';
-            case '[?': return '[';
-            default: return '[';
-        }
+			case '[&': return '\u2329';
+			case '[{': return '{';
+			case '[[': return '[';
+			case '[\\': return '[';
+			case '["': return '[';
+			case '[\'': return '[';
+			case '[(': return '(';
+			case '[?': return '[';
+			default: return '[';
+		}
 	}
 }
 
@@ -1087,16 +1103,16 @@ class MdcBracketClose extends MdcHieroglyph {
 	}
 	toString() {
 		switch (this.ch) {
-            case '&]': return '\u232A';
-            case '}]': return '}';
-            case ']]': return ']';
-            case '\\]': return ']';
-            case '"]': return ']';
-            case '\']': return ']';
-            case ')]': return ')';
-            case '?]': return ']';
-            default: return ']';
-        }
+			case '&]': return '\u232A';
+			case '}]': return '}';
+			case ']]': return ']';
+			case '\\]': return ']';
+			case '"]': return ']';
+			case '\']': return ']';
+			case ')]': return ')';
+			case '?]': return ']';
+			default: return ']';
+		}
 	}
 }
 

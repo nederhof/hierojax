@@ -1,4 +1,4 @@
-all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js
+all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../docs/resconversion.js
 
 ../docs/hierojax.js: util.js syntax.js formatting.js insertions.js rotations.js main.js
 	cp util.js ../docs/
@@ -46,6 +46,18 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js
 	cat mdcconvert.js >> tmp.js
 	mv tmp.js ../docs/mdcconversion.js
 
+../docs/resconversion.js: ../docs/hierojax.js unipoints.js resstructure.js ressyntax.js resconvert.js
+	cat ../docs/hierojax.js > tmp.js
+	echo ' '  >> tmp.js
+	cat unipoints.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat resstructure.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat ressyntax.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat resconvert.js >> tmp.js
+	mv tmp.js ../docs/resconversion.js
+
 clean:
 	rm -f ../docs/util.js
 	rm -f ../docs/insertions.js
@@ -53,9 +65,13 @@ clean:
 	rm -f ../docs/hierojax.js
 	rm -f ../docs/hierojaxedit.js
 	rm -f ../docs/mdcconversion.js
+	rm -f ../docs/resconversion.js
 
 syntax.js: syntax.jison
 	jison -p lr syntax.jison
 
 mdcsyntax.js: mdcsyntax.jison
 	jison mdcsyntax.jison
+
+ressyntax.js: ressyntax.jison
+	jison -p lr ressyntax.jison

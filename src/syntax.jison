@@ -17,8 +17,8 @@ END_ENCLOSURE_CHAR \uD80D\uDC3D|\uD80D\uDC3F
 
 %%
 
-[\[\({〈]	return 'BRACKET_OPEN';
-[\]\)}〉]	return 'BRACKET_CLOSE';
+[\[\({〈⸢]	return 'BRACKET_OPEN';
+[\]\)}〉⸣]	return 'BRACKET_CLOSE';
 [\u0FE0-\u0FE6]		return 'VS';
 /* [\u{13000}-\u{13257}|\u{1325E}-\u{13281}|\u{13283}-\u{13285}|\u{1328A}-\u{13378}|\u{1337C}-\u{1342E}]
  * converted to UTF-16 using:
@@ -60,8 +60,17 @@ END_ENCLOSURE_CHAR \uD80D\uDC3D|\uD80D\uDC3F
 %%
 
 fragment
-	: groups EOF
-		{return new Fragment($groups);}
+	: groups_or_singletons EOF
+		{return new Fragment($groups_or_singletons);}
+	;
+
+groups_or_singletons
+	:
+		{$$ = [];}
+	| group groups_or_singletons
+		{$$ = [$group].concat($groups_or_singletons);}
+	| singleton_group groups_or_singletons
+		{$$ = [$singleton_group].concat($groups_or_singletons);}
 	;
 
 groups
@@ -69,8 +78,6 @@ groups
 		{$$ = [];}
 	| group groups
 		{$$ = [$group].concat($groups);}
-	| singleton_group groups
-		{$$ = [$singleton_group].concat($groups);}
 	;
 
 group

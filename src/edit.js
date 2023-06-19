@@ -68,13 +68,16 @@ class Preview {
 	rl() {
 		return ['hrl', 'vrl'].includes(this.dir);
 	}
+	mirror() {
+		return this.dir == 'hrl';
+	}
 	updateAll() {
+		this.groups = tree.groupNodes().map(node => this.createGroup(node.group.toString()));
 		removeChildren($('preview-panel'));
-		this.groups = tree.groupNodes().map(node => {
-			const group = this.createGroup(node.group.toString());
-			$('preview-panel').appendChild(group.elem);
-			return group;
-		});
+		if (this.mirror())
+			this.groups.slice().reverse().forEach(g => $('preview-panel').appendChild(g.elem));
+		else
+			this.groups.forEach(g => $('preview-panel').appendChild(g.elem));
 		this.updateFocus();
 	}
 	update() {
@@ -88,14 +91,19 @@ class Preview {
 		for (nSuf = 0, i = treeStr.length-1, j = previewStr.length-1; i > nPre, j > nPre; nSuf++, i--, j--)
 			if (treeStr[i] != previewStr[j])
 				break;
+		const prev = nPre > 0 ? this.groups[nPre-1].elem : null;
 		const next = nSuf > 0 ? this.groups[this.groups.length - nSuf].elem : null;
 		for (let i = nPre; i < this.groups.length - nSuf; i++)
 			this.groups[i].elem.remove();
 		const newStr = treeStr.slice(nPre, treeStr.length - nSuf);
 		const groupsNew = newStr.map(this.createGroup);
 		this.groups.splice(nPre, this.groups.length - nPre - nSuf, ...groupsNew);
-		for (let i = 0; i < groupsNew.length; i++)
-			$('preview-panel').insertBefore(groupsNew[i].elem, next);
+		if (this.mirror())
+			for (let i = groupsNew.length-1; i >= 0; i--)
+				$('preview-panel').insertBefore(groupsNew[i].elem, prev);
+		else
+			for (let i = 0; i < groupsNew.length; i++)
+				$('preview-panel').insertBefore(groupsNew[i].elem, next);
 		this.updateFocus();
 		Edit.makeInput();
 	}
@@ -2771,7 +2779,7 @@ class Edit {
 		e.preventDefault();
 	}
 	static charToHex(c) {
-		return "&#x" + c.codePointAt(0).toString(16) + ";";
+		return '&#x' + c.codePointAt(0).toString(16) + ';';
 	}
 	static hexToChar(match, str) {
 		return String.fromCharCode(parseInt(str, 16));
@@ -2783,7 +2791,7 @@ class Edit {
 		return [...str].map(Edit.charToHex).join('');
 	}
 	static hexToString(str) {
-		str = str.replace(/\s/g, "");
+		str = str.replace(/\s/g, '');
 		str = str.replace(/&#x([a-f0-9]+);/g, Edit.hexToChar);
 		str = str.replace(/&#([0-9]+);/g, Edit.decToChar);
 		return str;

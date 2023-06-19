@@ -1,10 +1,10 @@
 @font-face {
-    font-family: 'Hieroglyphic';
-    src: url('NewGardinerSMP.ttf') format('truetype');
+	font-family: 'Hieroglyphic';
+	src: url('NewGardinerSMP.ttf') format('truetype');
 }
 
 .hierojax-source {
-    font-family: Hieroglyphic;
+	font-family: Hieroglyphic;
 	font-size: 20px;
 	line-height: 20px;
 	letter-spacing: 2px;
@@ -25,7 +25,7 @@
 }
 
 .hierojax {
-    font-family: Hieroglyphic;
+	font-family: Hieroglyphic;
 	display: inline-block;
 	position: relative;
 	overflow: hidden;
@@ -70,11 +70,11 @@
 }
 
 .hierojax-svg-sign {
-    font-family: Hieroglyphic;
+	font-family: Hieroglyphic;
 }
 
 .hierojax-svg-visual {
-    font-family: Hieroglyphic;
+	font-family: Hieroglyphic;
 	user-select: none;
 	-ms-user-select: none;
 	-webkit-user-select: none;

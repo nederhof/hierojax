@@ -76,19 +76,10 @@ h1 {
 	border: 2px dotted blue;
 	outline: none;
 }
-#preview-panel.hlr {
+#preview-panel.hlr, #preview-panel.hrl {
 	overflow-x: scroll;
 }
-#preview-panel.hrl {
-	overflow-x: scroll;
-	direction: rtl;
-}
-#preview-panel.vlr {
-	max-height: 60vh;
-	overflow-y: scroll;
-	display: grid;
-}
-#preview-panel.vrl {
+#preview-panel.vlr, #preview-panel.vrl {
 	max-height: 60vh;
 	overflow-y: scroll;
 	display: grid;
@@ -272,7 +263,7 @@ h1 {
 .node-control-label {
 	overflow-y: hidden;
 	font-size: 24px;
-    font-family: Hieroglyphic;
+	font-family: Hieroglyphic;
 	color: black;
 }
 
@@ -592,7 +583,7 @@ h1 {
 
 .hiero-select {
 	font-size: 24px;
-    font-family: Hieroglyphic;
+	font-family: Hieroglyphic;
 	padding: 2px;
 }
 .hiero-select:enabled {

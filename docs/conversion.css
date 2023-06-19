@@ -1,5 +1,5 @@
 .hidden {
-    display: none;
+	display: none;
 }
 
 ul {
@@ -9,7 +9,7 @@ ul {
 }
 
 li { 
-   margin-bottom: 5px;  
+	margin-bottom: 5px;
 }
 
 .hierojax {

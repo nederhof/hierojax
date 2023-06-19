@@ -1669,7 +1669,7 @@ class Enclosure extends Group {
 
 class Basic extends Group {
 	core; // Overlay/Literal
-	ts; bs; te; be; m; t; b; // Vertical/Horizontal/Basic/Overlay/Literal/Blank/Enclosure/Lost/null
+	ts; bs; te; be; m; t; b; // Vertical/Horizontal/Enclosure/Basic/Overlay/Literal/Blank/Lost/null
 	constructor(core, insertions) {
 		super();
 		this.core = core;
@@ -2202,7 +2202,7 @@ class BracketOpen extends Group {
 	}
 	format(options, x, y, w, h) {
 		const size = shapes.emSizeOf(this.ch, options.fontsize, 1, 1, 0, false);
-		const naturalRatio = size.w / size.h;
+		const naturalRatio = size.w;
 		const availableRatio = w / h;
 		if (availableRatio < naturalRatio)
 			this.xScale = Math.max(0.5, availableRatio / naturalRatio);
@@ -2230,7 +2230,7 @@ class BracketClose extends Group {
 	}
 	format(options, x, y, w, h) {
 		const size = shapes.emSizeOf(this.ch, options.fontsize, 1, 1, 0, false);
-		const naturalRatio = size.w / size.h;
+		const naturalRatio = size.w;
 		const availableRatio = w / h;
 		if (availableRatio < naturalRatio)
 			this.xScale = Math.max(0.5, availableRatio / naturalRatio);
