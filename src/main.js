@@ -63,7 +63,7 @@ class HieroJax {
 		options.fontsize = fontSize;
 		options.signcolor = signColor;
 		for (const p of ['fontsize', 'signcolor', 'dir', 'linesize', 'sep', 'separated', 'type',
-				'bracketcolor', 'shadepattern', 'border', 'standalone', 'log'])
+				'bracketcolor', 'shadepattern', 'align', 'border', 'standalone', 'log'])
 			if (elem.getAttribute('data-' + p))
 				options[p] = elem.getAttribute('data-' + p);
 		fragment.print(elem, options);

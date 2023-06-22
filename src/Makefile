@@ -1,4 +1,4 @@
-all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../docs/resconversion.js
+all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../docs/resconversion.js texts
 
 ../docs/hierojax.js: util.js syntax.js formatting.js insertions.js rotations.js main.js
 	cp util.js ../docs/
@@ -16,9 +16,6 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	echo ' '  >> tmp.js
 	cat main.js >> tmp.js
 	mv tmp.js ../docs/hierojax.js
-	cp ../docs/hierojax.css ../docs/texts/
-	cp ../docs/hierojax.js ../docs/texts/
-	cp ../docs/NewGardinerSMP.ttf ../docs/texts/
 
 ../docs/hierojaxedit.js: ../docs/hierojax.js unipoints.js signinfo.js edit.js
 	cat ../docs/hierojax.js > tmp.js
@@ -59,6 +56,17 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	echo ' '  >> tmp.js
 	cat resconvert.js >> tmp.js
 	mv tmp.js ../docs/resconversion.js
+
+texts: ../docs/texts/hierojax.css ../docs/texts/hierojax.js ../docs/texts/NewGardinerSMP.ttf
+
+../docs/texts/hierojax.css: ../docs/hierojax.css
+	cp ../docs/hierojax.css ../docs/texts/
+
+../docs/texts/hierojax.js: ../docs/hierojax.js
+	cp ../docs/hierojax.js ../docs/texts/
+
+../docs/texts/NewGardinerSMP.ttf: ../docs/NewGardinerSMP.ttf
+	cp ../docs/NewGardinerSMP.ttf ../docs/texts/
 
 clean:
 	rm -f ../docs/util.js

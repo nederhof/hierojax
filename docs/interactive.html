@@ -66,9 +66,19 @@
 	<input type="radio" id="hatching" name="shadepattern" value="hatching"
 	oninput="HieroJaxInteractive.createHTML();">
 	<label for="hatching">hatching</label>
+	<br>
+
+	<label>Align:</label>
+	<input type="radio" id="middle" name="align" value="middle" checked
+	oninput="HieroJaxInteractive.createHTML();">
+	<label for="uniform">middle</label>
+	<input type="radio" id="bottom" name="align" value="bottom"
+	oninput="HieroJaxInteractive.createHTML();">
+	<label for="hatching">bottom</label>
 	<p>
 	<input type="button" value="defaults" onclick="HieroJaxInteractive.setDefaults();">
 	</div>
+
 	<div style="float: right; width: 40%;">
 	<label for="linesize">Line size:</label>
 	<br>

@@ -22,7 +22,7 @@ class HieroJaxDemo {
 		p.appendChild(this.makeHiero(txt, { }));
 		p.appendChild(this.makeHiero(txt, { dir: 'hrl', shadepattern: 'hatching',
 			border: true, signcolor: 'red' }));
-		p.appendChild(this.makeHiero(txt, { type: 'canvas' }));
+		p.appendChild(this.makeHiero(txt, { type: 'canvas', align: 'bottom' }));
 		p.appendChild(this.makeHiero(txt, { dir: 'hrl', type: 'canvas', signcolor: 'rgb(64, 255, 0)' }));
 		p.appendChild(this.makeHiero(txt, { dir: 'vrl', type: 'dom',
 			shadepattern: 'hatching', signcolor: '#0040ff' }));
@@ -43,7 +43,7 @@ class HieroJaxDemo {
 		hiero.style.setProperty('font-size', '36px');
 		hiero.innerText = txt;
 		for (const p of ['dir', 'linesize', 'separated', 'type',
-				'bracketcolor', 'shadepattern', 'border'])
+				'bracketcolor', 'shadepattern', 'align', 'border'])
 			if (options[p])
 				hiero.setAttribute('data-' + p, options[p]);
 		if (options.signcolor)

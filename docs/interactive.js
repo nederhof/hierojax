@@ -38,6 +38,8 @@ class HieroJaxInteractive {
 			html += ' data-bracketcolor="' + formData.get('bracketcolor') + '"';
 		if (formData.get('shadepattern') != 'uniform')
 			html += ' data-shadepattern="' + formData.get('shadepattern') + '"';
+		if (formData.get('align') != 'middle')
+			html += ' data-align="' + formData.get('align') + '"';
 		html += ' data-standalone="true"';
 		if (styles)
 			html += ' style="' + styles + '"';
@@ -54,6 +56,7 @@ class HieroJaxInteractive {
 		$('blacksign').checked = true;
 		$('blackbracket').checked = true;
 		$('uniform').checked = true;
+		$('middle').checked = true;
 		HieroJaxInteractive.createHTML();
 	}
 

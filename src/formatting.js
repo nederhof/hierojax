@@ -1106,6 +1106,7 @@ class Fragment extends Group {
 		options.signcolor = options.signcolor || 'black';
 		options.bracketcolor = options.bracketcolor || 'black';
 		options.shadepattern = options.shadepattern || 'uniform';
+		options.align = options.align || 'middle';
 		options.border = options.border || false;
 		options.standalone = options.standalone || false;
 		options.log = options.log || false;
@@ -2053,7 +2054,7 @@ class Literal extends Group {
 		const bufX = ((x2-x1) - size.w) / 2;
 		const bufY = ((y2-y1) - size.h) / 2;
 		this.x = x1 + bufX;
-		this.y = y1 + bufY;
+		this.y = y1 + (options.align == 'bottom' ? ((y2-y1) - size.h) : bufY);
 		this.w = size.w;
 		this.h = size.h;
 		const xShade = this.x + this.w / 2;

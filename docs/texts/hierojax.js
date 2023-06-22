@@ -1950,6 +1950,7 @@ class Fragment extends Group {
 		options.signcolor = options.signcolor || 'black';
 		options.bracketcolor = options.bracketcolor || 'black';
 		options.shadepattern = options.shadepattern || 'uniform';
+		options.align = options.align || 'middle';
 		options.border = options.border || false;
 		options.standalone = options.standalone || false;
 		options.log = options.log || false;
@@ -2897,7 +2898,7 @@ class Literal extends Group {
 		const bufX = ((x2-x1) - size.w) / 2;
 		const bufY = ((y2-y1) - size.h) / 2;
 		this.x = x1 + bufX;
-		this.y = y1 + bufY;
+		this.y = y1 + (options.align == 'bottom' ? ((y2-y1) - size.h) : bufY);
 		this.w = size.w;
 		this.h = size.h;
 		const xShade = this.x + this.w / 2;
@@ -3575,7 +3576,7 @@ class HieroJax {
 		options.fontsize = fontSize;
 		options.signcolor = signColor;
 		for (const p of ['fontsize', 'signcolor', 'dir', 'linesize', 'sep', 'separated', 'type',
-				'bracketcolor', 'shadepattern', 'border', 'standalone', 'log'])
+				'bracketcolor', 'shadepattern', 'align', 'border', 'standalone', 'log'])
 			if (elem.getAttribute('data-' + p))
 				options[p] = elem.getAttribute('data-' + p);
 		fragment.print(elem, options);

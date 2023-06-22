@@ -29,6 +29,11 @@
 	display: inline-block;
 	position: relative;
 	overflow: hidden;
+	vertical-align: -0.1em;
+}
+
+.hierojax[data-type="svg"], .hierojax[data-type="canvas"] {
+	vertical-align: -0.2em;
 }
 
 .hierojax-border {
