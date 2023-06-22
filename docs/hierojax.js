@@ -3546,6 +3546,13 @@ class HieroJax {
 		this.waitForFonts(() => this.processFragmentNow(elem), 0);
 	}
 
+	processFragmentsIn(elem) {
+		const spans = elem.getElementsByTagName("span");
+		for (let span of spans)
+			if (span.classList.contains('hierojax'))
+				this.processFragment(span);
+	}
+
 	processFragmentsNow() {
 		var elems = document.getElementsByClassName('hierojax');
 		[...elems].forEach(elem => this.processFragmentNow(elem));

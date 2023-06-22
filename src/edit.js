@@ -2972,16 +2972,64 @@ class SignMenu {
 		if (name == '') {
 			this.info.innerHTML = '';
 		} else {
-/* TODO
-			var text = uniSignInfo[name];
+			var text = hierojax.uniInfo[name];
 			if (text !== undefined) {
 				text = text.replace('&amp;', '&');
 				this.info.innerHTML = text;
-				ResWeb.makeIn(this.info);
-				ResWeb.mapSignsIn(this.info);
-				ResWeb.mapTransIn(this.info);
+				hierojax.processFragmentsIn(this.info);
+				this.mapTransIn(this.info);
 			}
-*/
+		}
+	}
+	mapTransIn(elem) {
+		const spans = elem.getElementsByTagName("span");
+		for (let span of spans)
+			if (span.classList.contains('egytransl'))
+				this.mapTrans(span);
+	}
+	mapTrans(elem) {
+		const trans = elem.firstChild.nodeValue;
+		var uni = '';
+		for (let j = 0; j < trans.length; j++)
+			if (trans[j] === '^' && j < trans.length-1) {
+				j++;
+				uni += this.transUnicode(trans[j], true);
+			} else {
+				uni += this.transUnicode(trans[j], false);
+			}
+		elem.innerHTML = uni;
+	}
+	transUnicode(c, upper) {
+		switch (c) {
+			case 'A': return upper ? "\uA722" : "\uA723";
+			case 'j': return upper ? "J" : "j";
+			case 'i': return upper ? "I\u0313" : "i\u0313";
+			case 'y': return upper ? "Y" : "y";
+			case 'a': return upper ? "\uA724" : "\uA725";
+			case 'w': return upper ? "W" : "w";
+			case 'b': return upper ? "B" : "b";
+			case 'p': return upper ? "P" : "p";
+			case 'f': return upper ? "F" : "f";
+			case 'm': return upper ? "M" : "m";
+			case 'n': return upper ? "N" : "n";
+			case 'r': return upper ? "R" : "r";
+			case 'l': return upper ? "L" : "l";
+			case 'h': return upper ? "H" : "h";
+			case 'H': return upper ? "\u1E24" : "\u1E25";
+			case 'x': return upper ? "\u1E2A" : "\u1E2B";
+			case 'X': return upper ? "H\u0331" : "\u1E96";
+			case 'z': return upper ? "Z" : "z";
+			case 's': return upper ? "S" : "s";
+			case 'S': return upper ? "\u0160" : "\u0161";
+			case 'q': return upper ? "Q" : "q";
+			case 'K': return upper ? "\u1E32" : "\u1E33";
+			case 'k': return upper ? "K" : "k";
+			case 'g': return upper ? "G" : "g";
+			case 't': return upper ? "T" : "t";
+			case 'T': return upper ? "\u1E6E" : "\u1E6F";
+			case 'd': return upper ? "D" : "d";
+			case 'D': return upper ? "\u1E0E" : "\u1E0F";
+			default: return c;
 		}
 	}
 	processMenuKey(e) {	

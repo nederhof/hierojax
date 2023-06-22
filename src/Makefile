@@ -20,10 +20,12 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	cp ../docs/hierojax.js ../docs/texts/
 	cp ../docs/NewGardinerSMP.ttf ../docs/texts/
 
-../docs/hierojaxedit.js: ../docs/hierojax.js unipoints.js edit.js
+../docs/hierojaxedit.js: ../docs/hierojax.js unipoints.js signinfo.js edit.js
 	cat ../docs/hierojax.js > tmp.js
 	echo ' '  >> tmp.js
 	cat unipoints.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat signinfo.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat edit.js >> tmp.js
 	mv tmp.js ../docs/hierojaxedit.js

@@ -474,6 +474,23 @@ h1 {
 	overflow-y: hidden;
 }
 
+#cats-panel .hierojax-source {
+	font-size: 30px;
+}
+
+#cats-panel .hierojax {
+	font-size: 25px;
+	vertical-align: -0.25em;
+}
+
+#cats-panel .class {
+	color: blue;
+}
+
+#cats-panel .egytransl {
+	font-style: italic;
+}
+
 /* Text */
 
 .plain-text {
