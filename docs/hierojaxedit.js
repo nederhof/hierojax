@@ -2031,7 +2031,8 @@ class Vertical extends Group {
 		for (let i = 0; i < this.groups.length; i++) {
 			const group = this.groups[i];
 			if (i < this.groups.length-1) {
-				var y4 = y1 + group.size(options).h + Vertical.nestedVerticalSpacesOf(group) * buf;
+				const h = Vertical.netHeightOf(group, options);
+				var y4 = y1 + h + Vertical.nestedVerticalSpacesOf(group) * buf;
 				var y5 = y4 + buf / 2;
 			} else {
 				var y4 = y2;
@@ -2077,6 +2078,9 @@ class Vertical extends Group {
 				if (properGroup instanceof Vertical)
 					return Vertical.netHeightOf(properGroup, options);
 			}
+		} else if (group instanceof Vertical) {
+			const sizes = group.groups.map(g => Vertical.netHeightOf(g, options));
+			return getSum(sizes);
 		}
 		return group.size(options).h;
 	}
@@ -3270,6 +3274,7 @@ Shapes.insertions = {
 '\u{13197}': [{ be: { y: 0.6 } }],
 '\u{13198}': [{ te: { y: 0.5 } }],
 '\u{131A1}': [{ bs: { }, te: { } }],
+'\u{131A3}': [{ b: { } }],
 '\u{131AE}': [{ ts: { }, te: { }, }, { glyph: '\u{E48B}', ts: { }, bs: { }, te: { }, be: { } }],
 '\u{131AF}': [{ ts: { }, te: { } }, { glyph: '\u{E48C}', ts: { }, bs: { }, te: { }, be: { } }],
 '\u{131B0}': [{ bs: { }, te: { } }],
