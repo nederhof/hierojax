@@ -186,7 +186,7 @@ const mdcNames = {
 'N18': { str: '\u{133D4}', kind: 'literal' },
 'US1X6AEXTU': { str: '\u{133D7}', kind: 'literal' },
 'M44': { str: '\u{133DA}', kind: 'literal' },
-'Y1v': { str: '\u{133DB}\u0FE2', kind: 'group' },
+'Y1v': { str: '\u{133DB}\uFE02', kind: 'group' },
 'US1Z2AEXTU': { str: '\u{133E6}', kind: 'literal' },
 'N33A': { str: '\u{133E7}', kind: 'literal' },
 'Z2A': { str: '\u{133E8}', kind: 'literal' },
@@ -217,6 +217,6 @@ const mdcNames = {
 'US1Aa7AEXTU': { str: '\u{13414}', kind: 'literal' },
 'F51B': { str: '\u{13139}\u0fe0\u{13440}', kind: 'group' },
 'G20A': { str: '\uFFFD', kind: 'literal' },
-'P8h': { str: '\u{132A4}\u0FE2', kind: 'group' },
+'P8h': { str: '\u{132A4}\uFE02', kind: 'group' },
 'nTrw': { str: '\u{132b9}\u{13431}\u{132b9}\u{13431}\u{132b9}', kind: 'group' },
 };

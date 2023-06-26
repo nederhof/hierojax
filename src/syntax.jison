@@ -19,7 +19,7 @@ END_ENCLOSURE_CHAR \uD80D\uDC3D|\uD80D\uDC3F
 
 [\[\({〈⸢]	return 'BRACKET_OPEN';
 [\]\)}〉⸣]	return 'BRACKET_CLOSE';
-[\u0FE0-\u0FE6]		return 'VS';
+[\uFE00-\uFE06]		return 'VS';
 /* [\u{13000}-\u{13257}|\u{1325E}-\u{13281}|\u{13283}-\u{13285}|\u{1328A}-\u{13378}|\u{1337C}-\u{1342E}]
  * converted to UTF-16 using:
  * https://www.cyberdefinitions.com/symbols/converting-hexadecimal-to-UTF-16-format-for-JavaScript.html
@@ -496,5 +496,5 @@ class HieroParse {
 	}
 }
 HieroParse.walledOpen = '\u{1343E}';
-HieroParse.variationBase = 0x0FDF;
+HieroParse.variationBase = 0xFDFF;
 HieroParse.damageBase = 0x13446;

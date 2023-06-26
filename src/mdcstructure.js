@@ -1086,7 +1086,7 @@ class MdcBracketOpen extends MdcHieroglyph {
 			case '["': return '[';
 			case '[\'': return '[';
 			case '[(': return '(';
-			case '[?': return '[';
+			case '[?': return '\u2E22';
 			default: return '[';
 		}
 	}
@@ -1110,7 +1110,7 @@ class MdcBracketClose extends MdcHieroglyph {
 			case '"]': return ']';
 			case '\']': return ']';
 			case ')]': return ')';
-			case '?]': return ']';
+			case '?]': return '\u2E23';
 			default: return ']';
 		}
 	}

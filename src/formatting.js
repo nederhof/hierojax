@@ -1026,7 +1026,7 @@ Group.INSERTION_CHARS = [Group.INSERT_TS, Group.INSERT_BS, Group.INSERT_TE, Grou
 		Group.INSERT_M, Group.INSERT_T, Group.INSERT_B];
 Group.INSERTION_PLACES = ['ts', 'bs', 'te', 'be', 'm', 't', 'b'];
 Group.DAMAGE_BASE = 0x13446;
-Group.VARIATION_BASE = 0x0FDF;
+Group.VARIATION_BASE = 0xFDFF;
 
 class Fragment extends Group {
 	groups; // array of Vertical/Horizontal/Enclosure/Basic/Overlay/Literal/Singleton/Blank/Lost
