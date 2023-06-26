@@ -283,7 +283,7 @@ h1 {
 	display: inline-block;
 }
 
-#structure-panel {
+.structure-panel {
 	margin: 5px;
 	width: 150px;
 	float: left;
@@ -424,6 +424,10 @@ h1 {
 	background-color: #eee;
 	border-bottom: none;
 	font-weight: bold;
+}
+
+#sign-info-button {
+	margin: 0 5px 0 5px;
 }
 
 .cat-section {

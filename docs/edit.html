@@ -81,7 +81,7 @@
 		</div>
 	</div>
 	<div id="legend-panel">
-		<div id="structure-panel">
+		<div class="structure-panel">
 			<button type="button" id="literal-button" class="structure-button" title="create sign"
 				onclick="Edit.doLiteral();"><span class="underline">l</span>iteral</button>
 			<button type="button" id="singleton-button" class="structure-button" title="create isolated enclosure cap"
@@ -107,7 +107,7 @@
 			<button type="button" id="bracket-close-button" class="structure-button" title="append bracket close"
 				onclick="Edit.doBracketClose();">]</button>
 		</div>
-		<div id="structure-panel">
+		<div class="structure-panel">
 			<button type="button" id="overlay-button" class="structure-button" title="create overlay"
 				onclick="Edit.doOverlay();">o<span class="underline">v</span>erlay</button>
 			<button type="button" id="insert-button" class="structure-button" title="create insertion"
@@ -156,7 +156,7 @@
 				<tr><td>
 				<div id="open-param" class="parameter hidden">open:
 					<select id="open-select" class="hiero-select" onchange="Edit.adjustOpen();">
-						<option value=""></option>
+						<option value="">&nbsp;</option>
 						<option id="13258" value="&#x13258;">&#x13258;</option>
 						<option id="13259" value="&#x13259;">&#x13259;</option>
 						<option id="1325A" value="&#x1325A;">&#x1325A;</option>
@@ -169,7 +169,7 @@
 				</td><td>
 				<div id="close-param" class="parameter hidden">close:
 					<select id="close-select" class="hiero-select" onchange="Edit.adjustClose();">
-						<option value=""></option>
+						<option value="">&nbsp;</option>
 						<option id="1325B" value="&#x1325B;">&#x1325B;</option>
 						<option id="1325C" value="&#x1325C;">&#x1325C;</option>
 						<option id="1325D" value="&#x1325D;">&#x1325D;</option>
@@ -323,9 +323,9 @@
 			</div>
 			<div id="blank-param" class="parameter hidden">si<span class="underline">z</span>e:
 				<input type="radio" name="blank-size" id="blank-half"
-					onclick="Edit.adjustBlankSize('half');"><label for="black-half">half</label>
+					onclick="Edit.adjustBlankSize('half');"><label for="blank-half">half</label>
 				<input type="radio" name="blank-size" id="blank-full"
-					onclick="Edit.adjustBlankSize('full');"><label for="black-full">full</label>
+					onclick="Edit.adjustBlankSize('full');"><label for="blank-full">full</label>
 			</div>
 			<div id="lost-param" class="parameter hidden">si<span class="underline">z</span>e:
 				<table class="grid">
@@ -366,7 +366,7 @@
 				class="cats-panel-close" title="close"></a>
 	<ul id="cats-extra-menu" class="cats">
 		<li> <input type="text" id="chosen-sign" class="text-input"
-				size="5" spellcheck="false" readonly> </li>&nbsp;
+				size="5" spellcheck="false" readonly> </li>
 		<li> <button type="button" id="sign-info-button" class="generic-button" title="show information of sign"
 				onclick="signMenu.toggleInfo();">info</button> </li>
 	</ul>
