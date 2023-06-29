@@ -1,4 +1,4 @@
-all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../docs/resconversion.js texts
+all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../docs/resconversion.js ../docs/hierojaxedit16.js texts
 
 ../docs/hierojax.js: util.js syntax.js formatting.js insertions.js rotations.js main.js
 	cp util.js ../docs/
@@ -17,6 +17,20 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	cat main.js >> tmp.js
 	mv tmp.js ../docs/hierojax.js
 
+../docs/hierojax16.js: util.js syntax16.js formatting16.js insertions.js rotations.js main16.js
+	cat util.js > tmp.js
+	echo ' '  >> tmp.js
+	cat syntax16.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat formatting16.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat insertions.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat rotations.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat main16.js >> tmp.js
+	mv tmp.js ../docs/hierojax16.js
+
 ../docs/hierojaxedit.js: ../docs/hierojax.js unipoints.js signinfo.js edit.js
 	cat ../docs/hierojax.js > tmp.js
 	echo ' '  >> tmp.js
@@ -26,6 +40,16 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	echo ' '  >> tmp.js
 	cat edit.js >> tmp.js
 	mv tmp.js ../docs/hierojaxedit.js
+
+../docs/hierojaxedit16.js: ../docs/hierojax16.js unipoints.js signinfo.js edit16.js
+	cat ../docs/hierojax16.js > tmp.js
+	echo ' '  >> tmp.js
+	cat unipoints.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat signinfo.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat edit16.js >> tmp.js
+	mv tmp.js ../docs/hierojaxedit16.js
 
 ../docs/mdcconversion.js: ../docs/hierojax.js unipoints.js mdcnames.js mdcmnemonics.js mdcligatures.js mdcstructure.js mdcsyntax.js mdcconvert.js
 	cat ../docs/hierojax.js > tmp.js
@@ -76,6 +100,8 @@ clean:
 	rm -f ../docs/hierojaxedit.js
 	rm -f ../docs/mdcconversion.js
 	rm -f ../docs/resconversion.js
+	rm -f ../docs/hierojax16.js
+	rm -f ../docs/hierojaxedit16.js
 
 syntax.js: syntax.jison
 	jison -p lr syntax.jison
@@ -85,3 +111,8 @@ mdcsyntax.js: mdcsyntax.jison
 
 ressyntax.js: ressyntax.jison
 	jison -p lr ressyntax.jison
+
+syntax16.js: syntax16.jison
+	jison -p lr syntax16.jison
+
+

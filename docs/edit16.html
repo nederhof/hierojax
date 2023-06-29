@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>HieroJax Editor</title>
+<link rel="stylesheet" type="text/css" href="hierojax.css" />
+<link rel="stylesheet" type="text/css" href="edit.css" />
+<script type="text/javascript" src="hierojaxedit16.js"></script>
+</head>
+<body>
+<h1>Unicode hieroglyphic editor</h1>
+<div class="top-panel">
+	<div id="embedded" class="top-elem">
+		<button type="button" class="generic-button" onclick="embedded.save();">save</button>
+		<button type="button" class="generic-button" onclick="embedded.cancel();">cancel</button>
+	</div>
+	<div class="top-elem">
+	<span class="plain-text">Font size in preview:</span>
+	<select id="preview-size" class="number-select" onchange="Edit.remake();">
+		<option value="28">28</option>
+		<option value="32">32</option>
+		<option value="36">36</option>
+		<option value="40" selected>40</option>
+		<option value="44">44</option>
+		<option value="48">48</option>
+		<option value="52">52</option>
+		<option value="56">56</option>
+		<option value="60">60</option>
+		<option value="64">64</option>
+		<option value="68">68</option>
+		<option value="72">72</option>
+	</select>
+	</div>
+	<div class="top-elem">
+	<span class="plain-text">Font size in tree:</span>
+	<select id="tree-size" class="number-select" onchange="Edit.remake();">
+		<option value="28">28</option>
+		<option value="32">32</option>
+		<option value="36">36</option>
+		<option value="40" selected>40</option>
+		<option value="44">44</option>
+		<option value="48">48</option>
+		<option value="52">52</option>
+		<option value="56">56</option>
+		<option value="60">60</option>
+		<option value="64">64</option>
+		<option value="68">68</option>
+		<option value="72">72</option>
+	</select>
+	</div>
+	<div class="top-elem"> <button type="button" id="undo" title="undo edit"
+		class="generic-button" disabled onclick="editHistory.undo();">undo</button> </div>
+	<div class="top-elem"> <button type="button" id="redo" title="redo edit"
+		class="generic-button" disabled onclick="editHistory.redo();">redo</button> </div>
+	<div class="top-elem"> <a title="open help page"
+		class="generic-button" href="help.html" target="_blank">help</a> </div>
+</div>
+
+<div class="full-panel">
+	<div>
+		<div id="header-panel" class="hlr">
+			<div id="dir-panel" class="hlr">
+				<a onclick="preview.setDir('hlr');" id="hlr" title="display horizontal left-to-right"
+						class="button-selected">hlr</a>
+				<a onclick="preview.setDir('hrl');" id="hrl" title="display horizontal right-to-left"
+						class="button-unselected">hrl</a>
+				<a onclick="preview.setDir('vlr');" id="vlr" title="display vertical left-to-right"
+						class="button-unselected">vlr</a>
+				<a onclick="preview.setDir('vrl');" id="vrl" title="display vertical right-to-left"
+						class="button-unselected">vrl</a>
+			</div>
+			<div id="preview-panel" class="hlr" tabindex="0"
+					onkeydown="Edit.processKeyDown(event);"
+					onkeypress="Edit.processKeyPress(event);">
+			</div>
+		</div>
+		<div id="tree-panel" class="hlr" tabindex="1"
+					onkeydown="Edit.processKeyDown(event);"
+					onkeypress="Edit.processKeyPress(event);">
+			<div id="tree"><ul id="tree-elems"></ul></div>
+		</div>
+	</div>
+	<div id="legend-panel">
+		<div class="structure-panel">
+			<button type="button" id="literal-button" class="structure-button" title="create sign"
+				onclick="Edit.doLiteral();"><span class="underline">l</span>iteral</button>
+			<button type="button" id="singleton-button" class="structure-button" title="create isolated enclosure cap"
+				onclick="Edit.doSingleton();"><span class="underline">s</span>ingleton</button>
+			<button type="button" id="blank-button" class="structure-button" title="create blank sign"
+				onclick="Edit.doBlank();"><span class="underline">b</span>lank</button>
+			<button type="button" id="lost-button" class="structure-button" title="create lost sign"
+				onclick="Edit.doLost();">l<span class="underline">o</span>st</button>
+			<button type="button" id="prepend-button" class="structure-button" title="prepend new group"
+				onclick="Edit.doPrepend();"><span class="underline">p</span>repend</button>
+			<button type="button" id="append-button" class="structure-button" title="append new group"
+				onclick="Edit.doAppend();"><span class="underline">a</span>ppend</button>
+			<button type="button" id="plus-button" class="structure-button" title="prepend horizontal arrangement"
+				onclick="Edit.doPlus();">+</button>
+			<button type="button" id="star-button" class="structure-button" title="make horizontal arrangement"
+				onclick="Edit.doStar();">*</button>
+			<button type="button" id="semicolon-button" class="structure-button" title="prepend vertical arrangement"
+				onclick="Edit.doSemicolon();">;</button>
+			<button type="button" id="colon-button" class="structure-button" title="make vertical arrangement"
+				onclick="Edit.doColon();">:</button>
+			<button type="button" id="bracket-open-button" class="structure-button" title="prepend bracket open"
+				onclick="Edit.doBracketOpen();">[</button>
+			<button type="button" id="bracket-close-button" class="structure-button" title="append bracket close"
+				onclick="Edit.doBracketClose();">]</button>
+		</div>
+		<div class="structure-panel">
+			<button type="button" id="overlay-button" class="structure-button" title="create overlay"
+				onclick="Edit.doOverlay();">o<span class="underline">v</span>erlay</button>
+			<button type="button" id="insert-button" class="structure-button" title="create insertion"
+				onclick="Edit.doInsert();"><span class="underline">i</span>nsert</button>
+			<button type="button" id="enclosure-button" class="structure-button" title="create enclosure"
+				onclick="Edit.doEnclosure();"><span class="underline">e</span>nclosure</button>
+			<button type="button" id="swap-button" class="structure-button" title="swap sign with next sign"
+				onclick="Edit.doSwap();">s<span class="underline">w</span>ap</button>
+			<button type="button" id="delete-button" class="structure-button" title="delete element"
+				onclick="Edit.doDelete();">delete</button>
+		</div>
+		<div class="parameter-panel">
+			<span class="bold-text" id="param-type"></span>
+			<div id="name-param" class="parameter hidden">
+				<input type="text" id="name-text" class="text-input"
+					size="4" spellcheck="false" oninput="Edit.adjustName();" onchange="Tree.focus();">
+				<button type="button" class="generic-button" title="open menu"
+					onclick="signMenu.show();">men<span class="underline">u</span></button>
+			</div>
+			<div id="singleton-param" class="parameter hidden">
+				<select id="singleton-select" class="hiero-select" onchange="Edit.adjustSingleton();">
+					<option value="&#x13258;">&#x13258;</option>
+					<option value="&#x13259;">&#x13259;</option>
+					<option value="&#x1325A;">&#x1325A;</option>
+					<option value="&#x13286;">&#x13286;</option>
+					<option value="&#x13288;">&#x13288;</option>
+					<option value="&#x13379;">&#x13379;</option>
+					<option value="&#x1342F;">&#x1342F;</option>
+					<option value="&#x1325B;">&#x1325B;</option>
+					<option value="&#x1325C;">&#x1325C;</option>
+					<option value="&#x1325D;">&#x1325D;</option>
+					<option value="&#x13282;">&#x13282;</option>
+					<option value="&#x13287;">&#x13287;</option>
+					<option value="&#x13289;">&#x13289;</option>
+					<option value="&#x1337A;">&#x1337A;</option>
+					<option value="&#x1337B;">&#x1337B;</option>
+				</select>
+			</div>
+			<div id="enclosure-param" class="parameter hidden">
+				<select id="enclosure-select" class="generic-select" onchange="Edit.adjustEnclosure();">
+					<option value="plain">plain</option>
+					<option value="walled">walled</option>
+				</select>
+			</div>
+			<table class="grid">
+				<tr><td>
+				<div id="open-param" class="parameter hidden">open:
+					<select id="open-select" class="hiero-select" onchange="Edit.adjustOpen();">
+						<option value="">&nbsp;</option>
+						<option id="13258" value="&#x13258;">&#x13258;</option>
+						<option id="13259" value="&#x13259;">&#x13259;</option>
+						<option id="1325A" value="&#x1325A;">&#x1325A;</option>
+						<option id="13286" value="&#x13286;">&#x13286;</option>
+						<option id="13288" value="&#x13288;">&#x13288;</option>
+						<option id="13379" value="&#x13379;">&#x13379;</option>
+						<option id="1342F" value="&#x1342F;">&#x1342F;</option>
+					</select>
+				</div>
+				</td><td>
+				<div id="close-param" class="parameter hidden">close:
+					<select id="close-select" class="hiero-select" onchange="Edit.adjustClose();">
+						<option value="">&nbsp;</option>
+						<option id="1325B" value="&#x1325B;">&#x1325B;</option>
+						<option id="1325C" value="&#x1325C;">&#x1325C;</option>
+						<option id="1325D" value="&#x1325D;">&#x1325D;</option>
+						<option id="13282" value="&#x13282;">&#x13282;</option>
+						<option id="13287" value="&#x13287;">&#x13287;</option>
+						<option id="13289" value="&#x13289;">&#x13289;</option>
+						<option id="1337A" value="&#x1337A;">&#x1337A;</option>
+						<option id="1337B" value="&#x1337B;">&#x1337B;</option>
+					</select>
+				</div>
+				</td></tr>
+				<tr><td>
+				<div id="damage-open-param" class="parameter hidden">damage open:
+					<table class="grid">
+						<tr>
+						<td><input type="checkbox" id="damage-open-all"
+							onclick="Edit.adjustDamageOpen('full');"><label for="damage-open-all">all</label></td>
+						<td><input type="checkbox" id="damage-open-ts"
+							onclick="Edit.adjustDamageOpen('quarter');"><label for="damage-open-ts">ts</label></td>
+						<td><input type="checkbox" id="damage-open-te"
+							onclick="Edit.adjustDamageOpen('quarter');"><label for="damage-open-te">te</label></td>
+						</tr>
+						<tr>
+						<td></td>
+						<td><input type="checkbox" id="damage-open-bs"
+							onclick="Edit.adjustDamageOpen('quarter');"><label for="damage-open-bs">bs</label></td>
+						<td><input type="checkbox" id="damage-open-be"
+							onclick="Edit.adjustDamageOpen('quarter');"><label for="damage-open-be">be</label></td>
+						</tr>
+					</table>
+				</div>
+				</td><td>
+				<div id="damage-close-param" class="parameter hidden">damage close:
+					<table class="grid">
+						<tr>
+						<td><input type="checkbox" id="damage-close-all"
+							onclick="Edit.adjustDamageClose('full');"><label for="damage-close-all">all</label></td>
+						<td><input type="checkbox" id="damage-close-ts"
+							onclick="Edit.adjustDamageClose('quarter');"><label for="damage-close-ts">ts</label></td>
+						<td><input type="checkbox" id="damage-close-te"
+							onclick="Edit.adjustDamageClose('quarter');"><label for="damage-close-te">te</label></td>
+						</tr>
+						<tr>
+						<td></td>
+						<td><input type="checkbox" id="damage-close-bs"
+							onclick="Edit.adjustDamageClose('quarter');"><label for="damage-close-bs">bs</label></td>
+						<td><input type="checkbox" id="damage-close-be"
+							onclick="Edit.adjustDamageClose('quarter');"><label for="damage-close-be">be</label></td>
+						</tr>
+					</table>
+				</div>
+				</td></tr>
+			</table>
+			<div id="bracket-open-param" class="parameter hidden">
+				<select id="bracket-open-select" class="hiero-select" onchange="Edit.adjustBracketOpen();">
+					<option value="[">[</option>
+					<option value="(">(</option>
+					<option value="{">{</option>
+					<option value="&#x2329;">&#x2329;</option>
+					<option value="&#x2E22;">&#x2E22;</option>
+				</select>
+			</div>
+			<div id="bracket-close-param" class="parameter hidden">
+				<select id="bracket-close-select" class="hiero-select" onchange="Edit.adjustBracketClose();">
+					<option value="]">]</option>
+					<option value=")">)</option>
+					<option value="}">}</option>
+					<option value="&#x232A;">&#x232A;</option>
+					<option value="&#x2E23;">&#x2E23;</option>
+				</select>
+			</div>
+			<table class="grid">
+				<tr><td>
+				<div id="damage-param" class="parameter hidden"><span class="underline">d</span>amage:
+					<table class="grid">
+						<tr>
+						<td><input type="checkbox" id="damage-all"
+							onclick="Edit.adjustDamage('full');"><label for="damage-all">all</label></td>
+						<td><input type="checkbox" id="damage-ts"
+							onclick="Edit.adjustDamage('quarter');"><label for="damage-ts">ts</label></td>
+						<td><input type="checkbox" id="damage-te"
+							onclick="Edit.adjustDamage('quarter');"><label for="damage-te">te</label></td>
+						</tr>
+						<tr>
+						<td></td>
+						<td><input type="checkbox" id="damage-bs"
+							onclick="Edit.adjustDamage('quarter');"><label for="damage-bs">bs</label></td>
+						<td><input type="checkbox" id="damage-be"
+							onclick="Edit.adjustDamage('quarter');"><label for="damage-be">be</label></td>
+						</tr>
+					</table>
+				</div>
+				<div id="mirror-param" class="parameter hidden"><span class="underline">m</span>irror:
+					<input type="checkbox" id="mirror-check" onclick="Edit.adjustMirror();">
+				</div>
+				</td><td>
+				<div id="rotate-param" class="parameter hidden"><span class="underline">r</span>otate:
+					<table class="grid">
+						<tr>
+						<td><input type="radio" name="rotate-radio" id="rotate-315"
+							onclick="Edit.adjustRotate(315);"><label id="rotate-315-label" for="rotate-315">315</label></td>
+						<td><input type="radio" name="rotate-radio" id="rotate-0"
+							onclick="Edit.adjustRotate(0);"><label id="rotate-0-label" for="rotate-0">0</label></td>
+						<td><input type="radio" name="rotate-radio" id="rotate-45"
+							onclick="Edit.adjustRotate(45);"><label id="rotate-45-label" for="rotate-45">45</label></td>
+						</tr>
+						<tr>
+						<td><input type="radio" name="rotate-radio" id="rotate-270"
+							onclick="Edit.adjustRotate(270);"><label id="rotate-270-label" for="rotate-270">270</label></td>
+						<td></td>
+						<td><input type="radio" name="rotate-radio" id="rotate-90"
+							onclick="Edit.adjustRotate(90);"><label id="rotate-90-label" for="rotate-90">90</label></td>
+						</tr>
+						<tr>
+						<td><input type="radio" name="rotate-radio" id="rotate-225"
+							onclick="Edit.adjustRotate(225);"><label id="rotate-225-label" for="rotate-225">225</label></td>
+						<td><input type="radio" name="rotate-radio" id="rotate-180"
+							onclick="Edit.adjustRotate(180);"><label id="rotate-180-label" for="rotate-180">180</label></td>
+						<td><input type="radio" name="rotate-radio" id="rotate-135"
+							onclick="Edit.adjustRotate(135);"><label id="rotate-135-label" for="rotate-135">135</label></td>
+						</tr>
+					</table>
+				</div>
+				</td></tr>
+			</table>
+			<div id="place-param" class="parameter hidden">pla<span class="underline">c</span>e:
+				<table class="grid">
+					<tr>
+					<td><input type="radio" name="place-radio" id="place-ts"
+						onclick="Edit.adjustPlace('ts');"><label id="place-ts-label" for="place-ts">ts</label></td>
+					<td><input type="radio" name="place-radio" id="place-t"
+						onclick="Edit.adjustPlace('t');"><label id="place-t-label" for="place-t">t</label></td>
+					<td><input type="radio" name="place-radio" id="place-te"
+						onclick="Edit.adjustPlace('te');"><label id="place-te-label" for="place-te">te</label></td>
+					</tr>
+					<tr>
+					<td></td>
+					<td><input type="radio" name="place-radio" id="place-m"
+						onclick="Edit.adjustPlace('m');"><label id="place-m-label" for="place-m">m</label></td>
+					<td></td>
+					</tr>
+					<tr>
+					<td><input type="radio" name="place-radio" id="place-bs"
+						onclick="Edit.adjustPlace('bs');"><label id="place-bs-label" for="place-bs">bs</label></td>
+					<td><input type="radio" name="place-radio" id="place-b"
+						onclick="Edit.adjustPlace('b');"><label id="place-b-label" for="place-b">b</label></td>
+					<td><input type="radio" name="place-radio" id="place-be"
+						onclick="Edit.adjustPlace('be');"><label id="place-be-label" for="place-be">be</label></td>
+					</tr>
+				</table>
+			</div>
+			<div id="blank-param" class="parameter hidden">si<span class="underline">z</span>e:
+				<input type="radio" name="blank-size" id="blank-half"
+					onclick="Edit.adjustBlankSize('half');"><label for="blank-half">half</label>
+				<input type="radio" name="blank-size" id="blank-full"
+					onclick="Edit.adjustBlankSize('full');"><label for="blank-full">full</label>
+			</div>
+			<div id="lost-param" class="parameter hidden">si<span class="underline">z</span>e:
+				<table class="grid">
+					<tr>
+					<td><input type="radio" name="lost-size" id="lost11"
+						onclick="Edit.adjustLostSize('11');"><label for="lost11">1:1</label></td>
+					<td><input type="radio" name="lost-size" id="lost21"
+						onclick="Edit.adjustLostSize('21');"><label for="lost21">2:1</label></td>
+					<td><input type="radio" name="lost-size" id="lost31"
+						onclick="Edit.adjustLostSize('31');"><label for="lost31">3:1</label></td>
+					<td><input type="radio" name="lost-size" id="lost41"
+						onclick="Edit.adjustLostSize('41');"><label for="lost41">4:1</label></td>
+					</tr>
+					<tr>
+					<td><input type="radio" name="lost-size" id="lost12"
+						onclick="Edit.adjustLostSize('12');"><label for="lost12">1:2</label></td>
+					<td><input type="radio" name="lost-size" id="lost-half"
+						onclick="Edit.adjustLostSize('half');"><label for="lost-half">half</label></td>
+					<td><input type="radio" name="lost-size" id="lost32"
+						onclick="Edit.adjustLostSize('32');"><label for="lost32">3:2</label></td>
+					<td><input type="radio" name="lost-size" id="lost-wide"
+						onclick="Edit.adjustLostSize('wide');"><label for="lost-wide">wide</label></td>
+					</tr>
+					<td><input type="radio" name="lost-size" id="lost13"
+						onclick="Edit.adjustLostSize('13');"><label for="lost13">1:3</label></td>
+					<td><input type="radio" name="lost-size" id="lost23"
+						onclick="Edit.adjustLostSize('23');"><label for="lost23">2:3</label></td>
+					<td><input type="radio" name="lost-size" id="lost33"
+						onclick="Edit.adjustLostSize('33');"><label for="lost33">3:3</label></td>
+					<td><input type="radio" name="lost-size" id="lost43"
+						onclick="Edit.adjustLostSize('43');"><label for="lost43">4:3</label></td>
+					</tr>
+					<tr>
+					<td><input type="radio" name="lost-size" id="lost14"
+						onclick="Edit.adjustLostSize('14');"><label for="lost14">1:4</label></td>
+					<td><input type="radio" name="lost-size" id="lost-tall"
+						onclick="Edit.adjustLostSize('tall');"><label for="lost-tall">tall</label></td>
+					<td><input type="radio" name="lost-size" id="lost34"
+						onclick="Edit.adjustLostSize('34');"><label for="lost32">3:4</label></td>
+					<td><input type="radio" name="lost-size" id="lost-full"
+						onclick="Edit.adjustLostSize('full');"><label for="lost-full">full</label></td>
+					</tr>
+				</table>
+			</div>
+			<div id="expand-param" class="parameter hidden">e<span class="underline">x</span>pand:
+				<input type="checkbox" id="expand-check" onclick="Edit.adjustExpand();">
+			</div>
+		</div>
+	</div>
+	<div class="footer-panel">
+		<textarea id="unicode-text" rows="4" spellcheck="false"
+			onchange="Edit.changeText();"></textarea>
+		<button type="button" class="generic-button parse-button" title="parse text"
+			onclick="Edit.changeText();">Parse</button>
+		<button type="reset" class="generic-button danger-button" title="clear text"
+			onclick="Edit.clearText();">Clear</button>
+		<button type="button" class="generic-button" title="copy text to clipboard"
+			onclick="Edit.copyText();">Copy</button>
+		<span id="error" class="error-text"> </span>
+	</div>
+</div>
+
+<div id="cats-panel" class="hidden" tabindex="10">
+	<a href="#" onclick="event.preventDefault(); signMenu.hide();"
+				class="cats-panel-close" title="close"></a>
+	<ul id="cats-extra-menu" class="cats">
+		<li> <input type="text" id="chosen-sign" class="text-input"
+				size="5" spellcheck="false" readonly> </li>
+		<li> <button type="button" id="sign-info-button" class="generic-button" title="show information of sign"
+				onclick="signMenu.toggleInfo();">info</button> </li>
+	</ul>
+	<ul id="cats-menu" class="cats"> </ul>
+	<div id="cat-sections"> </div>
+	<div id="sign-info"> Nothing selected. </div>
+</div>
+
+</body>
+</html>
