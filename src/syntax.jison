@@ -60,17 +60,17 @@ END_ENCLOSURE_CHAR \uD80D\uDC3D|\uD80D\uDC3F
 %%
 
 fragment
-	: groups_or_singletons EOF
-		{return new Fragment($groups_or_singletons);}
+	: top_groups EOF
+		{return new Fragment($top_groups);}
 	;
 
-groups_or_singletons
+top_groups
 	:
 		{$$ = [];}
-	| group groups_or_singletons
-		{$$ = [$group].concat($groups_or_singletons);}
-	| singleton_group groups_or_singletons
-		{$$ = [$singleton_group].concat($groups_or_singletons);}
+	| group top_groups
+		{$$ = [$group].concat($top_groups);}
+	| singleton_group top_groups
+		{$$ = [$singleton_group].concat($top_groups);}
 	;
 
 groups
