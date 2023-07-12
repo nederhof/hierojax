@@ -18,3 +18,10 @@ function getMax(arr) {
 function getSum(arr) {
 	return arr.reduce((acc, x) => acc + x, 0);
 }
+
+function isLinux() {
+	return navigator.platform && (
+			navigator.platform.indexOf('Linux') >= 0 || navigator.platform.indexOf('Android') >= 0);
+			
+			
+}

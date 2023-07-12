@@ -18,12 +18,16 @@ There is a choice of three different technologies:
 </p>
 <ol>
 <li>using SVG,</li>
-<li>using CSS and HTML elements, and</li>
+<li>using DOM elements (CSS and HTML), and</li>
 <li>using HTML canvas.</li>
 </ol>
 <p>
-The last of these three is the most robust but suffers from
-pixelization. For most applications, SVG seems to be the best choice.
+For most applications, SVG seems to be the best choice.
+One advantage of DOM elements is that they allow cut-and-paste; 
+this is currently not possible with SVG without getting spurious
+linebreaks between signs. With DOM elements, however, positioning of signs
+is suboptimal on Mac OS.
+HTML canvas is the most robust but suffers from pixelization. 
 </p>
 
 <h2>Other pages on this site</h2>

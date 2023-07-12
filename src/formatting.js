@@ -171,7 +171,7 @@ class Shapes {
 	static prepareFont(ctx, fontSize, color) {
 		ctx.font = fontSize.toString() + 'px Hieroglyphic';
 		ctx.fillStyle = color;
-		ctx.textBaseline = 'bottom';
+		ctx.textBaseline = 'alphabetic';
 	}
 	static measureGlyph(ch, fontSize, xScale, yScale, rotate, mirror) {
 		const canvas = document.createElement('canvas');
@@ -619,8 +619,10 @@ class PrintedCanvas extends PrintedAny {
 		this.canvas = document.createElement('canvas');
 		this.canvas.width = Math.ceil(this.wPx);
 		this.canvas.height = Math.ceil(this.hPx);
-		if (this.element)
+		if (this.element) {
 			this.element.appendChild(this.canvas);
+			this.element.style.setProperty('height', this.canvas.height.toFixed(2) + 'px');
+		}
 		this.ctx = this.canvas.getContext('2d', { willReadFrequently: true });
 		if (this.options.border && !this.options.separated) {
 			this.ctx.beginPath();
@@ -734,7 +736,11 @@ class PrintedDOM extends PrintedAny {
 		sign.className = properties.unselectable ? 'hierojax-dom-visual' : 'hierojax-dom-sign';
 		sign.innerHTML = ch;
 		sign.style.setProperty('font-size', fontSizeStr + 'px');
-		sign.style.setProperty('line-height', fontSizeStr + 'px');
+		/* line-height gives better result on Linux, but doesn't work at all on Mac OS */
+		if (isLinux())
+			sign.style.setProperty('line-height', fontSizeStr + 'px');
+		else
+			sign.style.setProperty('height', fontSizeStr + 'px');
 		sign.style.setProperty('color', properties.bracket ? this.options.bracketcolor : this.options.signcolor);
 		var transforms = '';
 		transforms += 'translate(' +
@@ -1102,7 +1108,7 @@ class Fragment extends Group {
 		options.fontsize = options.fontsize || 22;
 		options.sep = Number(options.sep) || 0.07;
 		options.separated = options.separated || false;
-		options.type = options.type || 'dom';
+		options.type = options.type || 'svg';
 		options.signcolor = options.signcolor || 'black';
 		options.bracketcolor = options.bracketcolor || 'black';
 		options.shadepattern = options.shadepattern || 'uniform';
@@ -1118,7 +1124,7 @@ class Fragment extends Group {
 		var hAccum = 0;
 		const size = this.size(options);
 		const widthSep = size.w + options.sep;
-		const heightSep = size.h + options.sep
+		const heightSep = size.h + options.sep;
 		if (options.separated) {
 			if (options.dir == 'hrl') {
 				element.className = 'hierojax-hrl-container';
@@ -1138,7 +1144,7 @@ class Fragment extends Group {
 				const width = Group.v(options) ? Math.max(options.linesize, sizeSub.w) : sizeSub.w;
 				const height = Group.h(options) ? Math.max(options.linesize, sizeSub.h) : sizeSub.h;
 				const widthSubSep = width + options.sep;
-				const heightSubSep = height + options.sep
+				const heightSubSep = height + options.sep;
 				var printed = initializer(element, widthSubSep, heightSubSep, wAccum, hAccum, Group.rl(options), options);
 				g.print(options, printed);
 				if (Group.h(options))

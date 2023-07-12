@@ -7,7 +7,7 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	cat util.js > tmp.js
 	echo ' '  >> tmp.js
 	cat syntax.js >> tmp.js
-	echo ' '  >> tmp.js
+	echo '\n '  >> tmp.js
 	cat formatting.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat insertions.js >> tmp.js
@@ -21,7 +21,7 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	cat util.js > tmp.js
 	echo ' '  >> tmp.js
 	cat syntax16.js >> tmp.js
-	echo ' '  >> tmp.js
+	echo '\n '  >> tmp.js
 	cat formatting16.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat insertions.js >> tmp.js
