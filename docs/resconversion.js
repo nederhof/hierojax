@@ -1473,7 +1473,7 @@ class PrintedCanvas extends PrintedAny {
 		this.canvas.height = Math.ceil(this.hPx);
 		if (this.element) {
 			this.element.appendChild(this.canvas);
-			if (!this.options.separated)
+			if (!this.options.separated || Group.h(options))
 				this.element.style.setProperty('height', this.canvas.height.toFixed(2) + 'px');
 		}
 		this.ctx = this.canvas.getContext('2d', { willReadFrequently: true });

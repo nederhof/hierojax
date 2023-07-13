@@ -215,7 +215,7 @@ const mdcNames = {
 'US1Z16GEXTU': { str: '\u{1340B}', kind: 'literal' },
 'US1Z16HEXTU': { str: '\u{1340C}', kind: 'literal' },
 'US1Aa7AEXTU': { str: '\u{13414}', kind: 'literal' },
-'F51B': { str: '\u{13139}\u0fe0\u{13440}', kind: 'group' },
+'F51B': { str: '\u{13139}\uFE00\u{13440}', kind: 'group' },
 'G20A': { str: '\uFFFD', kind: 'literal' },
 'P8h': { str: '\u{132A4}\uFE02', kind: 'group' },
 'nTrw': { str: '\u{132b9}\u{13431}\u{132b9}\u{13431}\u{132b9}', kind: 'group' },

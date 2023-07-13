@@ -6,7 +6,6 @@
 .hierojax-source {
 	font-family: Hieroglyphic;
 	font-size: 20px;
-	line-height: 20px;
 	letter-spacing: 2px;
 }
 
@@ -16,6 +15,11 @@
 .hierojax-hrl-container {
 	display: inline-block;
 	direction: rtl;
+}
+
+
+.hierojax-hrl-container svg, .hierojax-hrl-container canvas {
+	direction: ltr;
 }
 
 .hierojax-v-container {
