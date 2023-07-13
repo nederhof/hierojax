@@ -30,8 +30,10 @@ class HieroJaxDemo {
 			shadepattern: 'hatching', signcolor: '#cc40ff' }));
 		p.appendChild(this.makeHiero(txt, { dir: 'vrl', separated: true,
 			shadepattern: 'hatching', border: true, signcolor: 'green' }));
-		p.appendChild(this.makeHiero(txt, { dir: 'vrl', type: 'canvas', separated: true,
+		p.appendChild(this.makeHiero(txt, { dir: 'hrl', type: 'canvas', separated: true,
 			shadepattern: 'hatching', border: true, signcolor: 'red' }));
+		p.appendChild(this.makeHiero(txt, { dir: 'hrl', type: 'svg', separated: true,
+			shadepattern: 'plain', border: false, signcolor: 'black' }));
 		p.appendChild(this.makeHiero(txt, { type: 'svg', dir: 'vlr', 
 			shadepattern: 'hatching', border: true }));
 		elem.replaceWith(p);
