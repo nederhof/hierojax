@@ -1108,15 +1108,15 @@ class Fragment extends Group {
 		options.linesize = Number(options.linesize) || 1;
 		options.fontsize = options.fontsize || 22;
 		options.sep = Number(options.sep) || 0.07;
-		options.separated = options.separated || false;
+		options.separated = options.separated == 'true';
 		options.type = options.type || 'svg';
 		options.signcolor = options.signcolor || 'black';
 		options.bracketcolor = options.bracketcolor || 'black';
 		options.shadepattern = options.shadepattern || 'uniform';
 		options.align = options.align || 'middle';
-		options.border = options.border || false;
-		options.standalone = options.standalone || false;
-		options.log = options.log || false;
+		options.border = options.border == 'true';
+		options.standalone = options.standalone == 'true';
+		options.log = options.log == 'true';
 		const initializer = options.type == 'canvas' ? PrintedCanvas.initialize :
 				options.type == 'svg' ? PrintedSVG.initialize :
 				PrintedDOM.initialize;

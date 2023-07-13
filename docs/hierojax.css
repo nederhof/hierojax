@@ -18,6 +18,11 @@
 	direction: rtl;
 }
 
+
+.hierojax-hrl-container svg, .hierojax-hrl-container canvas {
+	direction: ltr;
+}
+
 .hierojax-v-container {
 	display: inline-flex;
 	flex-direction: column;
