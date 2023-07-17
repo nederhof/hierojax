@@ -81,6 +81,16 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	cat resconvert.js >> tmp.js
 	mv tmp.js ../docs/resconversion.js
 
+insertions.js: insertions.json
+	echo -n 'Shapes.insertions = ' > insertions.js
+	cat insertions.json >> insertions.js
+	cp insertions.json ../docs/
+
+rotations.js: rotations.json
+	echo -n 'Shapes.rotations = ' > rotations.js
+	cat rotations.json >> rotations.js
+	cp rotations.json ../docs/
+
 texts: ../docs/texts/hierojax.css ../docs/texts/hierojax.js ../docs/texts/NewGardinerSMP.ttf
 
 ../docs/texts/hierojax.css: ../docs/hierojax.css
@@ -94,8 +104,10 @@ texts: ../docs/texts/hierojax.css ../docs/texts/hierojax.js ../docs/texts/NewGar
 
 clean:
 	rm -f ../docs/util.js
-	rm -f ../docs/insertions.js
-	rm -f ../docs/rotations.js
+	rm -f insertions.js
+	rm -f rotations.js
+	rm -f ../docs/insertions.json
+	rm -f ../docs/rotations.json
 	rm -f ../docs/hierojax.js
 	rm -f ../docs/hierojaxedit.js
 	rm -f ../docs/mdcconversion.js
