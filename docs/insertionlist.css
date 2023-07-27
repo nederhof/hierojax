@@ -11,7 +11,8 @@ canvas {
 
 img {
 	margin-left: 20px;
-	height: 30px;
+	height: 50px;
+	vertical-align: middle;
 }
 
 #signs li {
