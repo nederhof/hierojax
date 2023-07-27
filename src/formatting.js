@@ -463,13 +463,16 @@ class Shapes {
 			default: return place;
 		}
 	}
-	static allowedPlaces(ch, mirror) {
+	static allowedPlaces(ch, rot, mirror) {
 		var places = new Set();
 		if (ch in Shapes.insertions)
-			for (const alt of Shapes.insertions[ch])
-				for (const p in alt)
-					if (p != 'glyph')
-						places.add(mirror ? Shapes.mirrorPlace(p) : p);
+			for (const alt of Shapes.insertions[ch]) {
+				const altRot = alt.rot ? alt.rot : 0;
+				if (rot == altRot)
+					for (const p in alt)
+						if (Group.INSERTION_PLACES.includes(p))
+							places.add(mirror ? Shapes.mirrorPlace(p) : p);
+			}
 		return places;
 	}
 	static allowedRotations(ch) {
@@ -580,7 +583,7 @@ class PrintedAny {
 	}
 	addText(text) {
 	}
-	correctedMeasurement(ch, fontSize, xScale, yScale, rotate, mirror, properties) {
+	static correctedMeasurement(ch, fontSize, xScale, yScale, rotate, mirror, properties) {
 		var meas = shapes.measureGlyphMemo(ch, fontSize, xScale, yScale, rotate, mirror);
 		if (properties.xAs) {
 			const measAs = shapes.measureGlyphMemo(properties.xAs, fontSize, 1, 1, rotate, mirror);
@@ -650,7 +653,7 @@ class PrintedCanvas extends PrintedAny {
 		const yPx = Math.round(this.emToPx(rect.y));
 		const fontSize = Math.floor(this.fontSize * scale);
 		const fontColor = properties.bracket ? this.options.bracketcolor : this.options.signcolor;
-		const meas = this.correctedMeasurement(ch, fontSize, xScale, yScale, rotate, mirror, properties);
+		const meas = PrintedAny.correctedMeasurement(ch, fontSize, xScale, yScale, rotate, mirror, properties);
 		this.ctx.save();
 		Shapes.prepareFont(this.ctx, fontSize, fontColor);
 		this.ctx.translate(xPx + meas.widthScaled/2 - meas.x, yPx - meas.heightScaled/2 + meas.h - meas.y);
@@ -732,7 +735,7 @@ class PrintedDOM extends PrintedAny {
 		const yPx = this.emToPx(rect.y);
 		const xScaleStr = xScale.toFixed(2);
 		const yScaleStr = yScale.toFixed(2);
-		const meas = this.correctedMeasurement(ch, fontSize, xScale, yScale, rotate, mirror, properties);
+		const meas = PrintedAny.correctedMeasurement(ch, fontSize, xScale, yScale, rotate, mirror, properties);
 		const sign = document.createElement('div');
 		sign.className = properties.unselectable ? 'hierojax-dom-visual' : 'hierojax-dom-sign';
 		sign.innerHTML = ch;
@@ -828,7 +831,7 @@ class PrintedSVG extends PrintedAny {
 		const yPx = this.emToPx(rect.y);
 		const xScaleStr = xScale.toFixed(2);
 		const yScaleStr = yScale.toFixed(2);
-		const meas = this.correctedMeasurement(ch, fontSize, xScale, yScale, rotate, mirror, properties);
+		const meas = PrintedAny.correctedMeasurement(ch, fontSize, xScale, yScale, rotate, mirror, properties);
 		const sign = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 		sign.setAttribute('class', properties.unselectable ? 'hierojax-svg-visual' : 'hierojax-svg-sign');
 		sign.innerHTML = ch;
@@ -2034,8 +2037,10 @@ class Literal extends Group {
 	chooseAltGlyph(places) {
 		if (this.ch in Shapes.insertions) {
 			const mirrored = this.mirror ? places.map(p => Shapes.mirrorPlace(p)) : places;
+			const rot = this.rotationCoarse();
 			for (const alt of Shapes.insertions[this.ch]) {
-				if (mirrored.every(p => p in alt)) {
+				const altRot = alt.rot ? alt.rot : 0;
+				if (mirrored.every(p => p in alt) && rot == altRot) {
 					if ('glyph' in alt)
 						this.alt = alt.glyph;
 					this.adjustments = this.mirror ? Shapes.mirrorAdjustments(alt) : alt;
@@ -2052,8 +2057,11 @@ class Literal extends Group {
 		const h = size.h * this.scale;
 		return { w, h };
 	}
+	rotationCoarse() {
+		return Group.numToRotate(this.vs);
+	}
 	rotation() {
-		const rot = Group.numToRotate(this.vs);
+		const rot = this.rotationCoarse();
 		if (Shapes.allowedRotations(this.ch).includes(rot))
 			return rot + Number(Shapes.rotations[this.ch][rot]);
 		if (rot)

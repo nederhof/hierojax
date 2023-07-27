@@ -29,7 +29,7 @@ Two kinds of information are provided here:
 The purpose of the first kind of information is to avoid inconsistent encoding.
 The second issue is font-dependent, i.e., the exact positions
 pertain only to the <a href="https://mjn.host.cs.st-andrews.ac.uk/egyptian/fonts/newgardiner.html">NewGardiner</a> 
-font shown here, and could be slightly different for a different font.
+font shown here, and could be slightly different for another font.
 </p>
 <p>
 The choice of insertions can seem somewhat arbitrary. For some signs,
@@ -66,6 +66,9 @@ their mirrored equivalents.
 For example, if an unmirrored sign has a TS insertion, then its mirrored form
 requires a TE insertion.
 An overlay is always allowed to have TS, BS, TE, BE insertions.
+However, insertion needs to be specified individually for each degree of rotation of a sign. This is
+because, for example, T and B do not have obvious equivalents if a sign is
+rotated by 90 degrees. This is even more problematic for multiples of 45 degrees.
 </p>
 
 <ul id='signs'>

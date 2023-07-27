@@ -1315,13 +1315,16 @@ class Shapes {
 			default: return place;
 		}
 	}
-	static allowedPlaces(ch, mirror) {
+	static allowedPlaces(ch, rot, mirror) {
 		var places = new Set();
 		if (ch in Shapes.insertions)
-			for (const alt of Shapes.insertions[ch])
-				for (const p in alt)
-					if (p != 'glyph')
-						places.add(mirror ? Shapes.mirrorPlace(p) : p);
+			for (const alt of Shapes.insertions[ch]) {
+				const altRot = alt.rot ? alt.rot : 0;
+				if (rot == altRot)
+					for (const p in alt)
+						if (Group.INSERTION_PLACES.includes(p))
+							places.add(mirror ? Shapes.mirrorPlace(p) : p);
+			}
 		return places;
 	}
 	static allowedRotations(ch) {
@@ -1432,7 +1435,7 @@ class PrintedAny {
 	}
 	addText(text) {
 	}
-	correctedMeasurement(ch, fontSize, xScale, yScale, rotate, mirror, properties) {
+	static correctedMeasurement(ch, fontSize, xScale, yScale, rotate, mirror, properties) {
 		var meas = shapes.measureGlyphMemo(ch, fontSize, xScale, yScale, rotate, mirror);
 		if (properties.xAs) {
 			const measAs = shapes.measureGlyphMemo(properties.xAs, fontSize, 1, 1, rotate, mirror);
@@ -1502,7 +1505,7 @@ class PrintedCanvas extends PrintedAny {
 		const yPx = Math.round(this.emToPx(rect.y));
 		const fontSize = Math.floor(this.fontSize * scale);
 		const fontColor = properties.bracket ? this.options.bracketcolor : this.options.signcolor;
-		const meas = this.correctedMeasurement(ch, fontSize, xScale, yScale, rotate, mirror, properties);
+		const meas = PrintedAny.correctedMeasurement(ch, fontSize, xScale, yScale, rotate, mirror, properties);
 		this.ctx.save();
 		Shapes.prepareFont(this.ctx, fontSize, fontColor);
 		this.ctx.translate(xPx + meas.widthScaled/2 - meas.x, yPx - meas.heightScaled/2 + meas.h - meas.y);
@@ -1584,7 +1587,7 @@ class PrintedDOM extends PrintedAny {
 		const yPx = this.emToPx(rect.y);
 		const xScaleStr = xScale.toFixed(2);
 		const yScaleStr = yScale.toFixed(2);
-		const meas = this.correctedMeasurement(ch, fontSize, xScale, yScale, rotate, mirror, properties);
+		const meas = PrintedAny.correctedMeasurement(ch, fontSize, xScale, yScale, rotate, mirror, properties);
 		const sign = document.createElement('div');
 		sign.className = properties.unselectable ? 'hierojax-dom-visual' : 'hierojax-dom-sign';
 		sign.innerHTML = ch;
@@ -1680,7 +1683,7 @@ class PrintedSVG extends PrintedAny {
 		const yPx = this.emToPx(rect.y);
 		const xScaleStr = xScale.toFixed(2);
 		const yScaleStr = yScale.toFixed(2);
-		const meas = this.correctedMeasurement(ch, fontSize, xScale, yScale, rotate, mirror, properties);
+		const meas = PrintedAny.correctedMeasurement(ch, fontSize, xScale, yScale, rotate, mirror, properties);
 		const sign = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 		sign.setAttribute('class', properties.unselectable ? 'hierojax-svg-visual' : 'hierojax-svg-sign');
 		sign.innerHTML = ch;
@@ -2886,8 +2889,10 @@ class Literal extends Group {
 	chooseAltGlyph(places) {
 		if (this.ch in Shapes.insertions) {
 			const mirrored = this.mirror ? places.map(p => Shapes.mirrorPlace(p)) : places;
+			const rot = this.rotationCoarse();
 			for (const alt of Shapes.insertions[this.ch]) {
-				if (mirrored.every(p => p in alt)) {
+				const altRot = alt.rot ? alt.rot : 0;
+				if (mirrored.every(p => p in alt) && rot == altRot) {
 					if ('glyph' in alt)
 						this.alt = alt.glyph;
 					this.adjustments = this.mirror ? Shapes.mirrorAdjustments(alt) : alt;
@@ -2904,8 +2909,11 @@ class Literal extends Group {
 		const h = size.h * this.scale;
 		return { w, h };
 	}
+	rotationCoarse() {
+		return Group.numToRotate(this.vs);
+	}
 	rotation() {
-		const rot = Group.numToRotate(this.vs);
+		const rot = this.rotationCoarse();
 		if (Shapes.allowedRotations(this.ch).includes(rot))
 			return rot + Number(Shapes.rotations[this.ch][rot]);
 		if (rot)
@@ -3108,7 +3116,7 @@ class BracketClose extends Group {
 	}
 }
  
-Shapes.insertions = { 
+Shapes.insertions = {
 \u{13000}: [{ bs: { y: 0.6 } }],
 \u{13010}: [{ bs: { } }],
 \u{13011}: [{ bs: { } }],
@@ -3324,7 +3332,7 @@ Shapes.insertions = {
 \u{13254}: [{ glyph: '\u{E48E}', m: { x: 0.7 }, b: { x: 0.25, y: 0.7 } }],
 \u{13255}: [{ glyph: '\u{E48F}', t: { x: 0.25, y: 0.4 }, b: { x: 0.75, y: 0.6 } }],
 \u{13256}: [{ glyph: '\u{E490}', t: { x: 0.75, y: 0.6 }, b: { x: 0.25, y: 0.4 } }],
-\u{13257}: [{ glyph: '\u{E491}', m: { y: 0.4 } }],
+\u{13257}: [{ glyph: '\u{E491}', m: { y: 0.4 } }, { rot: 180, glyph: '\u{E491}', m: { y: 0.6 } }],
 \u{13267}: [{ glyph: '\u{E492}', m: { } }],
 \u{1326B}: [{ b: { } }, { glyph: '\u{E493}', m: { y: 0.65 } }],
 \u{1326C}: [{ glyph: '\u{E494}', m: { y: 0.6 } }],
@@ -3374,7 +3382,7 @@ Shapes.insertions = {
 \u{13308}: [{ bs: { }, te: { } }],
 \u{1330C}: [{ ts: { }, bs: { }, te: { } }, { glyph: '\u{E49B}', ts: { }, bs: { }, te: { }, be: { x: 0.75 } }],
 \u{1330D}: [{ ts: { }, bs: { }, te: { } }, { glyph: '\u{E49C}', ts: { }, bs: { }, te: { }, be: { x: 0.75 } }],
-\u{1330F}: [{ bs: { } }],
+\u{1330F}: [{ bs: { } }, { rot: 270, be: { } }],
 \u{13316}: [{ bs: { y: 0.55 }, be: { y: 0.55 }, t: { }, b: { } }],
 \u{1331D}: [{ bs: { } }],
 \u{13326}: [{ ts: { } }],
@@ -3390,8 +3398,8 @@ Shapes.insertions = {
 \u{13337}: [{ glyph: '\u{13336}', te: { }, be: { } }],
 \u{1333D}: [{ b: { } }],
 \u{1333E}: [{ b: { } }],
-\u{1333F}: [{ ts: { }, b: { } }],
-\u{13340}: [{ ts: { }, te: { }, b: { } }],
+\u{1333F}: [{ ts: { } }, { glyph: '\u{E4AD}', ts: { }, b: { } }],
+\u{13340}: [{ ts: { }, te: { } }, { glyph: '\u{E4AE}', ts: { }, te: { }, b: { } }],
 \u{13341}: [{ bs: { y: 0.7 }, te: { } }],
 \u{13344}: [{ te: { } }],
 \u{13345}: [{ ts: { y: 0.5 }, te: { y: 0.5 } }],
@@ -3464,6 +3472,7 @@ Shapes.rotations = {
 \u{1321A}: { 270: 0 },
 \u{1321B}: { 270: 0 },
 \u{1321C}: { 270: 0 },
+\u{13257}: { 180: 0 },
 \u{13283}: { 90: 0 },
 \u{13285}: { 270: 0 },
 \u{1327A}: { 270: 0 },
@@ -3505,6 +3514,7 @@ Shapes.rotations = {
 \u{13359}: { 270: 0 },
 \u{1335B}: { 270: 0 },
 \u{13361}: { 270: 0 },
+\u{13377}: { 90: 0, 270: 0 },
 \u{13397}: { 270: 0 },
 \u{13399}: { 90: 0 },
 \u{1339A}: { 90: 0 },
@@ -6462,7 +6472,7 @@ class ResInsert extends ResPart {
 	}
 	static allowedPlaces(group) {
 		if (group instanceof Literal) {
-			return Array.from(Shapes.allowedPlaces(group.ch, group.mirror));
+			return Array.from(Shapes.allowedPlaces(group.ch, 0, group.mirror));
 		} else if (group instanceof Overlay) {
 			return ['ts', 'bs', 'te', 'be'];
 		} else if (group instanceof Basic) {

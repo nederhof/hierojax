@@ -629,7 +629,7 @@ class MdcComplex extends MdcPart {
 			const core = this.hieroglyph.toGroup();
 			const name = this.hieroglyph.name ? MdcSign.resolveName(this.hieroglyph.name) : '';
 			if (core && MdcComplex.canBeCore(core)) {
-				const places = Shapes.allowedPlaces(core.ch);
+				const places = Shapes.allowedPlaces(core.ch, 0, false);
 				if (name in mdcComplex) {
 					var placesPre = [mdcComplex[name]['zone1']];
 					var placesPost = [mdcComplex[name]['zone2']];
@@ -828,7 +828,7 @@ class MdcLigature extends MdcPart {
 			insertions[places[1]] = this.subLiteral(names[2], places[1]);
 			return new Basic(this.subLiteral(names[1], null), insertions);
 		}
-		const places = Shapes.allowedPlaces(MdcSign.nameToChar(names[0]));
+		const places = Shapes.allowedPlaces(MdcSign.nameToChar(names[0]), 0, false);
 		const place = names[0] in MdcLigatureOne ? MdcLigatureOne[names[0]] :
 				places.size > 0 ? places.values().next().value : 'ts';
 		if (names.length == 2) {
@@ -903,7 +903,7 @@ class MdcAbsolute extends MdcPart {
 		const biggest = Math.max(...parts.map(p => p.scale));
 		const j = parts.findIndex(p => p.scale == biggest);
 		const core = new Literal(parts[j].ch, 0, parts[j].mirror, shade);
-		const placesFirst = Shapes.allowedPlaces(parts[j].ch);
+		const placesFirst = Shapes.allowedPlaces(parts[j].ch, 0, false);
 		const placeFirst = placesFirst.size > 0 ? placesFirst.values().next().value : 'ts';
 		var placeToChar = {};
 		for (let i = 0; i < parts.length; i++) {

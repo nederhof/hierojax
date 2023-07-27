@@ -947,7 +947,7 @@ class BasicNode extends Node {
 	static initial(core, group) {
 		var place = 'ts';
 		if (core instanceof Literal) {
-			const places = Shapes.allowedPlaces(core.ch);
+			const places = Shapes.allowedPlaces(core.ch, core.rotationCoarse(), false);
 			if (places.size > 0)
 				place = places.values().next().value;
 		}
@@ -959,7 +959,7 @@ class BasicNode extends Node {
 		if (this.group.core instanceof Overlay) {
 			return new Set(['ts', 'bs', 'te', 'be']);
 		} else {
-			return Shapes.allowedPlaces(this.group.core.ch, this.group.core.mirror);
+			return Shapes.allowedPlaces(this.group.core.ch, this.group.core.rotationCoarse(), this.group.core.mirror);
 		}
 	}
 	isInsertion() {
@@ -1185,13 +1185,7 @@ class LiteralNode extends Node {
 		$('name-param').classList.remove('hidden');
 		if (!name)
 			$('name-text').focus();
-		const rotations = Shapes.allowedRotations(this.group.ch);
-		for (let rot = 45; rot < 360; rot += 45) {
-			if (rotations.includes(rot))
-				$('rotate-' + rot + '-label').classList.remove('error-text');
-			else
-				$('rotate-' + rot + '-label').classList.add('error-text');
-		}
+		this.showAllowedRotations();
 		switch (this.group.vs) {
 			case 1: $('rotate-90').checked = true; break;
 			case 2: $('rotate-180').checked = true; break;
@@ -1219,6 +1213,15 @@ class LiteralNode extends Node {
 			$('damage-be').checked = this.group.damage & 8;
 		}
 		$('damage-param').classList.remove('hidden');
+	}
+	showAllowedRotations() {
+		const rotations = Shapes.allowedRotations(this.group.ch);
+		for (let rot = 45; rot < 360; rot += 45) {
+			if (rotations.includes(rot))
+				$('rotate-' + rot + '-label').classList.remove('error-text');
+			else
+				$('rotate-' + rot + '-label').classList.add('error-text');
+		}
 	}
 	static initial() {
 		return new Literal(Shapes.PLACEHOLDER, 0, false, 0);
@@ -2386,6 +2389,7 @@ class Edit {
 		}
 		editHistory.remember();
 		tree.focus.group.ch = String.fromCodePoint(codepoint);
+		tree.focus.showAllowedRotations();
 		Edit.redrawFocus();
 	}
 	static adjustSingleton() {
@@ -2881,7 +2885,7 @@ class SignMenu {
 				this.catLinks[other].classList.remove('selected');
 				this.catSecs[other].classList.add('hidden');
 			}
-		this.chosen.value = uniCategories.indexOf(cat) >= 0 ? cat : '';
+		this.chosen.value = uniCategories.includes(cat) ? cat : '';
 	}
 	shownCat() {
 		for (const cat of uniCategoriesAndShapes)

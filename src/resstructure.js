@@ -1260,7 +1260,7 @@ class ResInsert extends ResPart {
 	}
 	static allowedPlaces(group) {
 		if (group instanceof Literal) {
-			return Array.from(Shapes.allowedPlaces(group.ch, group.mirror));
+			return Array.from(Shapes.allowedPlaces(group.ch, 0, group.mirror));
 		} else if (group instanceof Overlay) {
 			return ['ts', 'bs', 'te', 'be'];
 		} else if (group instanceof Basic) {

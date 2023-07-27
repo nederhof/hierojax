@@ -9,7 +9,12 @@ canvas {
 	margin-bottom: 1em;
 }
 
+img {
+	margin-left: 20px;
+	height: 30px;
+}
+
 #signs li {
-	display: inline;
+	display: inline-block;
 	white-space: nowrap;
 }

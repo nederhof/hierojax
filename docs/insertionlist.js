@@ -22,9 +22,16 @@ function printPosition(ctx, x, y, xLabel, yLabel) {
 }
 
 function printInsertionGlyph(li, ch, glyph) {
-	const places = Object.keys(glyph).filter(p => p != 'glyph');
-	const meas = shapes.emSizeOf(ch, hieroSize, 1, 1, 0, false);
-	const buf = (1 - meas.w) / 2;
+	const rot = glyph.rot ? glyph.rot : 0;
+	if (rot) {
+		const im = document.createElement('img');
+		im.setAttribute('src', 'rotation' + glyph.rot + '.svg');
+		li.appendChild(im);
+	}
+
+	const places = Object.keys(glyph).filter(p => Group.INSERTION_PLACES.includes(p));
+	const meas = PrintedAny.correctedMeasurement(ch, hieroSize, 1, 1, rot, false, { });
+	const buf = (hieroSize - meas.w) / hieroSize / 2;
 	const canvas = document.createElement('canvas');
 	canvas.width = places.length > 0 ? hieroSize * 2 : hieroSize;
 	canvas.height = hieroSize * 2;
@@ -34,8 +41,8 @@ function printInsertionGlyph(li, ch, glyph) {
 	places.forEach(p => {
 		const place = glyph[p];
 		const pos = Shapes.insertionPosition(p, place);
-		const xCanvas = Math.round(hieroSize * (0.5 + buf + pos.x * meas.w));
-		const yCanvas = Math.round(hieroSize * (1.5 + (pos.y - 1) * meas.h));
+		const xCanvas = Math.round(hieroSize * (0.5 + buf) + pos.x * meas.w);
+		const yCanvas = Math.round(hieroSize * 1.5 + (pos.y - 1) * meas.h);
 		switch (p) {
 			case 'ts':
 				ctx.fillText('TS', startColumn, topRow);
@@ -72,13 +79,16 @@ function printInsertionGlyph(li, ch, glyph) {
 		ctx.strokeStyle = 'gray';
 		ctx.beginPath();
 		const x = Math.round(hieroSize * (0.5 + buf));
-		const y = Math.round(hieroSize * (1.5 - meas.h));
-		const w = Math.round(hieroSize * meas.w);
-		const h = Math.round(hieroSize * meas.h);
+		const y = Math.round(hieroSize * 1.5 - meas.h);
+		const w = Math.round(meas.w);
+		const h = Math.round(meas.h);
 		ctx.rect(x, y, w, h);
 		ctx.stroke();
 		Shapes.prepareFont(ctx, hieroSize, 'black');
-		ctx.fillText(ch, Math.round(hieroSize * (0.5 + buf)), Math.round(hieroSize * 1.5));
+		ctx.translate(Math.round(hieroSize * (0.5 + buf) + meas.widthScaled/2 - meas.x), 
+				Math.round(hieroSize * 1.5 - meas.heightScaled/2 - meas.y));
+		ctx.rotate(rot*Math.PI/180);
+		ctx.fillText(ch, Math.round(-meas.width/2), Math.round(meas.height/2));
 	} else {
 		Shapes.prepareFont(ctx, hieroSize, 'black');
 		ctx.fillText(ch, Math.round(hieroSize * buf), Math.round(hieroSize * 1.5));

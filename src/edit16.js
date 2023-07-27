@@ -947,7 +947,7 @@ class BasicNode extends Node {
 	static initial(core, group) {
 		var place = 'ts';
 		if (core instanceof Literal) {
-			const places = Shapes.allowedPlaces(core.ch);
+			const places = Shapes.allowedPlaces(core.ch, 0, false);
 			if (places.size > 0)
 				place = places.values().next().value;
 		}
@@ -959,7 +959,7 @@ class BasicNode extends Node {
 		if (this.group.core instanceof Overlay) {
 			return new Set(['ts', 'bs', 'te', 'be']);
 		} else {
-			return Shapes.allowedPlaces(this.group.core.ch, this.group.core.mirror);
+			return Shapes.allowedPlaces(this.group.core.ch, 0, this.group.core.mirror);
 		}
 	}
 	isInsertion() {

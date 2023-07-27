@@ -2,8 +2,6 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 
 ../docs/hierojax.js: util.js syntax.js formatting.js insertions.js rotations.js main.js
 	cp util.js ../docs/
-	cp insertions.js ../docs/
-	cp rotations.js ../docs/
 	cat util.js > tmp.js
 	echo ' '  >> tmp.js
 	cat syntax.js >> tmp.js
