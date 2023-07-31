@@ -8,11 +8,11 @@ function printed(ch, rot) {
 }
 
 function printRotation(ch) {
-    const rotations = Shapes.rotations[ch];
-    const li = document.createElement('li');
-    const span = document.createElement('span');
-    span.innerHTML = '0x' + ch.codePointAt(0).toString(16).toUpperCase();
-    li.appendChild(span);
+	const rotations = Shapes.rotations[ch];
+	const li = document.createElement('li');
+	const span = document.createElement('span');
+	span.innerHTML = '0x' + ch.codePointAt(0).toString(16).toUpperCase();
+	li.appendChild(span);
 	li.appendChild(printed(ch, 0));
 	for (let rot in rotations) {
 		const diff = rotations[rot];
@@ -27,12 +27,12 @@ function printRotation(ch) {
 		}
 		li.appendChild(printed(ch, rot));
 	}
-    $('signs').appendChild(li);
+	$('signs').appendChild(li);
 }
 
 function printRotations() {
-    const signs = Object.keys(Shapes.rotations).sort();
-    signs.forEach(s => printRotation(s), 0);
+	const signs = Object.keys(Shapes.rotations).sort();
+	signs.forEach(s => printRotation(s));
 }
 
 window.addEventListener("DOMContentLoaded", () => { 

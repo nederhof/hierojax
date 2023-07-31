@@ -1,6 +1,6 @@
 all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../docs/resconversion.js ../docs/hierojaxedit16.js texts
 
-../docs/hierojax.js: util.js syntax.js formatting.js insertions.js rotations.js main.js
+../docs/hierojax.js: util.js syntax.js formatting.js insertions.js rotations.js ligatures.js main.js
 	cp util.js ../docs/
 	cat util.js > tmp.js
 	echo ' '  >> tmp.js
@@ -12,10 +12,12 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	echo ' '  >> tmp.js
 	cat rotations.js >> tmp.js
 	echo ' '  >> tmp.js
+	cat ligatures.js >> tmp.js
+	echo ' '  >> tmp.js
 	cat main.js >> tmp.js
 	mv tmp.js ../docs/hierojax.js
 
-../docs/hierojax16.js: util.js syntax16.js formatting16.js insertions.js rotations.js main16.js
+../docs/hierojax16.js: util.js syntax16.js formatting16.js insertions.js rotations.js ligatures.js main16.js
 	cat util.js > tmp.js
 	echo ' '  >> tmp.js
 	cat syntax16.js >> tmp.js
@@ -25,6 +27,8 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	cat insertions.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat rotations.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat ligatures.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat main16.js >> tmp.js
 	mv tmp.js ../docs/hierojax16.js
@@ -89,6 +93,11 @@ rotations.js: rotations.json
 	cat rotations.json >> rotations.js
 	cp rotations.json ../docs/
 
+ligatures.js: overlayligatures.json
+	echo -n 'Shapes.overlayLigatures = ' > ligatures.js
+	cat overlayligatures.json >> ligatures.js
+	cp overlayligatures.json ../docs/
+
 texts: ../docs/texts/hierojax.css ../docs/texts/hierojax.js ../docs/texts/NewGardinerSMP.ttf
 
 ../docs/texts/hierojax.css: ../docs/hierojax.css
@@ -104,8 +113,10 @@ clean:
 	rm -f ../docs/util.js
 	rm -f insertions.js
 	rm -f rotations.js
+	rm -f ligatures.js
 	rm -f ../docs/insertions.json
 	rm -f ../docs/rotations.json
+	rm -f ../docs/overlayligatures.json
 	rm -f ../docs/hierojax.js
 	rm -f ../docs/hierojaxedit.js
 	rm -f ../docs/mdcconversion.js

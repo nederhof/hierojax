@@ -115,7 +115,7 @@ function printInsertion(ch) {
 
 function printInsertions() {
 	const signs = Object.keys(Shapes.insertions).sort();
-	hierojax.waitForFonts(() => signs.forEach(s => printInsertion(s), 0));
+	hierojax.waitForFonts(() => signs.forEach(s => printInsertion(s)), 0);
 }
 
 window.addEventListener("DOMContentLoaded", () => { printInsertions(); });
