@@ -956,11 +956,7 @@ class BasicNode extends Node {
 		return new Basic(core, insertions);
 	}
 	allowedPlaces() {
-		if (this.group.core instanceof Overlay) {
-			return new Set(['ts', 'bs', 'te', 'be']);
-		} else {
-			return Shapes.allowedPlaces(this.group.core.ch, this.group.core.rotationCoarse(), this.group.core.mirror);
-		}
+		return this.group.core.allowedPlaces();
 	}
 	isInsertion() {
 		return true;

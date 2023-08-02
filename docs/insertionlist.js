@@ -97,11 +97,14 @@ function printInsertionGlyph(li, ch, glyph) {
 }
 
 function printInsertion(ch) {
+	const isLigature = ch.codePointAt(0) < Shapes.REFERENCE_GLYPH.codePointAt(0)
 	const glyphs = Shapes.insertions[ch];
 	const li = document.createElement('li');
-	const span = document.createElement('span');
-	span.innerHTML = '0x' + ch.codePointAt(0).toString(16).toUpperCase();
-	li.appendChild(span);
+	if (!isLigature) {
+		const span = document.createElement('span');
+		span.innerHTML = '0x' + ch.codePointAt(0).toString(16).toUpperCase();
+		li.appendChild(span);
+	}
 	if (glyphs.length > 0 && 'glyph' in glyphs[0])
 		printInsertionGlyph(li, ch, { });
 	glyphs.forEach(g => {
@@ -110,7 +113,10 @@ function printInsertion(ch) {
 		else
 			printInsertionGlyph(li, ch, g);
 	});
-	$('signs').appendChild(li);
+	if (isLigature)
+		$('ligatures').appendChild(li);
+	else
+		$('signs').appendChild(li);
 }
 
 function printInsertions() {

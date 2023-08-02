@@ -1,19 +1,24 @@
 const hieroSize = 50;
+const sourceSize = 30;
 const margin = 4;
 
+function literalEncoding(sign) {
+	return sign.ch + (sign.mirror ? Group.MIRROR : '');
+}
+
 function overlayEncoding(lig) {
-	var hor = lig.horizontal.length == 1 ? lig.horizontal[0].sign :
-					Group.BEGIN_SEGMENT + lig.horizontal.map(s => s.sign).join(Group.HOR) + Group.END_SEGMENT;
-	var ver = lig.vertical.length == 1 ? lig.vertical[0].sign :
-					Group.BEGIN_SEGMENT + lig.vertical.map(s => s.sign).join(Group.VER) + Group.END_SEGMENT;
+	var hor = lig.horizontal.length == 1 ? literalEncoding(lig.horizontal[0]) :
+					Group.BEGIN_SEGMENT + lig.horizontal.map(literalEncoding).join(Group.HOR) + Group.END_SEGMENT;
+	var ver = lig.vertical.length == 1 ? literalEncoding(lig.vertical[0]) :
+					Group.BEGIN_SEGMENT + lig.vertical.map(literalEncoding).join(Group.VER) + Group.END_SEGMENT;
 	return hor + Group.OVERLAY + ver;
 }
 
-function originalOverlay(lig) {
+function expandedSpan(txt) {
 	const hiero = document.createElement('span');
-	hiero.className = 'hierojax';
-	hiero.style.setProperty('font-size', hieroSize + 'px');
-	hiero.innerText = overlayEncoding(lig);
+	hiero.className = 'hierojax-source';
+	hiero.style.setProperty('font-size', sourceSize + 'px');
+	hiero.innerText = txt;
 	return hiero;
 }
 
@@ -28,8 +33,8 @@ function printRectangle(ctx, wLig, hLig, sign) {
 	ctx.stroke();
 }
 
-function ligatureCanvas(lig) {
-	const meas = PrintedAny.correctedMeasurement(lig.ligature, hieroSize, 1, 1, 0, false, { });
+function ligatureCanvas(ch, lig) {
+	const meas = PrintedAny.correctedMeasurement(ch, hieroSize, 1, 1, 0, false, { });
 	const canvas = document.createElement('canvas');
 	const w = Math.round(meas.w);
 	const h = Math.round(meas.h);
@@ -38,22 +43,36 @@ function ligatureCanvas(lig) {
 	const ctx = canvas.getContext('2d');
 	lig.horizontal.concat(lig.vertical).forEach(s => printRectangle(ctx, w, h, s))
 	Shapes.prepareFont(ctx, hieroSize, 'black');
-	ctx.fillText(lig.ligature, margin, margin + hieroSize);
+	ctx.fillText(ch, margin, margin + hieroSize);
 	return canvas;
 }
 
-function printLigature(lig) {
+function printLigaturesPerExpanded(exp, ligatures) {
 	const li = document.createElement('li');
 	li.style.setProperty('font-size', '20px');
-	li.appendChild(originalOverlay(lig));
-	li.appendChild(document.createTextNode(' \u21A6 '));
-	hierojax.waitForFonts(() => li.appendChild(ligatureCanvas(lig)));
+	hierojax.waitForFonts(() => {
+		for (lig of ligatures)
+			li.appendChild(ligatureCanvas(lig.ch, lig.lig))
+		li.appendChild(document.createTextNode(' \u21A4 '));
+		li.appendChild(expandedSpan(exp));
+	});
 	$('ligatures').appendChild(li);
 }
 
 function printLigatures() {
-	const ligs = Shapes.overlayLigatures.sort((a,b) => b.horizontal[0] - a.horizontal[0]);
-	ligs.forEach(s => printLigature(s));
+	var expandedToChars = new Map();
+	for (const ch in Shapes.ligatures) {
+		const lig = Shapes.ligatures[ch];
+		const expanded = overlayEncoding(lig);
+		if (!expandedToChars.has(expanded))
+			expandedToChars.set(expanded, []);
+		expandedToChars.get(expanded).push({ ch, lig });
+	}
+	const expandeds = [...expandedToChars.keys()].sort();
+	for (let expanded of expandeds) {
+		const ligs = expandedToChars.get(expanded);
+		printLigaturesPerExpanded(expanded, ligs);
+	}
 }
 
 window.addEventListener("DOMContentLoaded", () => {

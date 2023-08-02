@@ -93,10 +93,10 @@ rotations.js: rotations.json
 	cat rotations.json >> rotations.js
 	cp rotations.json ../docs/
 
-ligatures.js: overlayligatures.json
-	echo -n 'Shapes.overlayLigatures = ' > ligatures.js
-	cat overlayligatures.json >> ligatures.js
-	cp overlayligatures.json ../docs/
+ligatures.js: ligatures.json
+	echo -n 'Shapes.ligatures = ' > ligatures.js
+	cat ligatures.json >> ligatures.js
+	cp ligatures.json ../docs/
 
 texts: ../docs/texts/hierojax.css ../docs/texts/hierojax.js ../docs/texts/NewGardinerSMP.ttf
 
@@ -116,7 +116,7 @@ clean:
 	rm -f ligatures.js
 	rm -f ../docs/insertions.json
 	rm -f ../docs/rotations.json
-	rm -f ../docs/overlayligatures.json
+	rm -f ../docs/ligatures.json
 	rm -f ../docs/hierojax.js
 	rm -f ../docs/hierojaxedit.js
 	rm -f ../docs/mdcconversion.js

@@ -476,7 +476,7 @@ class Shapes {
 		return places;
 	}
 	static allowedRotations(ch) {
-		return ch in Shapes.rotations ? 
+		return ch in Shapes.rotations ?
 			Object.keys(Shapes.rotations[ch]).map(rot => Number(rot)) : [];
 	}
 	static mirrorAdjustment(adjustment) {
@@ -519,6 +519,23 @@ class Shapes {
 			}
 		}
 		return mirrored;
+	}
+	memoOverlayLigatures() {
+		if (!this.overlayLigatures) {
+			this.overlayLigatures = new Map();
+			for (const ch in Shapes.ligatures) {
+				const lig = Shapes.ligatures[ch];
+				if (lig.type == 'overlay' && !lig.alt) {
+					const horizontal = lig.horizontal;
+					const vertical = lig.vertical;
+					const first = horizontal[0].ch;
+					if (!this.overlayLigatures.has(first))
+						this.overlayLigatures.set(first, []);
+					this.overlayLigatures.get(first).push(ch);
+				}
+			}
+		}
+		return this.overlayLigatures;
 	}
 }
 const shapes = new Shapes();
@@ -1568,7 +1585,7 @@ class Enclosure extends Group {
 				const group = this.groups[i];
 				var x2 = x1 + group.size(options).w;
 				var x3 = !this.delimClose ? x3Encl :
-					i < this.groups.length-1 ? x2 + this.scale * options.sep / 2 : 
+					i < this.groups.length-1 ? x2 + this.scale * options.sep / 2 :
 					this.delimCloseRect.x - this.kernCloseSize();
 				group.format(options, x0, x1, x2, x3, y0Encl,
 					y1Encl + bufY + this.thickness(),
@@ -1600,7 +1617,7 @@ class Enclosure extends Group {
 				const group = this.groups[i];
 				var y2 = y1 + group.size(options).h;
 				var y3 = !this.delimClose ? y3Encl :
-					i < this.groups.length-1 ? y2 + this.scale * options.sep / 2 : 
+					i < this.groups.length-1 ? y2 + this.scale * options.sep / 2 :
 					this.delimCloseRect.y - this.kernCloseSize();
 				group.format(options, x0Encl,
 					x1Encl + bufX + this.thickness(),
@@ -1690,8 +1707,7 @@ class Basic extends Group {
 		this.core = core;
 		for (let place in insertions)
 			this[place] = insertions[place];
-		if (this.core instanceof Literal)
-			this.core.chooseAltGlyph(this.places());
+		this.core.chooseAltGlyph(this.places());
 	}
 	places() {
 		var ps = [];
@@ -1758,7 +1774,7 @@ class Basic extends Group {
 				const insPrinted = new PrintedCanvasWithoutExtras(measSize, insSize.w, insSize.h);
 				this[place].print(measOptions, insPrinted);
 				var adjustments = { };
-				if (this.core instanceof Literal && place in this.core.adjustments)
+				if (place in this.core.adjustments)
 					adjustments = this.core.adjustments[place];
 				const position = Shapes.insertionPosition(place, adjustments);
 				var xInit = Math.min(coreW-1, Math.round(position.x * coreW));
@@ -1930,10 +1946,15 @@ class Basic extends Group {
 
 class Overlay extends Group {
 	lits1; lits2; // non-empty array of Literal
+	lig; // ligature
+	adjustments; // adjusted positions for insertions
 	constructor(lits1, lits2) {
 		super();
 		this.lits1 = lits1;
 		this.lits2 = lits2;
+		this.lig = this.findLigature();
+		this.alt = this.lig;
+		this.adjustments = { };
 	}
 	toString() {
 		return (this.lits1.length > 1 ?
@@ -1946,7 +1967,51 @@ class Overlay extends Group {
 						this.lits2.map(g => g.toString()).join(Group.VER) + Group.END_SEGMENT :
 					this.lits2[0].toString());
 	}
+	allowedPlaces() {
+		const lig = this.findLigature();
+		return lig ? Shapes.allowedPlaces(lig, 0, false) : new Set(['ts', 'bs', 'te', 'be']);
+	}
+	findLigature() {
+		const chs = shapes.memoOverlayLigatures().get(this.lits1[0].ch);
+		if (chs && chs.length > 0)
+			for (const ch of chs)
+				if (this.matchLigature(ch))
+					return ch;
+		return null;
+	}
+	matchLigature(ch) {
+		const lig = Shapes.ligatures[ch];
+		if (this.lits1.length != lig.horizontal.length || this.lits2.length != lig.vertical.length)
+			return false;
+		for (let i = 0; i < this.lits1.length; i++) {
+			const sign = lig.horizontal[i];
+			const lit = this.lits1[i];
+			if (lit.ch != sign.ch || lit.mirror != !!sign.mirror || lit.vs)
+				return false;
+		}
+		for (let i = 0; i < this.lits2.length; i++) {
+			const sign = lig.vertical[i];
+			const lit = this.lits2[i];
+			if (lit.ch != sign.ch || lit.mirror != !!sign.mirror || lit.vs)
+				return false;
+		}
+		return true;
+	}
+	chooseAltGlyph(places) {
+		if (this.lig && this.lig in Shapes.insertions) { 
+			for (const alt of Shapes.insertions[this.lig]) {
+				if (places.every(p => p in alt)) {
+					if ('glyph' in alt)
+						this.alt = alt.glyph;
+					this.adjustments = alt;
+					return;
+				}
+			}
+		}
+	}
 	size(options) {
+		if (this.alt)
+			return this.sizeLigature(options);
 		const sizes1 = this.lits1.map(g => g.size(options));
 		const widths1 = sizes1.map(s => s.w);
 		const heights1 = sizes1.map(s => s.h);
@@ -1957,12 +2022,22 @@ class Overlay extends Group {
 		const h = Math.max(getMax(heights1), getSum(heights2));
 		return { w, h };
 	}
+	sizeLigature(options) {
+		const size = shapes.emSizeOf(this.alt, options.fontsize, 1, 1, 0, false);
+		const w = size.w * this.scale;
+		const h = size.h * this.scale;
+		return { w, h };
+	}
 	resize(f) {
 		super.resize(f);
 		this.lits1.forEach(g => g.resize(f));
 		this.lits2.forEach(g => g.resize(f));
 	}
 	format(options, x0, x1, x2, x3, y0, y1, y2, y3) {
+		if (this.alt) {
+			this.formatLigature(options, x0, x1, x2, x3, y0, y1, y2, y3);
+			return;
+		}
 		const width1 = getSum(this.lits1.map(g => g.size(options).w));
 		const height2 = getSum(this.lits2.map(g => g.size(options).h));
 		const bufX = ((x2-x1) - width1) / 2;
@@ -1998,7 +2073,40 @@ class Overlay extends Group {
 			y4 = y6;
 		}
 	}
+	formatLigature(options, x0, x1, x2, x3, y0, y1, y2, y3) {
+		const lig = Shapes.ligatures[this.alt];
+		const size = this.size(options);
+		const bufX = ((x2-x1) - size.w) / 2;
+		const bufY = ((y2-y1) - size.h) / 2;
+		this.x = x1 + bufX;
+		this.y = y1 + (options.align == 'bottom' ? ((y2-y1) - size.h) : bufY);
+		this.w = size.w;
+		this.h = size.h;
+		this.areas = [];
+		for (let i = 0; i < lig.horizontal.length; i++) {
+			const s = lig.horizontal[i];
+			const damage = this.lits1[i].damage;
+			const xMin = i == 0 ? x0 : this.x + s.x * this.w;
+			const xMid = this.x + (s.x + s.w / 2) * this.w;
+			const xMax = i == lig.horizontal.length-1 ? x3 : this.x + (s.x + s.w) * this.w;
+			const yMid = this.y + (s.y + s.h / 2) * this.h;
+			this.areas.push(...Group.damageAreas(damage, xMin, xMid, xMax, y0, yMid, y3));
+		}
+		for (let i = 0; i < lig.vertical.length; i++) {
+			const s = lig.vertical[i];
+			const damage = this.lits2[i].damage;
+			const xMid = this.x + (s.x + s.w / 2) * this.w;
+			const yMin = i == 0 ? y0 : this.y + s.y * this.h;
+			const yMid = this.y + (s.y + s.h / 2) * this.h;
+			const yMax = i == lig.vertical.length-1 ? y3 : this.y + (s.y + s.h) * this.h;
+			this.areas.push(...Group.damageAreas(damage, x0, xMid, x3, yMin, yMid, yMax));
+		}
+	}
 	print(options, printed) {
+		if (this.alt) {
+			this.printLigature(options, printed);
+			return;
+		}
 		if (this.lits1.length > 1)
 			printed.addHidden(Group.BEGIN_SEGMENT);
 		this.lits1.forEach(g => g.print(options, printed));
@@ -2010,6 +2118,12 @@ class Overlay extends Group {
 		this.lits2.forEach(g => g.print(options, printed));
 		if (this.lits2.length > 1)
 			printed.addHidden(Group.END_SEGMENT);
+	}
+	printLigature(options, printed) {
+		printed.addHidden(this.toString());
+		printed.addSign(this.alt, this.scale, 1, 1, 0, false, this, { unselectable: true });
+		for (const area of this.areas)
+			printed.addShading(area.x, area.y, area.w, area.h);
 	}
 }
 
@@ -2033,6 +2147,9 @@ class Literal extends Group {
 		return this.ch + Group.numToVariation(this.vs) +
 			(this.mirror ? Group.MIRROR : '') +
 			Group.numToDamage(this.damage);
+	}
+	allowedPlaces() {
+		return Shapes.allowedPlaces(this.ch, this.rotationCoarse(), this.mirror);
 	}
 	chooseAltGlyph(places) {
 		if (this.ch in Shapes.insertions) {

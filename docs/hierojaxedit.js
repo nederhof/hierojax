@@ -1328,7 +1328,7 @@ class Shapes {
 		return places;
 	}
 	static allowedRotations(ch) {
-		return ch in Shapes.rotations ? 
+		return ch in Shapes.rotations ?
 			Object.keys(Shapes.rotations[ch]).map(rot => Number(rot)) : [];
 	}
 	static mirrorAdjustment(adjustment) {
@@ -1371,6 +1371,23 @@ class Shapes {
 			}
 		}
 		return mirrored;
+	}
+	memoOverlayLigatures() {
+		if (!this.overlayLigatures) {
+			this.overlayLigatures = new Map();
+			for (const ch in Shapes.ligatures) {
+				const lig = Shapes.ligatures[ch];
+				if (lig.type == 'overlay' && !lig.alt) {
+					const horizontal = lig.horizontal;
+					const vertical = lig.vertical;
+					const first = horizontal[0].ch;
+					if (!this.overlayLigatures.has(first))
+						this.overlayLigatures.set(first, []);
+					this.overlayLigatures.get(first).push(ch);
+				}
+			}
+		}
+		return this.overlayLigatures;
 	}
 }
 const shapes = new Shapes();
@@ -2420,7 +2437,7 @@ class Enclosure extends Group {
 				const group = this.groups[i];
 				var x2 = x1 + group.size(options).w;
 				var x3 = !this.delimClose ? x3Encl :
-					i < this.groups.length-1 ? x2 + this.scale * options.sep / 2 : 
+					i < this.groups.length-1 ? x2 + this.scale * options.sep / 2 :
 					this.delimCloseRect.x - this.kernCloseSize();
 				group.format(options, x0, x1, x2, x3, y0Encl,
 					y1Encl + bufY + this.thickness(),
@@ -2452,7 +2469,7 @@ class Enclosure extends Group {
 				const group = this.groups[i];
 				var y2 = y1 + group.size(options).h;
 				var y3 = !this.delimClose ? y3Encl :
-					i < this.groups.length-1 ? y2 + this.scale * options.sep / 2 : 
+					i < this.groups.length-1 ? y2 + this.scale * options.sep / 2 :
 					this.delimCloseRect.y - this.kernCloseSize();
 				group.format(options, x0Encl,
 					x1Encl + bufX + this.thickness(),
@@ -2542,8 +2559,7 @@ class Basic extends Group {
 		this.core = core;
 		for (let place in insertions)
 			this[place] = insertions[place];
-		if (this.core instanceof Literal)
-			this.core.chooseAltGlyph(this.places());
+		this.core.chooseAltGlyph(this.places());
 	}
 	places() {
 		var ps = [];
@@ -2610,7 +2626,7 @@ class Basic extends Group {
 				const insPrinted = new PrintedCanvasWithoutExtras(measSize, insSize.w, insSize.h);
 				this[place].print(measOptions, insPrinted);
 				var adjustments = { };
-				if (this.core instanceof Literal && place in this.core.adjustments)
+				if (place in this.core.adjustments)
 					adjustments = this.core.adjustments[place];
 				const position = Shapes.insertionPosition(place, adjustments);
 				var xInit = Math.min(coreW-1, Math.round(position.x * coreW));
@@ -2782,10 +2798,15 @@ class Basic extends Group {
 
 class Overlay extends Group {
 	lits1; lits2; // non-empty array of Literal
+	lig; // ligature
+	adjustments; // adjusted positions for insertions
 	constructor(lits1, lits2) {
 		super();
 		this.lits1 = lits1;
 		this.lits2 = lits2;
+		this.lig = this.findLigature();
+		this.alt = this.lig;
+		this.adjustments = { };
 	}
 	toString() {
 		return (this.lits1.length > 1 ?
@@ -2798,7 +2819,51 @@ class Overlay extends Group {
 						this.lits2.map(g => g.toString()).join(Group.VER) + Group.END_SEGMENT :
 					this.lits2[0].toString());
 	}
+	allowedPlaces() {
+		const lig = this.findLigature();
+		return lig ? Shapes.allowedPlaces(lig, 0, false) : new Set(['ts', 'bs', 'te', 'be']);
+	}
+	findLigature() {
+		const chs = shapes.memoOverlayLigatures().get(this.lits1[0].ch);
+		if (chs && chs.length > 0)
+			for (const ch of chs)
+				if (this.matchLigature(ch))
+					return ch;
+		return null;
+	}
+	matchLigature(ch) {
+		const lig = Shapes.ligatures[ch];
+		if (this.lits1.length != lig.horizontal.length || this.lits2.length != lig.vertical.length)
+			return false;
+		for (let i = 0; i < this.lits1.length; i++) {
+			const sign = lig.horizontal[i];
+			const lit = this.lits1[i];
+			if (lit.ch != sign.ch || lit.mirror != !!sign.mirror || lit.vs)
+				return false;
+		}
+		for (let i = 0; i < this.lits2.length; i++) {
+			const sign = lig.vertical[i];
+			const lit = this.lits2[i];
+			if (lit.ch != sign.ch || lit.mirror != !!sign.mirror || lit.vs)
+				return false;
+		}
+		return true;
+	}
+	chooseAltGlyph(places) {
+		if (this.lig && this.lig in Shapes.insertions) { 
+			for (const alt of Shapes.insertions[this.lig]) {
+				if (places.every(p => p in alt)) {
+					if ('glyph' in alt)
+						this.alt = alt.glyph;
+					this.adjustments = alt;
+					return;
+				}
+			}
+		}
+	}
 	size(options) {
+		if (this.alt)
+			return this.sizeLigature(options);
 		const sizes1 = this.lits1.map(g => g.size(options));
 		const widths1 = sizes1.map(s => s.w);
 		const heights1 = sizes1.map(s => s.h);
@@ -2809,12 +2874,22 @@ class Overlay extends Group {
 		const h = Math.max(getMax(heights1), getSum(heights2));
 		return { w, h };
 	}
+	sizeLigature(options) {
+		const size = shapes.emSizeOf(this.alt, options.fontsize, 1, 1, 0, false);
+		const w = size.w * this.scale;
+		const h = size.h * this.scale;
+		return { w, h };
+	}
 	resize(f) {
 		super.resize(f);
 		this.lits1.forEach(g => g.resize(f));
 		this.lits2.forEach(g => g.resize(f));
 	}
 	format(options, x0, x1, x2, x3, y0, y1, y2, y3) {
+		if (this.alt) {
+			this.formatLigature(options, x0, x1, x2, x3, y0, y1, y2, y3);
+			return;
+		}
 		const width1 = getSum(this.lits1.map(g => g.size(options).w));
 		const height2 = getSum(this.lits2.map(g => g.size(options).h));
 		const bufX = ((x2-x1) - width1) / 2;
@@ -2850,7 +2925,40 @@ class Overlay extends Group {
 			y4 = y6;
 		}
 	}
+	formatLigature(options, x0, x1, x2, x3, y0, y1, y2, y3) {
+		const lig = Shapes.ligatures[this.alt];
+		const size = this.size(options);
+		const bufX = ((x2-x1) - size.w) / 2;
+		const bufY = ((y2-y1) - size.h) / 2;
+		this.x = x1 + bufX;
+		this.y = y1 + (options.align == 'bottom' ? ((y2-y1) - size.h) : bufY);
+		this.w = size.w;
+		this.h = size.h;
+		this.areas = [];
+		for (let i = 0; i < lig.horizontal.length; i++) {
+			const s = lig.horizontal[i];
+			const damage = this.lits1[i].damage;
+			const xMin = i == 0 ? x0 : this.x + s.x * this.w;
+			const xMid = this.x + (s.x + s.w / 2) * this.w;
+			const xMax = i == lig.horizontal.length-1 ? x3 : this.x + (s.x + s.w) * this.w;
+			const yMid = this.y + (s.y + s.h / 2) * this.h;
+			this.areas.push(...Group.damageAreas(damage, xMin, xMid, xMax, y0, yMid, y3));
+		}
+		for (let i = 0; i < lig.vertical.length; i++) {
+			const s = lig.vertical[i];
+			const damage = this.lits2[i].damage;
+			const xMid = this.x + (s.x + s.w / 2) * this.w;
+			const yMin = i == 0 ? y0 : this.y + s.y * this.h;
+			const yMid = this.y + (s.y + s.h / 2) * this.h;
+			const yMax = i == lig.vertical.length-1 ? y3 : this.y + (s.y + s.h) * this.h;
+			this.areas.push(...Group.damageAreas(damage, x0, xMid, x3, yMin, yMid, yMax));
+		}
+	}
 	print(options, printed) {
+		if (this.alt) {
+			this.printLigature(options, printed);
+			return;
+		}
 		if (this.lits1.length > 1)
 			printed.addHidden(Group.BEGIN_SEGMENT);
 		this.lits1.forEach(g => g.print(options, printed));
@@ -2862,6 +2970,12 @@ class Overlay extends Group {
 		this.lits2.forEach(g => g.print(options, printed));
 		if (this.lits2.length > 1)
 			printed.addHidden(Group.END_SEGMENT);
+	}
+	printLigature(options, printed) {
+		printed.addHidden(this.toString());
+		printed.addSign(this.alt, this.scale, 1, 1, 0, false, this, { unselectable: true });
+		for (const area of this.areas)
+			printed.addShading(area.x, area.y, area.w, area.h);
 	}
 }
 
@@ -2885,6 +2999,9 @@ class Literal extends Group {
 		return this.ch + Group.numToVariation(this.vs) +
 			(this.mirror ? Group.MIRROR : '') +
 			Group.numToDamage(this.damage);
+	}
+	allowedPlaces() {
+		return Shapes.allowedPlaces(this.ch, this.rotationCoarse(), this.mirror);
 	}
 	chooseAltGlyph(places) {
 		if (this.ch in Shapes.insertions) {
@@ -3444,6 +3561,8 @@ Shapes.insertions = {
 \u{13426}: [{ b: { } }],
 \u{13427}: [{ ts: { }, bs: { }, te: { }, be: { } }],
 \u{13428}: [{ bs: { } }],
+'\uE506': [{ ts: { }, bs: { y: 0.7 }, te: { }, be: { }, t: {x: 0.6} }, 
+			{ glyph: '\uE507', ts: { }, bs: { y: 0.7 }, te: { }, be: { }, m: { x: 0.6, y: 0.6 } }],
 }
  
 Shapes.rotations = {
@@ -3541,93 +3660,191 @@ Shapes.rotations = {
 \u{1342E}: { 270: 0 },
 }
  
-Shapes.overlayLigatures = [ 
-{ ligature: '\u{E500}',
-	horizontal: [ { sign: '\u{131C5}', x: 0.4, y: 0, w: 0.35, h: 1 } ],
-	vertical: [ { sign: '\u{13193}', x: 0.1, y: 0, w: 0.9, h: 0.8 },
-					{ sign: '\u{13193}', x: 0, y: 0.2, w: 0.9, h: 0.8 } ] },
-{ ligature: '\u{E501}',
-	horizontal: [ { sign: '\u{131C5}', x: 0.3, y: 0, w: 0.25, h: 1 },
-					{ sign: '\u{131C5}', x: 0.55, y: 0, w: 0.25, h: 1 } ],
-	vertical: [ { sign: '\u{13193}', x: 0.1, y: 0.05, w: 0.9, h: 0.8 },
-					{ sign: '\u{13193}', x: 0, y: 0.2, w: 0.9, h: 0.8 } ] },
-{ ligature: '\u{E502}',
-	horizontal: [ { sign: '\u{130C0}', x: 0.05, y: 0, w: 0.35, h: 1 },
-					{ sign: '\u{130C0}', x: 0.4, y: 0, w: 0.4, h: 1 } ],
-	vertical: [ { sign: '\u{1309D}', x: 0, y: 0.25, w: 1, h: 0.3 } ] },
-{ ligature: '\u{E503}',
-	horizontal: [ { sign: '\u{130C0}', x: 0.05, y: 0, w: 0.35, h: 1 },
-					{ sign: '\u{130C0}', x: 0.4, y: 0, w: 0.4, h: 1 } ],
-	vertical: [ { sign: '\u{1309D}', x: 0, y: 0.15, w: 1, h: 0.3 },
-					{ sign: '\u{1309D}', x: 0, y: 0.45, w: 1, h: 0.3 } ] },
-{ ligature: '\u{E504}',
-	horizontal: [ { sign: '\u{130C0}', x: 0.05, y: 0, w: 0.5, h: 1 } ],
-	vertical: [ { sign: '\u{13381}', x: 0, y: 0.1, w: 1, h: 0.65 } ] },
-{ ligature: '\u{130C1}',
-	horizontal: [ { sign: '\u{130C0}', x: 0.2, y: 0, w: 0.5, h: 1 } ],
-	vertical: [ { sign: '\u{1309D}', x: 0, y: 0.3, w: 1, h: 0.25 } ] },
-{ ligature: '\u{13174}',
-	horizontal: [ { sign: '\u{13171}', x: 0.2, y: 0, w: 0.65, h: 1 } ],
-	vertical: [ { sign: '\u{1309D}', x: 0, y: 0.1, w: 1, h: 0.25 } ] },
-{ ligature: '\u{13175}',
-	horizontal: [ { sign: '\u{13171}', x: 0.2, y: 0, w: 0.65, h: 1 } ],
-	vertical: [ { sign: '\u{1309E}', x: 0, y: 0.05, w: 1, h: 0.25 } ] },
-{ ligature: '\u{13176}',
-	horizontal: [ { sign: '\u{13171}', x: 0.05, y: 0, w: 0.8, h: 1 } ],
-	vertical: [ { sign: '\u{13333}', x: 0, y: 0, w: 1, h: 0.6 } ] },
-{ ligature: '\u{131AE}',
-	horizontal: [ { sign: '\u{131AD}', x: 0.2, y: 0, w: 0.6, h: 1 } ],
-	vertical: [ { sign: '\u{131B1}', x: 0, y: 0.7, w: 1, h: 0.3 } ] },
-{ ligature: '\u{131AF}',
-	horizontal: [ { sign: '\u{131AD}', x: 0.25, y: 0, w: 0.45, h: 1 } ],
-	vertical: [ { sign: '\u{13191}', x: 0, y: 0.6, w: 1, h: 0.4 } ] },
-{ ligature: '\u{131C6}',
-	horizontal: [ { sign: '\u{131C5}', x: 0.25, y: 0, w: 0.4, h: 1 } ],
-	vertical: [ { sign: '\u{13193}', x: 0, y: 0.1, w: 1, h: 0.85 } ] },
-{ ligature: '\u{131D8}',
-	horizontal: [ { sign: '\u{131D7}', x: 0.2, y: 0, w: 0.55, h: 1 } ],
-	vertical: [ { sign: '\u{1309D}', x: 0, y: 0.1, w: 1, h: 0.3 } ] },
-{ ligature: '\u{132A3}',
-	horizontal: [ { sign: '\u{132A2}', x: 0.3, y: 0, w: 0.4, h: 1 } ],
-	vertical: [ { sign: '\u{1309D}', x: 0, y: 0.55, w: 1, h: 0.25 } ] },
-{ ligature: '\u{132A5}',
-	horizontal: [ { sign: '\u{132A4}', x: 0.3, y: 0, w: 0.25, h: 1 } ],
-	vertical: [ { sign: '\u{13191}', x: 0, y: 0.2, w: 1, h: 0.4 } ] },
-{ ligature: '\u{132DF}',
-	horizontal: [ { sign: '\u{130C0}', x: 0.1, y: 0, w: 0.45, h: 1 } ],
-	vertical: [ { sign: '\u{132DE}', x: 0, y: 0.25, w: 1, h: 0.5 } ] },
-{ ligature: '\u{132E0}',
-	horizontal: [ { sign: '\u{13309}', x: 0.35, y: 0, w: 0.25, h: 1 } ],
-	vertical: [ { sign: '\u{132DE}', x: 0, y: 0.5, w: 1, h: 0.5 } ] },
-{ ligature: '\u{132E1}',
-	horizontal: [ { sign: '\u{13300}', x: 0.30, y: 0, w: 0.3, h: 1 } ],
-	vertical: [ { sign: '\u{132DE}', x: 0, y: 0.4, w: 1, h: 0.5 } ] },
-{ ligature: '\u{132F5}',
-	horizontal: [ { sign: '\u{132F4}', x: 0.4, y: 0, w: 0.25, h: 1 } ],
-	vertical: [ { sign: '\u{13191}', x: 0, y: 0.2, w: 1, h: 0.3 } ] },
-{ ligature: '\u{132F6}',
-	horizontal: [ { sign: '\u{132F4}', x: 0.3, y: 0, w: 0.25, h: 1 } ],
-	vertical: [ { sign: '\u{13333}', x: 0, y: 0.1, w: 1, h: 0.8 } ] },
-{ ligature: '\u{1330C}',
-	horizontal: [ { sign: '\u{13309}', x: 0.35, y: 0, w: 0.3, h: 1 } ],
-	vertical: [ { sign: '\u{13193}', x: 0, y: 0.2, w: 1, h: 0.8 } ] },
-{ ligature: '\u{1330D}',
-	horizontal: [ { sign: '\u{13309}', x: 0.35, y: 0, w: 0.3, h: 1 } ],
-	vertical: [ { sign: '\u{13193}', x: 0, y: 0.1, w: 1, h: 0.8 },
-				{ sign: '\u{13193}', x: 0, y: 0.4, w: 0.8, h: 0.6 } ] },
-{ ligature: '\u{1332D}',
-	horizontal: [ { sign: '\u{132F4}', x: 0.35, y: 0, w: 0.25, h: 1 } ],
-	vertical: [ { sign: '\u{1332B}', x: 0, y: 0.2, w: 1, h: 0.4 } ] },
-{ ligature: '\u{1332F}',
-	horizontal: [ { sign: '\u{132F4}', x: 0.35, y: 0, w: 0.25, h: 1 } ],
-	vertical: [ { sign: '\u{1332E}', x: 0, y: 0.3, w: 1, h: 0.5 } ] },
-{ ligature: '\u{1335A}',
-	horizontal: [ { sign: '\u{13359}', x: 0.25, y: 0, w: 0.45, h: 1 } ],
-	vertical: [ { sign: '\u{13191}', x: 0, y: 0.4, w: 1, h: 0.3 } ] },
-{ ligature: '\u{1339E}',
-	horizontal: [ { sign: '\u{1339D}', x: 0.2, y: 0, w: 0.45, h: 1 } ],
-	vertical: [ { sign: '\u{133A1}', x: 0, y: 0.3, w: 1, h: 0.3 } ] },
-]
+Shapes.ligatures = {
+\u{130C1}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{130C0}', x: 0.2, y: 0, w: 0.5, h: 1 } ],
+	vertical: [ { ch: '\u{1309D}', x: 0, y: 0.3, w: 1, h: 0.25 } ] },
+\u{13174}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{13171}', x: 0.2, y: 0, w: 0.65, h: 1 } ],
+	vertical: [ { ch: '\u{1309D}', x: 0, y: 0.1, w: 1, h: 0.25 } ] },
+'\uE489': {
+	type: 'overlay',
+	alt: true,
+	horizontal: [ { ch: '\u{13171}', x: 0.2, y: 0, w: 0.65, h: 1 } ],
+	vertical: [ { ch: '\u{1309D}', x: 0, y: 0.3, w: 1, h: 0.25 } ] },
+\u{13175}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{13171}', x: 0.2, y: 0, w: 0.65, h: 1 } ],
+	vertical: [ { ch: '\u{1309E}', x: 0, y: 0.05, w: 1, h: 0.25 } ] },
+'\uE48A': {
+	type: 'overlay',
+	alt: true,
+	horizontal: [ { ch: '\u{13171}', x: 0.2, y: 0, w: 0.65, h: 1 } ],
+	vertical: [ { ch: '\u{1309E}', x: 0, y: 0.25, w: 1, h: 0.25 } ] },
+\u{13176}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{13171}', x: 0.05, y: 0, w: 0.8, h: 1 } ],
+	vertical: [ { ch: '\u{13333}', x: 0, y: 0, w: 1, h: 0.6 } ] },
+\u{131AE}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{131AD}', x: 0.2, y: 0, w: 0.6, h: 1 } ],
+	vertical: [ { ch: '\u{131B1}', x: 0, y: 0.7, w: 1, h: 0.3 } ] },
+'\uE48B': {
+	type: 'overlay',
+	alt: true,
+	horizontal: [ { ch: '\u{131AD}', x: 0.2, y: 0, w: 0.6, h: 1 } ],
+	vertical: [ { ch: '\u{131B1}', x: 0, y: 0.35, w: 1, h: 0.3 } ] },
+\u{131AF}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{131AD}', x: 0.25, y: 0, w: 0.45, h: 1 } ],
+	vertical: [ { ch: '\u{13191}', x: 0, y: 0.6, w: 1, h: 0.4 } ] },
+'\uE48C': {
+	type: 'overlay',
+	alt: true,
+	horizontal: [ { ch: '\u{131AD}', x: 0.25, y: 0, w: 0.45, h: 1 } ],
+	vertical: [ { ch: '\u{13191}', x: 0, y: 0.3, w: 1, h: 0.4 } ] },
+\u{131C6}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{131C5}', x: 0.25, y: 0, w: 0.4, h: 1 } ],
+	vertical: [ { ch: '\u{13193}', x: 0, y: 0.1, w: 1, h: 0.85 } ] },
+\u{131D8}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{131D7}', x: 0.2, y: 0, w: 0.55, h: 1 } ],
+	vertical: [ { ch: '\u{1309D}', x: 0, y: 0.1, w: 1, h: 0.3 } ] },
+\u{132A3}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{132A2}', x: 0.3, y: 0, w: 0.4, h: 1 } ],
+	vertical: [ { ch: '\u{1309D}', x: 0, y: 0.55, w: 1, h: 0.25 } ] },
+'\uE496': {
+	type: 'overlay',
+	alt: true,
+	horizontal: [ { ch: '\u{132A2}', x: 0.3, y: 0, w: 0.4, h: 1 } ],
+	vertical: [ { ch: '\u{1309D}', x: 0, y: 0.25, w: 1, h: 0.25 } ] },
+\u{132A5}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{132A4}', x: 0.3, y: 0, w: 0.25, h: 1 } ],
+	vertical: [ { ch: '\u{13191}', x: 0, y: 0.2, w: 1, h: 0.4 } ] },
+\u{132DF}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{130C0}', x: 0.1, y: 0, w: 0.45, h: 1 } ],
+	vertical: [ { ch: '\u{132DE}', x: 0, y: 0.25, w: 1, h: 0.5 } ] },
+\u{132E0}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{13309}', x: 0.35, y: 0, w: 0.25, h: 1 } ],
+	vertical: [ { ch: '\u{132DE}', x: 0, y: 0.5, w: 1, h: 0.5 } ] },
+'\uE497': {
+	type: 'overlay',
+	alt: true,
+	horizontal: [ { ch: '\u{13309}', x: 0.35, y: 0, w: 0.25, h: 1 } ],
+	vertical: [ { ch: '\u{132DE}', x: 0, y: 0.3, w: 1, h: 0.5 } ] },
+\u{132E1}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{13300}', x: 0.30, y: 0, w: 0.3, h: 1 } ],
+	vertical: [ { ch: '\u{132DE}', x: 0, y: 0.4, w: 1, h: 0.5 } ] },
+'\uE498': {
+	type: 'overlay',
+	alt: true,
+	horizontal: [ { ch: '\u{13300}', x: 0.30, y: 0, w: 0.3, h: 1 } ],
+	vertical: [ { ch: '\u{132DE}', x: 0, y: 0.3, w: 1, h: 0.5 } ] },
+\u{132F5}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{132F4}', x: 0.4, y: 0, w: 0.25, h: 1 } ],
+	vertical: [ { ch: '\u{13191}', x: 0, y: 0.2, w: 1, h: 0.3 } ] },
+\u{132F6}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{132F4}', x: 0.3, y: 0, w: 0.25, h: 1 } ],
+	vertical: [ { ch: '\u{13333}', x: 0, y: 0.1, w: 1, h: 0.8 } ] },
+'\uE49A': {
+	type: 'overlay',
+	alt: true,
+	horizontal: [ { ch: '\u{132F4}', x: 0.3, y: 0, w: 0.25, h: 1 } ],
+	vertical: [ { ch: '\u{13333}', x: 0, y: 0.1, w: 1, h: 0.6 } ] },
+\u{1330C}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{13309}', x: 0.35, y: 0, w: 0.3, h: 1 } ],
+	vertical: [ { ch: '\u{13193}', x: 0, y: 0.2, w: 1, h: 0.8 } ] },
+'\uE49B': {
+	type: 'overlay',
+	alt: true,
+	horizontal: [ { ch: '\u{13309}', x: 0.35, y: 0, w: 0.3, h: 1 } ],
+	vertical: [ { ch: '\u{13193}', x: 0, y: 0.2, w: 1, h: 0.6 } ] },
+\u{1330D}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{13309}', x: 0.35, y: 0, w: 0.3, h: 1 } ],
+	vertical: [ { ch: '\u{13193}', x: 0, y: 0.1, w: 1, h: 0.8 },
+				{ ch: '\u{13193}', x: 0, y: 0.4, w: 0.8, h: 0.6 } ] },
+'\uE49C': {
+	type: 'overlay',
+	alt: true,
+	horizontal: [ { ch: '\u{13309}', x: 0.35, y: 0, w: 0.3, h: 1 } ],
+	vertical: [ { ch: '\u{13193}', x: 0, y: 0.1, w: 1, h: 0.7 },
+				{ ch: '\u{13193}', x: 0, y: 0.4, w: 0.8, h: 0.4 } ] },
+\u{1332D}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{132F4}', x: 0.35, y: 0, w: 0.25, h: 1 } ],
+	vertical: [ { ch: '\u{1332B}', x: 0, y: 0.2, w: 1, h: 0.4 } ] },
+\u{1332F}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{132F4}', x: 0.35, y: 0, w: 0.25, h: 1 } ],
+	vertical: [ { ch: '\u{1332E}', x: 0, y: 0.3, w: 1, h: 0.5 } ] },
+\u{1335A}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{13359}', x: 0.25, y: 0, w: 0.45, h: 1 } ],
+	vertical: [ { ch: '\u{13191}', x: 0, y: 0.4, w: 1, h: 0.3 } ] },
+\u{1339E}: {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{1339D}', x: 0.2, y: 0, w: 0.45, h: 1 } ],
+	vertical: [ { ch: '\u{133A1}', x: 0, y: 0.3, w: 1, h: 0.3 } ] },
+'\uE4A1': {
+	type: 'overlay',
+	alt: true,
+	horizontal: [ { ch: '\u{1339D}', x: 0.2, y: 0, w: 0.45, h: 1 } ],
+	vertical: [ { ch: '\u{133A1}', x: 0, y: 0.4, w: 1, h: 0.3 } ] },
+'\uE500': {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{131C5}', x: 0.4, y: 0, w: 0.35, h: 1 } ],
+	vertical: [ { ch: '\u{13193}', x: 0.1, y: 0, w: 0.9, h: 0.8 },
+				{ ch: '\u{13193}', x: 0, y: 0.2, w: 0.9, h: 0.8 } ] },
+'\uE501': {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{131C5}', x: 0.3, y: 0, w: 0.25, h: 1 },
+				{ ch: '\u{131C5}', x: 0.55, y: 0, w: 0.25, h: 1 } ],
+	vertical: [ { ch: '\u{13193}', x: 0.1, y: 0.05, w: 0.9, h: 0.8 },
+				{ ch: '\u{13193}', x: 0, y: 0.2, w: 0.9, h: 0.8 } ] },
+'\uE502': {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{130C0}', x: 0.05, y: 0, w: 0.35, h: 1 },
+				{ ch: '\u{130C0}', x: 0.4, y: 0, w: 0.4, h: 1 } ],
+	vertical: [ { ch: '\u{1309D}', x: 0, y: 0.25, w: 1, h: 0.3 } ] },
+'\uE503': {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{130C0}', x: 0.05, y: 0, w: 0.35, h: 1 },
+				{ ch: '\u{130C0}', x: 0.4, y: 0, w: 0.4, h: 1 } ],
+	vertical: [ { ch: '\u{1309D}', x: 0, y: 0.15, w: 1, h: 0.3 },
+				{ ch: '\u{1309D}', x: 0, y: 0.45, w: 1, h: 0.3 } ] },
+'\uE504': {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{130C0}', x: 0.05, y: 0, w: 0.5, h: 1 } ],
+	vertical: [ { ch: '\u{13381}', x: 0, y: 0.1, w: 1, h: 0.65 } ] },
+'\uE505': {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{132F4}', mirror: true, x: 0.4, y: 0, w: 0.3, h: 1 } ],
+	vertical: [ { ch: '\u{13193}', x: 0.1, y: 0, w: 0.9, h: 0.8 },
+				{ ch: '\u{13193}', x: 0, y: 0.2, w: 0.9, h: 0.8 } ] },
+'\uE506': {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{130C0}', x: 0, y: 0, w: 0.45, h: 1 },
+				{ ch: '\u{130C0}', x: 0.45, y: 0, w: 0.45, h: 1 } ],
+	vertical: [ { ch: '\u{13283}', x: 0.2, y: 0.35, w: 0.8, h: 0.2 } ] },
+'\uE507': {
+	type: 'overlay',
+	alt: true,
+	horizontal: [ { ch: '\u{130C0}', x: 0, y: 0, w: 0.45, h: 1 },
+				{ ch: '\u{130C0}', x: 0.45, y: 0, w: 0.45, h: 1 } ],
+	vertical: [ { ch: '\u{13283}', x: 0.2, y: 0.05, w: 0.8, h: 0.2 } ] },
+}
  
 class HieroJax {
 	constructor() {
@@ -7329,11 +7546,7 @@ class BasicNode extends Node {
 		return new Basic(core, insertions);
 	}
 	allowedPlaces() {
-		if (this.group.core instanceof Overlay) {
-			return new Set(['ts', 'bs', 'te', 'be']);
-		} else {
-			return Shapes.allowedPlaces(this.group.core.ch, this.group.core.rotationCoarse(), this.group.core.mirror);
-		}
+		return this.group.core.allowedPlaces();
 	}
 	isInsertion() {
 		return true;
