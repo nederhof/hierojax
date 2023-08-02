@@ -1,4 +1,4 @@
-{
+Shapes.ligatures = {
 \u{130C1}: {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{130C0}', x: 0.2, y: 0, w: 0.5, h: 1 } ],

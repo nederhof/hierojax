@@ -3565,7 +3565,7 @@ Shapes.insertions = {
 			{ glyph: '\uE507', ts: { }, bs: { y: 0.7 }, te: { }, be: { }, m: { x: 0.6, y: 0.6 } }],
 }
  
-Shapes.rotations = {
+Shapes.rotations = { 
 \u{13078}: { 45: -15 },
 \u{13091}: { 90: 0 },
 \u{13092}: { 90: 0 },

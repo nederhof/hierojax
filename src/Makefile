@@ -1,4 +1,4 @@
-all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../docs/resconversion.js ../docs/hierojaxedit16.js texts
+all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../docs/resconversion.js ../docs/hierojaxedit16.js texts jsons
 
 ../docs/hierojax.js: util.js syntax.js formatting.js insertions.js rotations.js ligatures.js main.js
 	cp util.js ../docs/
@@ -83,19 +83,18 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	cat resconvert.js >> tmp.js
 	mv tmp.js ../docs/resconversion.js
 
-insertions.js: insertions.json
-	echo -n 'Shapes.insertions = ' > insertions.js
-	cat insertions.json >> insertions.js
+jsons: insertions.json rotations.json ligatures.json
+
+insertions.json: insertions.js
+	cat convertinit.js insertions.js convertinsertions.js | js > insertions.json
 	cp insertions.json ../docs/
 
-rotations.js: rotations.json
-	echo -n 'Shapes.rotations = ' > rotations.js
-	cat rotations.json >> rotations.js
+rotations.json: rotations.js
+	cat convertinit.js rotations.js convertrotations.js | js > rotations.json
 	cp rotations.json ../docs/
 
-ligatures.js: ligatures.json
-	echo -n 'Shapes.ligatures = ' > ligatures.js
-	cat ligatures.json >> ligatures.js
+ligatures.json: ligatures.js
+	cat convertinit.js ligatures.js convertligatures.js | js > ligatures.json
 	cp ligatures.json ../docs/
 
 texts: ../docs/texts/hierojax.css ../docs/texts/hierojax.js ../docs/texts/NewGardinerSMP.ttf
@@ -111,9 +110,9 @@ texts: ../docs/texts/hierojax.css ../docs/texts/hierojax.js ../docs/texts/NewGar
 
 clean:
 	rm -f ../docs/util.js
-	rm -f insertions.js
-	rm -f rotations.js
-	rm -f ligatures.js
+	rm -f insertions.json
+	rm -f rotations.json
+	rm -f ligatures.json
 	rm -f ../docs/insertions.json
 	rm -f ../docs/rotations.json
 	rm -f ../docs/ligatures.json
