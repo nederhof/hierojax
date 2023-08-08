@@ -58,6 +58,7 @@ INTEGER [0-9]+
 '\\t2'	return 'ROTATE-180-MIRROR';
 '\\t3'	return 'ROTATE-270-MIRROR';
 '\\t4'	return 'ROTATE-360-MIRROR';
+'\\t'	return 'ROTATE-90-MIRROR';
 '\\R'{INTEGER}	return 'ROTATE-DEGREES';
 '\\'{INTEGER}	return 'SCALE-PERCENTAGE';
 
@@ -65,6 +66,8 @@ INTEGER [0-9]+
 '\\'i		return 'GRAY-GLYPH';
 '\\'l		return 'ELONGATE-GLYPH';
 '\\shading'[1234]+	return 'GLYPH-SHADE';
+'\\'h		return 'MIRROR';
+'\\'v		return 'ROTATE-180-MIRROR';
 '\\'[a-zA-Z]+[0-9]*	return 'IGNORED-MODIFIER';
 '\\'		return 'MIRROR';
 
@@ -78,6 +81,11 @@ INTEGER [0-9]+
 
 '-'?'#b'	return 'SHADE-ON';
 '-'?'#e'	return 'SHADE-OFF';
+
+'#//'	return 'SHADE-FULL';
+'#/'	return 'SHADE-HALF';
+'#h/'	return 'SHADE-WIDE';
+'#v/'	return 'SHADE-TALL';
 
 '##'	return 'OVERLAY';
 '#'		return 'OVERLAY';
@@ -342,6 +350,14 @@ modifier
 		{$$ = { };}
 	| GLYPH-SHADE
 		{$$ = { shade: MdcParse.corners(yytext) };}
+	| SHADE-FULL
+		{$$ = { shade: MdcParse.corners('1234') };}
+	| SHADE-HALF
+		{$$ = { shade: MdcParse.corners('1') };}
+	| SHADE-WIDE
+		{$$ = { shade: MdcParse.corners('12') };}
+	| SHADE-TALL
+		{$$ = { shade: MdcParse.corners('13') };}
 	| IGNORED-MODIFIER
 		{$$ = { };}
 	;

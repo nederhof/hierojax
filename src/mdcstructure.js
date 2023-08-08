@@ -1175,13 +1175,13 @@ class MdcEnclosure extends MdcHieroglyph {
 		var delimOpen = '\u{13379}';
 		var delimClose = '\u{1337A}';
 		if (this.begin == '' && this.end == '') {
-		} else if (this.begin == 'S' && this.end == '') {
+		} else if (this.begin.match(/[Ss].?/) && this.end == '') {
 			delimOpen = '\u{13258}';
 			delimClose = '\u{13282}';
-		} else if (this.begin == 'H' && this.end == '') {
+		} else if (this.begin.match(/[Hh].?/) && this.end == '') {
 			delimOpen = '\u{13258}';
 			delimClose = '\u{1325C}';
-		} else if (this.begin == 'F' && this.end == '') {
+		} else if (this.begin.match(/[Ff].?/) && this.end == '') {
 			type = 'walled';
 			delimOpen = '\u{13288}';
 			delimClose = '\u{13289}';
@@ -1214,6 +1214,13 @@ class MdcEnclosure extends MdcHieroglyph {
 			} else if (this.begin == 'f1') {
 				type = 'walled';
 				delimOpen = '\u{13288}';
+			} else if (this.begin == 'b') {
+				delimClose = null;
+			} else if (this.begin == 'm') {
+				delimOpen = null;
+				delimClose = null;
+			} else if (this.begin == 'e') {
+				delimOpen = null;
 			}
 			if (this.end == '0')
 				delimClose = null;
@@ -1241,6 +1248,14 @@ class MdcEnclosure extends MdcHieroglyph {
 				delimClose = null;
 			else if (this.end == 'f1')
 				delimClose = '\u{13289}';
+		}
+		if (this.begin.match(/[SsHhFf]b/) && this.end == '') {
+			delimClose = null;
+		} else if (this.begin.match(/[SsHhFf]m/) && this.end == '') {
+			delimOpen = null;
+			delimClose = null;
+		} else if (this.begin.match(/[SsHhFf]e/) && this.end == '') {
+			delimOpen = null;
 		}
 		const shadeOpen = MdcPart.cornersToShading(
 			MdcPart.completeCorners(this.startCorners, this.state.shade));
