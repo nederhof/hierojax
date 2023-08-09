@@ -24,10 +24,11 @@ INTEGER [0-9]+
 '!!'[ \t\n\r\f_]*					return 'BREAK';
 ('+s-')?'!'('='{INTEGER}'%')?[ \t\n\r\f_]*	return 'BREAK';
 '+s'[ \t\n\r\f_]*						return 'BREAK';
-'+'[a-rt-z+]('\+'|[^+])*	return 'TEXT';
+'+'[a-rt-z+S]('\+'|[^+])*	return 'TEXT';
+'@'.*[\n\r\f]				return 'TEXT';
 '|'[^|-]*					return 'LINE-NUMBER';
 \{[lL]{INTEGER}\,{INTEGER}\}	return 'BREAK';
-'?'{INTEGER}	return 'TAB';
+'?'{INTEGER}' '*	return 'TAB';
 '%clear'		return 'TAB';
 '%{'[^}]*'}'	return 'TAB';
 'zone{'[^}]*'}'	return 'ZONE';
@@ -87,13 +88,13 @@ INTEGER [0-9]+
 '#h/'	return 'SHADE-WIDE';
 '#v/'	return 'SHADE-TALL';
 
-'##'	return 'OVERLAY';
-'#'		return 'OVERLAY';
+'##'	return 'OVERLAY-DOUBLE';
+'#'		return 'OVERLAY-SINGLE';
 
 '$r'	return 'RED';
 '$b'	return 'BLACK';
 '$'		return 'COLOR-TOGGLE';
-'-'?'#'	return 'SHADE-TOGGLE';
+('-'' '?)?'#'	return 'SHADE-TOGGLE';
 
 /*
 			cartouche
@@ -234,7 +235,9 @@ inner_group
 	;
 
 overlay
-	: hieroglyph OVERLAY hieroglyph
+	: hieroglyph OVERLAY-SINGLE hieroglyph
+		{$$ = new MdcOverlay($hieroglyph1, $hieroglyph2);}
+	| hieroglyph OVERLAY-DOUBLE hieroglyph
 		{$$ = new MdcOverlay($hieroglyph1, $hieroglyph2);}
 	;
 
@@ -375,6 +378,8 @@ toggle
 		{$$ = { shade: 'on' };}
 	| SHADE-OFF
 		{$$ = { shade: 'off' };}
+	| OVERLAY-SINGLE
+		{$$ = { shade: 'toggle' };}
 	;
 
 %%
