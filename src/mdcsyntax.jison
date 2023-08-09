@@ -108,8 +108,8 @@ INTEGER [0-9]+
 	h2	h3	Hwt, square at bottom and square at top
 	s2	1	reverse serekh
 */
-'<'[SFHsfh]?[bme]?[0123]?'-'	return 'BEGIN-ENCLOSURE';
-'-'[SFHsfh]?[0123]?'>'			return 'END-ENCLOSURE';
+'<'[SFHsfh]?[bme]?[0123]?'-'' '?	return 'BEGIN-ENCLOSURE';
+'-'[SFHsfh]?[0123]?'>'				return 'END-ENCLOSURE';
 
 '-'[ \t\n\r\f_]*	return 'SEP';
 [ \t\n\r\f_]+		return 'SPACE';
