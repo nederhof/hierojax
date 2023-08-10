@@ -8964,7 +8964,22 @@ class Edit {
 			return;
 		var codepoint = null;
 		const name = $('name-text').value;
-		if (name in uniGlyphs) {
+		if (name.slice(-1) == '-') {
+			Edit.doAppend();
+			return;
+		} else if (name.slice(-1) == '*') {
+			Edit.doStar();
+			return;
+		} else if (name.slice(-1) == '+') {
+			Edit.doPlus();
+			return;
+		} else if (name.slice(-1) == ':') {
+			Edit.doColon();
+			return;
+		} else if (name.slice(-1) == ';') {
+			Edit.doSemicolon();
+			return;
+		} else if (name in uniGlyphs) {
 			codepoint = uniGlyphs[name];
 		} else if (name in uniMnemonics) {
 			codepoint = uniGlyphs[uniMnemonics[name]];
@@ -8981,6 +8996,10 @@ class Edit {
 		tree.focus.group.ch = String.fromCodePoint(codepoint);
 		tree.focus.showAllowedRotations();
 		Edit.redrawFocus();
+	}
+	static adjustNameOnEnter(e) {
+		if (e.keyCode == 13)
+			Tree.focus();
 	}
 	static adjustSingleton() {
 		if (!(tree.focus instanceof SingletonNode))
@@ -9349,6 +9368,7 @@ class Edit {
 			case 'b': Edit.doBlank(); break;
 			case 'o': Edit.doLost(); break;
 			case 'a': Edit.doAppend(); break;
+			case '-': Edit.doAppend(); break;
 			case 'p': Edit.doPrepend(); break;
 			case '*': Edit.doStar(); break;
 			case '+': Edit.doPlus(); break;

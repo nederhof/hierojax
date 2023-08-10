@@ -1,4 +1,4 @@
-all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../docs/resconversion.js ../docs/hierojaxedit16.js texts jsons
+all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../docs/resconversion.js ../docs/hierojaxedit16.js ../docs/hierojaxedit9.js texts jsons
 
 ../docs/hierojax.js: util.js syntax.js formatting.js insertions.js rotations.js ligatures.js main.js
 	cp util.js ../docs/
@@ -33,6 +33,22 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	cat main16.js >> tmp.js
 	mv tmp.js ../docs/hierojax16.js
 
+../docs/hierojax9.js: util.js syntax9.js formatting9.js insertions.js rotations.js ligatures.js main9.js
+	cat util.js > tmp.js
+	echo ' '  >> tmp.js
+	cat syntax9.js >> tmp.js
+	echo '\n '  >> tmp.js
+	cat formatting9.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat insertions.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat rotations.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat ligatures.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat main9.js >> tmp.js
+	mv tmp.js ../docs/hierojax9.js
+
 ../docs/hierojaxedit.js: ../docs/hierojax.js unipoints.js signinfo.js edit.js
 	cat ../docs/hierojax.js > tmp.js
 	echo ' '  >> tmp.js
@@ -52,6 +68,16 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	echo ' '  >> tmp.js
 	cat edit16.js >> tmp.js
 	mv tmp.js ../docs/hierojaxedit16.js
+
+../docs/hierojaxedit9.js: ../docs/hierojax9.js unipoints.js signinfo.js edit9.js
+	cat ../docs/hierojax9.js > tmp.js
+	echo ' '  >> tmp.js
+	cat unipoints.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat signinfo.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat edit9.js >> tmp.js
+	mv tmp.js ../docs/hierojaxedit9.js
 
 ../docs/mdcconversion.js: ../docs/hierojax.js unipoints.js mdcnames.js mdcmnemonics.js mdcligatures.js mdcstructure.js mdcsyntax.js mdcconvert.js
 	cat ../docs/hierojax.js > tmp.js
@@ -122,6 +148,8 @@ clean:
 	rm -f ../docs/resconversion.js
 	rm -f ../docs/hierojax16.js
 	rm -f ../docs/hierojaxedit16.js
+	rm -f ../docs/hierojax9.js
+	rm -f ../docs/hierojaxedit9.js
 
 syntax.js: syntax.jison
 	jison -p lr syntax.jison
@@ -135,4 +163,5 @@ ressyntax.js: ressyntax.jison
 syntax16.js: syntax16.jison
 	jison -p lr syntax16.jison
 
-
+syntax9.js: syntax9.jison
+	jison -p lr syntax9.jison

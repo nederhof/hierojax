@@ -947,7 +947,7 @@ class BasicNode extends Node {
 	static initial(core, group) {
 		var place = 'ts';
 		if (core instanceof Literal) {
-			const places = Shapes.allowedPlaces(core.ch, core.rotationCoarse(), false);
+			const places = Shapes.allowedPlaces(core.ch, 0, false);
 			if (places.size > 0)
 				place = places.values().next().value;
 		}
@@ -956,7 +956,11 @@ class BasicNode extends Node {
 		return new Basic(core, insertions);
 	}
 	allowedPlaces() {
-		return this.group.core.allowedPlaces();
+		if (this.group.core instanceof Overlay) {
+			return new Set(['ts', 'bs', 'te', 'be']);
+		} else {
+			return Shapes.allowedPlaces(this.group.core.ch, 0, this.group.core.mirror);
+		}
 	}
 	isInsertion() {
 		return true;
@@ -1181,7 +1185,13 @@ class LiteralNode extends Node {
 		$('name-param').classList.remove('hidden');
 		if (!name)
 			$('name-text').focus();
-		this.showAllowedRotations();
+		const rotations = Shapes.allowedRotations(this.group.ch);
+		for (let rot = 45; rot < 360; rot += 45) {
+			if (rotations.includes(rot))
+				$('rotate-' + rot + '-label').classList.remove('error-text');
+			else
+				$('rotate-' + rot + '-label').classList.add('error-text');
+		}
 		switch (this.group.vs) {
 			case 1: $('rotate-90').checked = true; break;
 			case 2: $('rotate-180').checked = true; break;
@@ -1209,15 +1219,6 @@ class LiteralNode extends Node {
 			$('damage-be').checked = this.group.damage & 8;
 		}
 		$('damage-param').classList.remove('hidden');
-	}
-	showAllowedRotations() {
-		const rotations = Shapes.allowedRotations(this.group.ch);
-		for (let rot = 45; rot < 360; rot += 45) {
-			if (rotations.includes(rot))
-				$('rotate-' + rot + '-label').classList.remove('error-text');
-			else
-				$('rotate-' + rot + '-label').classList.add('error-text');
-		}
 	}
 	static initial() {
 		return new Literal(Shapes.PLACEHOLDER, 0, false, 0);
@@ -1314,12 +1315,20 @@ class LostNode extends Node {
 		$('lost-tall').checked = this.group.width == 0.5 && this.group.height == 1;
 		$('lost-wide').checked = this.group.width == 1 && this.group.height == 0.5;
 		$('lost-full').checked = this.group.width == 1 && this.group.height == 1;
+		$('lost11').checked = this.group.width == 0.33 && this.group.height == 0.33;
+		$('lost21').checked = this.group.width == 0.66 && this.group.height == 0.33;
+		$('lost31').checked = this.group.width == 1 && this.group.height == 0.33;
+		$('lost12').checked = this.group.width == 0.33 && this.group.height == 0.66;
+		$('lost22').checked = this.group.width == 0.66 && this.group.height == 0.66;
+		$('lost32').checked = this.group.width == 1 && this.group.height == 0.66;
+		$('lost13').checked = this.group.width == 0.33 && this.group.height == 1;
+		$('lost23').checked = this.group.width == 0.66 && this.group.height == 1;
 		$('lost-param').classList.remove('hidden');
 		$('expand-check').checked = this.group.expand;
 		$('expand-param').classList.remove('hidden');
 	}
 	static initial() {
-		return new Lost(1, 1, true);
+		return new Lost(1, 1, false);
 	}
 	isInsertion() {
 		return true;
@@ -1400,10 +1409,10 @@ class Edit {
 	}
 	static makeFromString(string, address) {
 		try {
-			var fragment = syntax.parse(string);
+			var fragment = syntax9.parse(string);
 			var error = '';
 		} catch(err) {
-			var fragment = syntax.parse('');
+			var fragment = syntax9.parse('');
 			var error = 'Parsing error';
 		}
 		$('error').innerHTML = error;
@@ -2370,22 +2379,7 @@ class Edit {
 			return;
 		var codepoint = null;
 		const name = $('name-text').value;
-		if (name.slice(-1) == '-') {
-			Edit.doAppend();
-			return;
-		} else if (name.slice(-1) == '*') {
-			Edit.doStar();
-			return;
-		} else if (name.slice(-1) == '+') {
-			Edit.doPlus();
-			return;
-		} else if (name.slice(-1) == ':') {
-			Edit.doColon();
-			return;
-		} else if (name.slice(-1) == ';') {
-			Edit.doSemicolon();
-			return;
-		} else if (name in uniGlyphs) {
+		if (name in uniGlyphs) {
 			codepoint = uniGlyphs[name];
 		} else if (name in uniMnemonics) {
 			codepoint = uniGlyphs[uniMnemonics[name]];
@@ -2400,12 +2394,7 @@ class Edit {
 		}
 		editHistory.remember();
 		tree.focus.group.ch = String.fromCodePoint(codepoint);
-		tree.focus.showAllowedRotations();
 		Edit.redrawFocus();
-	}
-	static adjustNameOnEnter(e) {
-		if (e.keyCode == 13)
-			Tree.focus();
 	}
 	static adjustSingleton() {
 		if (!(tree.focus instanceof SingletonNode))
@@ -2671,6 +2660,22 @@ class Edit {
 				tree.focus.group.width = 0.5; tree.focus.group.height = 1; break;
 			case 'wide':
 				tree.focus.group.width = 1; tree.focus.group.height = 0.5; break;
+			case '11':
+				tree.focus.group.width = 0.33; tree.focus.group.height = 0.33; break;
+			case '21':
+				tree.focus.group.width = 0.66; tree.focus.group.height = 0.33; break;
+			case '31':
+				tree.focus.group.width = 1; tree.focus.group.height = 0.33; break;
+			case '12':
+				tree.focus.group.width = 0.33; tree.focus.group.height = 0.66; break;
+			case '22':
+				tree.focus.group.width = 0.66; tree.focus.group.height = 0.66; break;
+			case '32':
+				tree.focus.group.width = 1; tree.focus.group.height = 0.66; break;
+			case '13':
+				tree.focus.group.width = 0.33; tree.focus.group.height = 1; break;
+			case '23':
+				tree.focus.group.width = 0.66; tree.focus.group.height = 1; break;
 			default:
 				tree.focus.group.width = 1; tree.focus.group.height = 1; break;
 		}
@@ -2774,7 +2779,6 @@ class Edit {
 			case 'b': Edit.doBlank(); break;
 			case 'o': Edit.doLost(); break;
 			case 'a': Edit.doAppend(); break;
-			case '-': Edit.doAppend(); break;
 			case 'p': Edit.doPrepend(); break;
 			case '*': Edit.doStar(); break;
 			case '+': Edit.doPlus(); break;
@@ -2901,7 +2905,7 @@ class SignMenu {
 				this.catLinks[other].classList.remove('selected');
 				this.catSecs[other].classList.add('hidden');
 			}
-		this.chosen.value = uniCategories.includes(cat) ? cat : '';
+		this.chosen.value = uniCategories.indexOf(cat) >= 0 ? cat : '';
 	}
 	shownCat() {
 		for (const cat of uniCategoriesAndShapes)

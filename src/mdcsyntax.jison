@@ -25,7 +25,7 @@ INTEGER [0-9]+
 ('+s-')?'!'('='{INTEGER}'%')?[ \t\n\r\f_]*	return 'BREAK';
 '+s'[ \t\n\r\f_]*						return 'BREAK';
 '+'[a-rt-z+S]('\+'|[^+])*	return 'TEXT';
-'@'.*[\n\r\f]				return 'TEXT';
+'@'[^-]*[\n\r\f]?				return 'TEXT';
 '|'[^|-]*					return 'LINE-NUMBER';
 \{[lL]{INTEGER}\,{INTEGER}\}	return 'BREAK';
 '?'{INTEGER}' '*	return 'TAB';
