@@ -2910,7 +2910,10 @@ class SignMenu {
 	}
 	hide() {
 		this.panel.classList.add('hidden');
-		Tree.focus();
+		if ($('name-text').value != '')
+			Tree.focus();
+		else
+			Edit.doNameFocus();
 	}
 	showCat(cat) {
 		for (const other of uniCategoriesAndShapes.concat('transliteration'))
