@@ -442,6 +442,10 @@ h1 {
 	cursor: pointer;
 }
 
+#translit-search {
+	display: table-row;
+}
+
 .sign-button {
 	display: table-cell;
 	float: left;

@@ -35,7 +35,7 @@ class HieroJax {
 	}
 
 	processFragmentsIn(elem) {
-		const spans = elem.getElementsByTagName("span");
+		const spans = elem.getElementsByTagName('span');
 		for (let span of spans)
 			if (span.classList.contains('hierojax'))
 				this.processFragment(span);

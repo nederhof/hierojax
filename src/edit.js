@@ -2833,6 +2833,7 @@ class SignMenu {
 			this.makeCatMenu(this.menu, cat, uniHiero.catToTexts[cat]);
 		for (const shape in uniGlyphsByShape)
 			this.makeCatMenu(this.extraMenu, shape, uniGlyphsByShape[shape]);
+		this.makeTransliterationMenu(this.extraMenu);
 		const signMenu = this;
 		this.panel.addEventListener('keydown', function(e) { signMenu.processMenuKey(e); }, false);
 		this.showCat('A');
@@ -2855,6 +2856,11 @@ class SignMenu {
 
 		const section = document.createElement('div');
 		section.className = 'cat-section';
+		this.fillCatSection(section, texts);
+		this.catSecs[cat] = section;
+		this.sections.appendChild(section);
+	}
+	fillCatSection(section, texts) {
 		for (const text of texts) {
 			const signLink = document.createElement('a');
 			const sign = document.createElement('div');
@@ -2877,7 +2883,21 @@ class SignMenu {
 				function(e) { e.preventDefault(); signMenu.chooseSign(text); });
 			section.appendChild(signLink);
 		}
-		this.catSecs[cat] = section;
+	}
+	makeTransliterationMenu(menu) {
+		const tab = document.createElement('li');
+		const link = document.createElement('a');
+		const text = document.createTextNode('transliteration');
+		link.setAttribute('href', '#');
+		link.appendChild(text);
+		link.addEventListener('click', function(e) { e.preventDefault(); signMenu.showCat('transliteration'); });
+		link.addEventListener('mouseover', function(e) { signMenu.processSignInfo('', link); });
+		this.catLinks['transliteration'] = link;
+		tab.appendChild(link);
+		menu.appendChild(tab);
+
+		const section = $('transliteration-section');
+		this.catSecs['transliteration'] = section;
 		this.sections.appendChild(section);
 	}
 	show() {
@@ -2893,7 +2913,7 @@ class SignMenu {
 		Tree.focus();
 	}
 	showCat(cat) {
-		for (const other of uniCategoriesAndShapes)
+		for (const other of uniCategoriesAndShapes.concat('transliteration'))
 			if (other === cat) {
 				this.catLinks[other].classList.add('selected');
 				this.catSecs[other].classList.remove('hidden');
@@ -2902,9 +2922,11 @@ class SignMenu {
 				this.catSecs[other].classList.add('hidden');
 			}
 		this.chosen.value = uniCategories.includes(cat) ? cat : '';
+		if (cat == 'transliteration')
+			removeChildren($('transliteration-section'));
 	}
 	shownCat() {
-		for (const cat of uniCategoriesAndShapes)
+		for (const cat of uniCategoriesAndShapes.concat('transliteration'))
 			if (this.catLinks[cat].classList.contains('selected'))
 				return cat;
 		return '';
@@ -2916,6 +2938,8 @@ class SignMenu {
 			return;
 		} else if (i > 0) {
 			this.showCat(uniCategories[i-1]);
+		} else if (cat == 'transliteration') {
+			this.showCat(uniShapes[uniShapes.length-1]);
 		} else {
 			i = uniShapes.indexOf(cat);
 			if (i >= 1)
@@ -2931,7 +2955,9 @@ class SignMenu {
 			this.showCat(uniCategories[i+1]);
 		} else {
 			i = uniShapes.indexOf(cat);
-			if (i >= 0 && i < uniShapes.length-1)
+			if (i == uniShapes.length-1)
+				this.showCat('transliteration');
+			else if (i >= 0 && i < uniShapes.length-1)
 				this.showCat(uniShapes[i+1]);
 		}
 	}
@@ -2997,29 +3023,30 @@ class SignMenu {
 				text = text.replace('&amp;', '&');
 				this.info.innerHTML = text;
 				hierojax.processFragmentsIn(this.info);
-				this.mapTransIn(this.info);
+				SignMenu.mapTransIn(this.info);
 			}
 		}
 	}
-	mapTransIn(elem) {
+	static mapTransIn(elem) {
 		const spans = elem.getElementsByTagName("span");
 		for (let span of spans)
-			if (span.classList.contains('egytransl'))
-				this.mapTrans(span);
+			if (span.classList.contains('egytransl')) {
+				const trans = span.firstChild.nodeValue;
+				span.innerHTML = SignMenu.mapTrans(trans);
+			}
 	}
-	mapTrans(elem) {
-		const trans = elem.firstChild.nodeValue;
+	static mapTrans(trans) {
 		var uni = '';
 		for (let j = 0; j < trans.length; j++)
 			if (trans[j] === '^' && j < trans.length-1) {
 				j++;
-				uni += this.transUnicode(trans[j], true);
+				uni += SignMenu.transUnicode(trans[j], true);
 			} else {
-				uni += this.transUnicode(trans[j], false);
+				uni += SignMenu.transUnicode(trans[j], false);
 			}
-		elem.innerHTML = uni;
+		return uni;
 	}
-	transUnicode(c, upper) {
+	static transUnicode(c, upper) {
 		switch (c) {
 			case 'A': return upper ? "\uA722" : "\uA723";
 			case 'j': return upper ? "J" : "j";
@@ -3059,7 +3086,6 @@ class SignMenu {
 	tryProcessMenuKey(e) {
 		var c = e.keyCode;
 		switch (c) {
-			case 8: this.backspaceSign(); return true; // backspace
 			case 13: this.chooseTypedSign(); return true; // enter
 			case 27: this.hide(); return true; // escape
 			case 32: this.toggleInfo(); return true; // space
@@ -3067,6 +3093,19 @@ class SignMenu {
 			case 38: this.showCatUp(); return true; // up
 			case 39: this.showCatRight(); return true; // right
 			case 40: this.showCatDown(); return true; // down
+			case 191: {
+				if (this.shownCat() == 'transliteration')
+					this.showCat('A');
+				else
+					this.showCat('transliteration');
+				return true; // ?
+			}
+		}
+		if (this.shownCat() == 'transliteration')
+			return this.addTransChar(e);
+		if (c == 8) { // backspace
+			this.backspaceSign();
+			return true;
 		}
 		c = String.fromCharCode(c);
 		if (/^[A-Z]$/.test(c)) {
@@ -3085,6 +3124,53 @@ class SignMenu {
 			return true;
 		}
 		return false;
+	}
+	addTransChar(e) {
+		var c = e.key;
+		if (e.keyCode == 8) {
+			this.chosen.value = this.chosen.value.replace(/.$/, '');
+			this.filterTransliteration();
+			return true;
+		} else if ('AjiyawbpfmnrlhHxXzsSqKkgtTdD'.includes(c)) {
+			if (c == 'i')
+				c = 'j';
+			else if (c == 'z')
+				c = 's';
+			else if (c == 'K')
+				c = 'q';
+			this.chosen.value = this.chosen.value + SignMenu.transUnicode(c, false);
+			this.filterTransliteration();
+			return true;
+		}
+		return false;
+	}
+	filterTransliteration() {
+		removeChildren($('transliteration-section'));
+		var signs = [];
+		for (const cat in uniHiero.catToTexts)
+			for (const sign of uniHiero.catToTexts[cat])
+				if (this.infoHasTranslit(sign, this.chosen.value)) {
+					signs.push(sign);
+				}
+		this.fillCatSection($('transliteration-section'), signs);
+	}
+	infoHasTranslit(name, trans) {
+		const info = hierojax.uniInfo[name];
+		if (info) {
+			const transs = this.extractInfoTranslit(name);
+			return transs.indexOf(trans) >= 0;
+		} else {
+			return false;
+		}
+	}
+	extractInfoTranslit(name) {
+		const info = hierojax.uniInfo[name];
+		if (info) {
+			return [... info.matchAll(/<span class="egytransl">\^?([a-zA-Z]+)<\/span>/g)]
+				.map(m => SignMenu.mapTrans(m[1]));
+		} else {
+			return [];
+		}
 	}
 }
 var signMenu = null;
