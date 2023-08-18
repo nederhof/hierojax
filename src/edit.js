@@ -2718,6 +2718,7 @@ class Edit {
 		tree.focus.redrawToRoot();
 		const rootIndex = tree.getFocusIndex();
 		preview.update();
+		tree.focus.li.scrollIntoView();
 	}
 	static setEnclosureType(type) {
 		if (type == 'walled') {
@@ -3099,7 +3100,7 @@ class SignMenu {
 		switch (c) {
 			case 13: { // enter
 				if (this.shownCat() == 'transliteration') {
-					if (this.translitFocus >= 0 && 
+					if (this.translitFocus >= 0 &&
 							this.translitFocus < this.translitElems.length)
 						this.chooseSign(this.translitSigns[this.translitFocus]);
 				} else {

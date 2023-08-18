@@ -9312,6 +9312,8 @@ class Edit {
 		tree.focus.redrawToRoot();
 		const rootIndex = tree.getFocusIndex();
 		preview.update();
+		tree.focus.li.scrollIntoView(); // added
+console.log("scroll");
 	}
 	static setEnclosureType(type) {
 		if (type == 'walled') {
