@@ -9455,6 +9455,7 @@ class SignMenu {
 		this.sections.appendChild(section);
 	}
 	fillCatSection(section, texts) {
+		var signs = [];
 		for (const text of texts) {
 			const signLink = document.createElement('a');
 			const sign = document.createElement('div');
@@ -9476,7 +9477,9 @@ class SignMenu {
 			signLink.addEventListener('click',
 				function(e) { e.preventDefault(); signMenu.chooseSign(text); });
 			section.appendChild(signLink);
+			signs.push(sign);
 		}
+		return signs;
 	}
 	makeTransliterationMenu(menu) {
 		const tab = document.createElement('li');
@@ -9493,6 +9496,9 @@ class SignMenu {
 		const section = $('transliteration-section');
 		this.catSecs['transliteration'] = section;
 		this.sections.appendChild(section);
+		this.translitSigns = [];
+		this.translitElems = [];
+		this.translitFocus = -1;
 	}
 	show() {
 		this.panel.classList.remove('hidden');
@@ -9501,6 +9507,8 @@ class SignMenu {
 		const parts = uniNameStructure.exec(name);
 		if (parts)
 			this.showCat(parts[1]);
+		else
+			this.showCat('A');
 	}
 	hide() {
 		this.panel.classList.add('hidden');
@@ -9520,7 +9528,7 @@ class SignMenu {
 			}
 		this.chosen.value = uniCategories.includes(cat) ? cat : '';
 		if (cat == 'transliteration')
-			removeChildren($('transliteration-section'));
+			this.emptyTransliterationSection();
 	}
 	shownCat() {
 		for (const cat of uniCategoriesAndShapes.concat('transliteration'))
@@ -9683,12 +9691,27 @@ class SignMenu {
 	tryProcessMenuKey(e) {
 		var c = e.keyCode;
 		switch (c) {
-			case 13: this.chooseTypedSign(); return true; // enter
+			case 13: { // enter
+				if (this.shownCat() == 'transliteration') {
+					if (this.translitFocus >= 0 && 
+							this.translitFocus < this.translitElems.length)
+						this.chooseSign(this.translitSigns[this.translitFocus]);
+				} else {
+					this.chooseTypedSign();
+				}
+				return true;
+			}
 			case 27: this.hide(); return true; // escape
 			case 32: this.toggleInfo(); return true; // space
 			case 37: this.showCatLeft(); return true; // left
 			case 38: this.showCatUp(); return true; // up
-			case 39: this.showCatRight(); return true; // right
+			case 39: { // right
+				if (this.shownCat() == 'transliteration')
+					this.nextTranslitFocus();
+				else
+					this.showCatRight();
+				return true;
+			}
 			case 40: this.showCatDown(); return true; // down
 			case 191: {
 				if (this.shownCat() == 'transliteration')
@@ -9724,7 +9747,7 @@ class SignMenu {
 	}
 	addTransChar(e) {
 		var c = e.key;
-		if (e.keyCode == 8) {
+		if (e.keyCode == 8) { // backspace
 			this.chosen.value = this.chosen.value.replace(/.$/, '');
 			this.filterTransliteration();
 			return true;
@@ -9742,14 +9765,38 @@ class SignMenu {
 		return false;
 	}
 	filterTransliteration() {
-		removeChildren($('transliteration-section'));
+		this.emptyTransliterationSection();
 		var signs = [];
 		for (const cat in uniHiero.catToTexts)
 			for (const sign of uniHiero.catToTexts[cat])
 				if (this.infoHasTranslit(sign, this.chosen.value)) {
 					signs.push(sign);
 				}
-		this.fillCatSection($('transliteration-section'), signs);
+		this.translitSigns = signs;
+		this.translitElems = this.fillCatSection($('transliteration-section'), signs);
+		this.setTranslitFocus(this.translitElems.length >= 0 ? 0 : -1);
+	}
+	emptyTransliterationSection() {
+		removeChildren($('transliteration-section'));
+		this.translitSigns = [];
+		this.translitElems = [];
+		this.translitFocus = -1;
+	}
+	setTranslitFocus(n) {
+		this.translitFocus = n;
+		for (var i = 0; i < this.translitElems.length; i++) {
+			if (i == n) {
+				this.translitElems[i].classList.add('sign-button-focus');
+				this.translitElems[i].classList.remove('sign-button-no-focus');
+			} else {
+				this.translitElems[i].classList.remove('sign-button-focus');
+				this.translitElems[i].classList.add('sign-button-no-focus');
+			}
+		}
+	}
+	nextTranslitFocus() {
+		if (this.translitElems.length > 0)
+			this.setTranslitFocus((this.translitFocus+1) % this.translitElems.length);
 	}
 	infoHasTranslit(name, trans) {
 		const info = hierojax.uniInfo[name];

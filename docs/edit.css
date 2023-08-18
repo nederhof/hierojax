@@ -456,6 +456,13 @@ h1 {
 .sign-button-link {
 	color: inherit;
 }
+.sign-button-no-focus {
+	padding: 4px;
+}
+.sign-button-focus {
+	padding: 2px;
+	border: 2px solid blue;
+}
 .sign-button-label {
 	font-weight: bold;
 	text-align: center;
