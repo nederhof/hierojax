@@ -17,8 +17,8 @@ END_ENCLOSURE_CHAR \uD80D\uDC3D|\uD80D\uDC3F
 
 %%
 
-[\[\({〈⸢]	return 'BRACKET_OPEN';
-[\]\)}〉⸣]	return 'BRACKET_CLOSE';
+[\[{⟨⟦⸢]	return 'BRACKET_OPEN';
+[\]}⟩⟧⸣]	return 'BRACKET_CLOSE';
 [\uFE00-\uFE06]		return 'VS';
 /* [\u{13000}-\u{13257}|\u{1325E}-\u{13281}|\u{13283}-\u{13285}|\u{1328A}-\u{13378}|\u{1337C}-\u{1342E}]
  * converted to UTF-16 using:

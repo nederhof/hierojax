@@ -1079,13 +1079,13 @@ class MdcBracketOpen extends MdcHieroglyph {
 	}
 	toString() {
 		switch (this.ch) {
-			case '[&': return '\u2329';
+			case '[&': return '\u27E8';
 			case '[{': return '{';
 			case '[[': return '[';
 			case '[\\': return '[';
-			case '["': return '[';
+			case '["': return '\u27E6';
 			case '[\'': return '[';
-			case '[(': return '(';
+			case '[(': return '[';
 			case '[?': return '\u2E22';
 			default: return '[';
 		}
@@ -1103,13 +1103,13 @@ class MdcBracketClose extends MdcHieroglyph {
 	}
 	toString() {
 		switch (this.ch) {
-			case '&]': return '\u232A';
+			case '&]': return '\u27E9';
 			case '}]': return '}';
 			case ']]': return ']';
 			case '\\]': return ']';
-			case '"]': return ']';
+			case '"]': return '\u27E7';
 			case '\']': return ']';
-			case ')]': return ')';
+			case ')]': return ']';
 			case '?]': return '\u2E23';
 			default: return ']';
 		}
