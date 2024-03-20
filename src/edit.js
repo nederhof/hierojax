@@ -1985,7 +1985,7 @@ class Edit {
 					const index = overlayNode.group.lits2.indexOf(node.group);
 					overlayNode.insertVertical(index, lit);
 				} else {
-					node.replace(VerticalNode.initial([node.group, lit]));
+					node.replace(VerticalNode.initial([lit, node.group]));
 				}
 				tree.setPlaceholderAddress();
 				break;

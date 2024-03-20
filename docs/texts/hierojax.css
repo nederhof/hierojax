@@ -33,6 +33,7 @@
 	display: inline-block;
 	position: relative;
 	vertical-align: -0.1em;
+	text-indent: 0;
 }
 
 .hierojax[data-type="svg"], .hierojax[data-type="canvas"] {
