@@ -1,7 +1,7 @@
 function sendEncoding() {
 	const txt = $('text-to-edit').value;
 	const encoded = encodeURIComponent(txt);
-	window.open('edit.html?encoding=' + encoded, '_blank');
+	window.open('hierojaxedit.html?encoding=' + encoded, '_blank');
 }
 
 function saveEncoding(txt) {

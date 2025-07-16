@@ -1413,16 +1413,15 @@ class Enclosure extends Group {
 		return s;
 	}
 	size(options) {
-		const inner = this.innerSize(options);
 		if (Group.h(options)) {
-			const w = this.openSize(options).w + this.kernOpenSize() +
+			const w = this.openSize(options).w + this.kernOpenSize() + 
 						this.innerSize(options).w +
 						this.kernCloseSize() + this.closeSize(options).w;
 			const h = this.outlineSize(options).h;
 			return { w, h };
 		} else {
 			const w = this.outlineSize(options).w;
-			const h = this.openSize(options).h + this.kernOpenSize() +
+			const h = this.openSize(options).h + this.kernOpenSize() + 
 						this.innerSize(options).h +
 						this.kernCloseSize() + this.closeSize(options).h;
 			return { w, h };
