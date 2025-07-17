@@ -945,7 +945,7 @@ class PrintedSVG extends PrintedAny {
 }`;
 	}
 }
-PrintedSVG.EXTERNAL_FONT = 'NewGardinerSMP.ttf';
+PrintedSVG.EXTERNAL_FONT = 'NewGardiner.ttf';
 
 class Group {
 	scale;

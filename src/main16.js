@@ -5,7 +5,7 @@ class HieroJax {
 
 	startLoadingFonts() {
 		const hierojax = this;
-		this.fonts = [ new FontFace('Hieroglyphic', 'url(NewGardinerSMP.ttf)') ];
+		this.fonts = [ new FontFace('Hieroglyphic', 'url(NewGardiner.ttf)') ];
 		this.nFonts = this.fonts.length;
 		this.nFontsLoaded = 0;
 		this.fonts.forEach(f => { f.load().then((font) => {

@@ -20,11 +20,13 @@ END_ENCLOSURE_CHAR \uD80D[\uDC3D\uDC3F]
 [\[{⟨⟦⸢]	return 'BRACKET_OPEN';
 [\]}⟩⟧⸣]	return 'BRACKET_CLOSE';
 [\uFE00-\uFE06]		return 'VS';
-/* [\u{13000}-\u{13257}\u{1325E}-\u{13281}\u{13283}-\u{13285}\u{1328A}-\u{13378}\u{1337C}-\u{1342E}]
+/* [\u{13000}-\u{13257}\u{1325E}-\u{13281}\u{13283}-\u{13285}\u{1328A}-\u{13378}\u{1337C}-\u{1342E}\u{13460}-\u{143FA}]
  * converted to UTF-16 using:
  * https://www.cyberdefinitions.com/symbols/converting-hexadecimal-to-UTF-16-format-for-JavaScript.html
+ * Easier in js:
+ * String.fromCodePoint(0x13000).split('')
  */
-\uD80C[\uDC00-\uDE57\uDE5E-\uDE81\uDE83-\uDE85\uDE8A-\uDF78\uDF7C-\uDFFF]|\uD80D[\uDC00-\uDC2E]|\uFFFD return 'SIGN';
+\uD80C[\uDC00-\uDE57\uDE5E-\uDE81\uDE83-\uDE85\uDE8A-\uDF78\uDF7C-\uDFFF]|\uD80D[\uDC00-\uDC2E\uDC60-\uDFFF]|\uD80E[\uDC00-\uDFFF]|\uD80F[\uDC00-\uDFFF]|\uD810[\uDC00-\uDFFA]|\uFFFD return 'SIGN';
 
 '\uD80D\uDC30'	return 'VER';
 '\uD80D\uDC31'	return 'HOR';

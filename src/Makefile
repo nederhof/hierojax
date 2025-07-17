@@ -49,40 +49,48 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	cat main9.js >> tmp.js
 	mv tmp.js ../docs/hierojax9.js
 
-../docs/hierojaxedit.js: ../docs/hierojax.js unipoints.js signinfo.js edit.js
+../docs/hierojaxedit.js: ../docs/hierojax.js unipoints.js extpoints.js signinfo.js edit.js
 	cat ../docs/hierojax.js > tmp.js
 	echo ' '  >> tmp.js
 	cat unipoints.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat extpoints.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat signinfo.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat edit.js >> tmp.js
 	mv tmp.js ../docs/hierojaxedit.js
 
-../docs/hierojaxedit16.js: ../docs/hierojax16.js unipoints.js signinfo.js edit16.js
+../docs/hierojaxedit16.js: ../docs/hierojax16.js unipoints.js extpoints.js signinfo.js edit16.js
 	cat ../docs/hierojax16.js > tmp.js
 	echo ' '  >> tmp.js
 	cat unipoints.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat extpoints.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat signinfo.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat edit16.js >> tmp.js
 	mv tmp.js ../docs/hierojaxedit16.js
 
-../docs/hierojaxedit9.js: ../docs/hierojax9.js unipoints.js signinfo.js edit9.js
+../docs/hierojaxedit9.js: ../docs/hierojax9.js unipoints.js extpoints.js signinfo.js edit9.js
 	cat ../docs/hierojax9.js > tmp.js
 	echo ' '  >> tmp.js
 	cat unipoints.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat extpoints.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat signinfo.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat edit9.js >> tmp.js
 	mv tmp.js ../docs/hierojaxedit9.js
 
-../docs/mdcconversion.js: ../docs/hierojax.js unipoints.js mdcnames.js mdcmnemonics.js mdcligatures.js mdcstructure.js mdcsyntax.js mdcconvert.js
+../docs/mdcconversion.js: ../docs/hierojax.js unipoints.js extpoints.js mdcnames.js mdcmnemonics.js mdcligatures.js mdcstructure.js mdcsyntax.js mdcconvert.js
 	cat ../docs/hierojax.js > tmp.js
 	echo ' '  >> tmp.js
 	cat unipoints.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat extpoints.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat mdcnames.js >> tmp.js
 	echo ' '  >> tmp.js
@@ -97,10 +105,12 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	cat mdcconvert.js >> tmp.js
 	mv tmp.js ../docs/mdcconversion.js
 
-../docs/resconversion.js: ../docs/hierojax.js unipoints.js resstructure.js ressyntax.js resconvert.js
+../docs/resconversion.js: ../docs/hierojax.js unipoints.js extpoints.js resstructure.js ressyntax.js resconvert.js
 	cat ../docs/hierojax.js > tmp.js
 	echo ' '  >> tmp.js
 	cat unipoints.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat extpoints.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat resstructure.js >> tmp.js
 	echo ' '  >> tmp.js
@@ -123,7 +133,7 @@ ligatures.json: ligatures.js
 	cat convertinit.js ligatures.js convertligatures.js | js > ligatures.json
 	cp ligatures.json ../docs/
 
-texts: ../docs/texts/hierojax.css ../docs/texts/hierojax.js ../docs/texts/NewGardinerSMP.ttf
+texts: ../docs/texts/hierojax.css ../docs/texts/hierojax.js ../docs/texts/NewGardiner.ttf
 
 ../docs/texts/hierojax.css: ../docs/hierojax.css
 	cp ../docs/hierojax.css ../docs/texts/
@@ -131,8 +141,8 @@ texts: ../docs/texts/hierojax.css ../docs/texts/hierojax.js ../docs/texts/NewGar
 ../docs/texts/hierojax.js: ../docs/hierojax.js
 	cp ../docs/hierojax.js ../docs/texts/
 
-../docs/texts/NewGardinerSMP.ttf: ../docs/NewGardinerSMP.ttf
-	cp ../docs/NewGardinerSMP.ttf ../docs/texts/
+../docs/texts/NewGardiner.ttf: ../docs/NewGardiner.ttf
+	cp ../docs/NewGardiner.ttf ../docs/texts/
 
 clean:
 	rm -f ../docs/util.js

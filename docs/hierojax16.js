@@ -1832,7 +1832,7 @@ class PrintedSVG extends PrintedAny {
 }`;
 	}
 }
-PrintedSVG.EXTERNAL_FONT = 'NewGardinerSMP.ttf';
+PrintedSVG.EXTERNAL_FONT = 'NewGardiner.ttf';
 
 class Group {
 	scale;
@@ -3824,7 +3824,7 @@ class HieroJax {
 
 	startLoadingFonts() {
 		const hierojax = this;
-		this.fonts = [ new FontFace('Hieroglyphic', 'url(NewGardinerSMP.ttf)') ];
+		this.fonts = [ new FontFace('Hieroglyphic', 'url(NewGardiner.ttf)') ];
 		this.nFonts = this.fonts.length;
 		this.nFontsLoaded = 0;
 		this.fonts.forEach(f => { f.load().then((font) => {

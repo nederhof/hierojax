@@ -1507,26 +1507,37 @@ const uniCategories = ['A','B','C','D','E','F','G','H','I',
 const uniShapes = Object.keys(uniGlyphsByShape);
 const uniCategoriesAndShapes = uniCategories.concat(uniShapes);
 
-const uniNameStructure = /([A-I]|[K-Z]|(?:Aa)|(?:NL)|(?:NU))([1-9](?:[0-9][0-9]?)?)([a-z]?)/;
+const uniNameStructure = /([A-I]|[K-Z]|(?:Aa)|(?:NL)|(?:NU))([1-9](?:[0-9][0-9]?)?)([a-z]{0,2})/;
 const uniMnemonicStructure = /[a-zA-Z]+/;
 const uniControlStructure = /:|\*|\^st|\^sb|\^et|\^sb|\+|\(|\)/;
-const uniAllStructure = /([A-I]|[K-Z]|(?:Aa)|(?:NL)|(?:NU))([1-9](?:[0-9][0-9]?)?)([a-z]?)|[a-zA-Z]+|:|\*|\^st|\^sb|\^et|\^sb|\+|\(|\)/g;
+const uniAllStructure = /([A-I]|[K-Z]|(?:Aa)|(?:NL)|(?:NU))([1-9](?:[0-9][0-9]?)?)([a-z]{0,2})|[a-zA-Z]+|:|\*|\^st|\^sb|\^et|\^sb|\+|\(|\)/g;
 const uniDamageCharBase = 0x13446;
 
 class UniHiero {
 	catToTexts;
+	catToTextsExtended;
 	constructor() {
 		this.catToTexts = {};
+		this.catToTextsExtended = {};
 		this.glyphToText = {};
 		this.pointToText = {};
+		for (const cat of uniCategories) {
+			this.catToTexts[cat] = [];
+			this.catToTextsExtended[cat] = [];
+		}
 		for (const glyph in uniGlyphs) {
 			this.glyphToText[String.fromCodePoint(uniGlyphs[glyph])] = glyph;
 			this.pointToText[String.fromCodePoint(uniGlyphs[glyph])] = glyph;
 			const parts = uniNameStructure.exec(glyph);
 			const cat = parts[1];
-			if (!(cat in this.catToTexts))
-				this.catToTexts[cat] = [];
 			this.catToTexts[cat].push(glyph);
+		}
+		for (const glyph in extGlyphs) {
+			this.glyphToText[String.fromCodePoint(extGlyphs[glyph])] = glyph;
+			this.pointToText[String.fromCodePoint(extGlyphs[glyph])] = glyph;
+			const parts = uniNameStructure.exec(glyph);
+			const cat = parts[1];
+			this.catToTextsExtended[cat].push(glyph);
 		}
 		for (const control in uniControls) {
 			this.pointToText[String.fromCodePoint(uniControls[control])] = control;
@@ -1545,6 +1556,7 @@ class UniHiero {
 		const matches = text.match(uniAllStructure);
 		return matches ? matches.map(s =>
 			s in uniGlyphs ? String.fromCodePoint(uniGlyphs[s]) :
+			s in extGlyphs ? String.fromCodePoint(extGlyphs[s]) :
 			s in uniControls ? String.fromCodePoint(uniControls[s]) :
 			s in uniMnemonics ? String.fromCodePoint(uniGlyphs[uniMnemonics[s]]) :
 			'').join('') : '';
@@ -1563,6 +1575,10 @@ class UniHiero {
 			if (num1 < num2)
 				return -1;
 			else if (num1 > num2)
+				return 1;
+			else if (suf1.length < suf2.length)
+				return -1;
+			else if (suf1.length > suf2.length)
 				return 1;
 			else if (suf1 < suf2)
 				return -1;

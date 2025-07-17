@@ -346,7 +346,7 @@ h1 {
 	width: 94%;
 	z-index: 10;
 	overflow: auto;
-	background-color: #eee;
+	background-color: white;
 	border: 5px solid #444;
 	box-sizing: border-box;
 	border-radius: 12px;
@@ -432,7 +432,7 @@ h1 {
 
 .cat-section {
 	padding: 0.5em;
-	background-color: #eee;
+	background-color: white;
 	clear: both;
 	display: table;
 	padding: 20px 10px 20px 20px;
@@ -468,8 +468,21 @@ h1 {
 	text-align: center;
 	display: table-row;
 }
+.sign-button-label-ext {
+	font-weight: normal;
+	color: dimgray;
+	text-align: center;
+	display: table-row;
+}
 .sign-button-hi {
 	font-family: Hieroglyphic;
+	font-size: 36px;
+	display: table-row;
+	line-height: 46px;
+}
+.sign-button-hi-ext {
+	font-family: Hieroglyphic;
+	color: dimgray;
 	font-size: 36px;
 	display: table-row;
 	line-height: 46px;

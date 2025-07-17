@@ -2387,6 +2387,8 @@ class Edit {
 			return;
 		} else if (name in uniGlyphs) {
 			codepoint = uniGlyphs[name];
+		} else if (name in extGlyphs) {
+			codepoint = extGlyphs[name];
 		} else if (name in uniMnemonics) {
 			codepoint = uniGlyphs[uniMnemonics[name]];
 		} else if (name == '') {
@@ -2830,10 +2832,10 @@ class SignMenu {
 		this.chosen = $('chosen-sign');
 		this.info = $('sign-info');
 		this.infoButton = $('sign-info-button');
-		for (const cat in uniHiero.catToTexts)
-			this.makeCatMenu(this.menu, cat, uniHiero.catToTexts[cat]);
+		for (const cat of uniCategories)
+			this.makeCatMenu(this.menu, cat, uniHiero.catToTexts[cat], uniHiero.catToTextsExtended[cat]);
 		for (const shape in uniGlyphsByShape)
-			this.makeCatMenu(this.extraMenu, shape, uniGlyphsByShape[shape]);
+			this.makeCatMenu(this.extraMenu, shape, uniGlyphsByShape[shape], []);
 		this.makeTransliterationMenu(this.extraMenu);
 		const signMenu = this;
 		this.panel.addEventListener('keydown', function(e) { signMenu.processMenuKey(e); }, false);
@@ -2841,7 +2843,7 @@ class SignMenu {
 		this.hide();
 		this.hideInfo();
 	}
-	makeCatMenu(menu, cat, texts) {
+	makeCatMenu(menu, cat, texts, textsExtended) {
 		const signMenu = this;
 		const c = cat;
 		const tab = document.createElement('li');
@@ -2857,12 +2859,17 @@ class SignMenu {
 
 		const section = document.createElement('div');
 		section.className = 'cat-section';
-		this.fillCatSection(section, texts);
+		this.fillCatSection(section, texts, textsExtended);
 		this.catSecs[cat] = section;
 		this.sections.appendChild(section);
 	}
-	fillCatSection(section, texts) {
+	fillCatSection(section, texts, textsExtended) {
 		var signs = [];
+		this.fillCatSectionPart(section, texts, signs, false);
+		this.fillCatSectionPart(section, textsExtended, signs, true);
+		return signs;
+	}
+	fillCatSectionPart(section, texts, signs, isExtended) {
 		for (const text of texts) {
 			const signLink = document.createElement('a');
 			const sign = document.createElement('div');
@@ -2873,11 +2880,11 @@ class SignMenu {
 			signLink.appendChild(sign);
 			sign.className = 'sign-button';
 			sign.appendChild(glyph);
-			glyph.className = 'sign-button-hi';
-			const codepoint = uniGlyphs[text];
+			glyph.className = isExtended ? 'sign-button-hi-ext' : 'sign-button-hi';
+			const codepoint = isExtended ? extGlyphs[text] : uniGlyphs[text];
 			glyph.innerHTML = String.fromCodePoint(codepoint);
 			sign.appendChild(label);
-			label.className = 'sign-button-label';
+			label.className = isExtended ? 'sign-button-label-ext' : 'sign-button-label';
 			label.innerHTML = text;
 			signLink.addEventListener('mouseover',
 				function(e) { signMenu.processSignInfo(text, glyph); });
@@ -2886,7 +2893,6 @@ class SignMenu {
 			section.appendChild(signLink);
 			signs.push(sign);
 		}
-		return signs;
 	}
 	makeTransliterationMenu(menu) {
 		const tab = document.createElement('li');
@@ -2994,7 +3000,7 @@ class SignMenu {
 		this.chosen.value = this.chosen.value.substring(0, this.chosen.value.length-1);
 	}
 	chooseTypedSign() {
-		if (this.chosen.value in uniGlyphs)
+		if (this.chosen.value in uniGlyphs || this.chosen.value in extGlyphs)
 			this.chooseSign(this.chosen.value);
 	}
 	chooseSign(name) {
@@ -3142,7 +3148,7 @@ class SignMenu {
 				this.showCat('Aa');
 			else if (/^([A-IK-Z]?|NL|NU|Aa)$/.test(this.chosen.value) && /^[A-IK-Z]$/.test(c))
 				this.showCat(c);
-			else if (/^[a-zA-Z]+[0-9]+$/.test(this.chosen.value))
+			else if (/^[a-zA-Z]+[0-9]+[a-z]?$/.test(this.chosen.value))
 				this.chosen.value = this.chosen.value + c.toLowerCase();
 			return true;
 		} else if (/^[0-9]$/.test(c)) {
@@ -3174,13 +3180,19 @@ class SignMenu {
 	filterTransliteration() {
 		this.emptyTransliterationSection();
 		var signs = [];
-		for (const cat in uniHiero.catToTexts)
+		var signsExtended = [];
+		for (const cat of uniCategories) {
 			for (const sign of uniHiero.catToTexts[cat])
 				if (this.infoHasTranslit(sign, this.chosen.value)) {
 					signs.push(sign);
 				}
+			for (const sign of uniHiero.catToTextsExtended[cat])
+				if (this.infoHasTranslit(sign, this.chosen.value)) {
+					signsExtended.push(sign);
+				}
+		}
 		this.translitSigns = signs;
-		this.translitElems = this.fillCatSection($('transliteration-section'), signs);
+		this.translitElems = this.fillCatSection($('transliteration-section'), signs, signsExtended);
 		this.setTranslitFocus(this.translitElems.length >= 0 ? 0 : -1);
 	}
 	emptyTransliterationSection() {
