@@ -1,6 +1,6 @@
 all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../docs/resconversion.js ../docs/hierojaxedit16.js ../docs/hierojaxedit9.js texts jsons
 
-../docs/hierojax.js: util.js syntax.js formatting.js insertions.js rotations.js ligatures.js main.js
+../docs/hierojax.js: util.js syntax.js formatting.js insertions.js standardizedvariants.js ligatures.js main.js
 	cp util.js ../docs/
 	cat util.js > tmp.js
 	echo ' '  >> tmp.js
@@ -10,14 +10,14 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	echo ' '  >> tmp.js
 	cat insertions.js >> tmp.js
 	echo ' '  >> tmp.js
-	cat rotations.js >> tmp.js
+	cat standardizedvariants.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat ligatures.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat main.js >> tmp.js
 	mv tmp.js ../docs/hierojax.js
 
-../docs/hierojax16.js: util.js syntax16.js formatting16.js insertions.js rotations.js ligatures.js main16.js
+../docs/hierojax16.js: util.js syntax16.js formatting16.js insertions.js standardizedvariants.js ligatures.js main16.js
 	cat util.js > tmp.js
 	echo ' '  >> tmp.js
 	cat syntax16.js >> tmp.js
@@ -26,14 +26,14 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	echo ' '  >> tmp.js
 	cat insertions.js >> tmp.js
 	echo ' '  >> tmp.js
-	cat rotations.js >> tmp.js
+	cat standardizedvariants.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat ligatures.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat main16.js >> tmp.js
 	mv tmp.js ../docs/hierojax16.js
 
-../docs/hierojax9.js: util.js syntax9.js formatting9.js insertions.js rotations.js ligatures.js main9.js
+../docs/hierojax9.js: util.js syntax9.js formatting9.js insertions.js standardizedvariants.js ligatures.js main9.js
 	cat util.js > tmp.js
 	echo ' '  >> tmp.js
 	cat syntax9.js >> tmp.js
@@ -42,7 +42,7 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	echo ' '  >> tmp.js
 	cat insertions.js >> tmp.js
 	echo ' '  >> tmp.js
-	cat rotations.js >> tmp.js
+	cat standardizedvariants.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat ligatures.js >> tmp.js
 	echo ' '  >> tmp.js
