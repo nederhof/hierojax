@@ -998,6 +998,7 @@ class MdcSign extends MdcHieroglyph {
 	}
 	toGroup() {
 		const mdcName = mdcNames[this.name];
+		const mdcNameUniKemet = mdcNamesUniKemet[this.name];
 		var vs = 0;
 		if ('rotate' in this) {
 			const rounded = Math.round(this.rotate % 360 / 45) * 45;
@@ -1012,6 +1013,8 @@ class MdcSign extends MdcHieroglyph {
 				return new Singleton(mdcName.str, shade);
 			else
 				return MdcFragment.strToGroup(mdcName.str);
+		} else if (mdcNameUniKemet) {
+			return new Literal(mdcNameUniKemet.str, vs, mirror, shade);
 		} else {
 			return new Literal(MdcSign.nameToChar(this.name), vs, mirror, shade);
 		}

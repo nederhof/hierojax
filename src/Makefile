@@ -85,7 +85,7 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	cat edit9.js >> tmp.js
 	mv tmp.js ../docs/hierojaxedit9.js
 
-../docs/mdcconversion.js: ../docs/hierojax.js unipoints.js extpoints.js mdcnames.js mdcmnemonics.js mdcligatures.js mdcstructure.js mdcsyntax.js mdcconvert.js
+../docs/mdcconversion.js: ../docs/hierojax.js unipoints.js extpoints.js mdcnames.js mdcnamesunikemet.js mdcmnemonics.js mdcligatures.js mdcstructure.js mdcsyntax.js mdcconvert.js
 	cat ../docs/hierojax.js > tmp.js
 	echo ' '  >> tmp.js
 	cat unipoints.js >> tmp.js
@@ -93,6 +93,8 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 	cat extpoints.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat mdcnames.js >> tmp.js
+	echo ' '  >> tmp.js
+	cat mdcnamesunikemet.js >> tmp.js
 	echo ' '  >> tmp.js
 	cat mdcmnemonics.js >> tmp.js
 	echo ' '  >> tmp.js
