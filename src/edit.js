@@ -751,7 +751,7 @@ class HorizontalNode extends Node {
 			this.replace(this.group.groups[0]);
 		}
 	}
-	removeDuplicateBrackets(groups) {
+	removeDuplicateBrackets() {
 		var norm = [];
 		this.group.groups.forEach(group => {
 			if (norm.length == 0) {
@@ -1020,7 +1020,7 @@ class BasicOpNode extends Node {
 	setEditing() {
 		super.setEditing();
 		const allowedPlaces = this.parent.allowedPlaces();
-		['ts','bs','te','be','m','t','b'].forEach(place => {
+		Group.INSERTION_PLACES.forEach(place => {
 			$('place-' + place).checked = this.place == place;
 			$('place-' + place).disabled =
 					this.parent.group[place] && this.place != place;
@@ -1388,7 +1388,7 @@ class Edit {
 	static clearText() {
 		editHistory.remember();
 		$('unicode-text').value = '';
-		Edit.makeFromInput('', [0]);
+		Edit.makeFromInput();
 	}
 	static copyText() {
 		$('unicode-text').select();
@@ -1397,6 +1397,7 @@ class Edit {
 	static makeInput() {
 		const str = tree.toString();
 		$('unicode-text').value = str;
+		$('error').innerHTML = ''
 	}
 	static makeFromString(string, address) {
 		try {
@@ -1838,8 +1839,7 @@ class Edit {
 				const index = node.childNumber();
 				const node1 = siblings[index-1];
 				const node2 = siblings[index+1];
-				return !(node1 instanceof BracketCloseNode ||
-							node2 instanceof BracketOpenNode);
+				return !(node1 instanceof BracketCloseNode) && !(node2 instanceof BracketOpenNode);
 			}
 			case FragmentOpNode:
 				return node.nonSingletonNeighbors();
@@ -2287,17 +2287,21 @@ class Edit {
 			case BracketCloseNode:
 				return true;
 			case EnclosureNode:
-				return node.group.groups.length == 0 || !node.parent ||
-					node.parent.acceptsMultipleChildren();
+				if (node.hasBracketOpen() || node.hasBracketClose())
+					return false;
+				else
+					return node.group.groups.length == 0 || !node.parent || node.parent.acceptsMultipleChildren();
 			case LiteralNode:
-				if (node.parent instanceof FlatHorizontalNode)
+				if (node.hasBracketOpen() || node.hasBracketClose())
+					return false;
+				else if (node.parent instanceof FlatHorizontalNode)
 					return true;
 				else if (node.parent instanceof FlatVerticalNode)
 					return true;
 				else if (node.parent instanceof OverlayNode)
 					return node.parent.group.lits1.length == 1 && node.parent.group.lits2.length == 1;
 				else
-					return !node.usedAsCore() && !node.hasBracketOpen() && !node.hasBracketClose();
+					return !node.usedAsCore();
 			default:
 				return false;
 		}
@@ -2718,7 +2722,6 @@ class Edit {
 	}
 	static redrawFocus() {
 		tree.focus.redrawToRoot();
-		const rootIndex = tree.getFocusIndex();
 		preview.update();
 		tree.focus.li.scrollIntoView();
 	}
@@ -2996,8 +2999,8 @@ class SignMenu {
 			this.showCat(uniCategories[0]);
 	}
 	backspaceSign() {
-		this.chosen.value.length > 0;
-		this.chosen.value = this.chosen.value.substring(0, this.chosen.value.length-1);
+		if (this.chosen.value.length > 0)
+			this.chosen.value = this.chosen.value.substring(0, this.chosen.value.length-1);
 	}
 	chooseTypedSign() {
 		if (this.chosen.value in uniGlyphs || this.chosen.value in extGlyphs)
@@ -3126,7 +3129,7 @@ class SignMenu {
 				return true;
 			}
 			case 40: this.showCatDown(); return true; // down
-			case 191: {
+			case 191: { // question mark
 				if (this.shownCat() == 'transliteration')
 					this.showCat('A');
 				else
@@ -3148,11 +3151,11 @@ class SignMenu {
 				this.showCat('Aa');
 			else if (/^([A-IK-Z]?|NL|NU|Aa)$/.test(this.chosen.value) && /^[A-IK-Z]$/.test(c))
 				this.showCat(c);
-			else if (/^[a-zA-Z]+[0-9]+[a-z]?$/.test(this.chosen.value))
+			else if (/^[a-zA-Z]+[0-9]{1,3}[a-z]?$/.test(this.chosen.value))
 				this.chosen.value = this.chosen.value + c.toLowerCase();
 			return true;
 		} else if (/^[0-9]$/.test(c)) {
-			if (/^[a-zA-Z]+[0-9]*$/.test(this.chosen.value))
+			if (/^[a-zA-Z]+[0-9]{0,2}$/.test(this.chosen.value))
 				this.chosen.value = this.chosen.value + c;
 			return true;
 		}

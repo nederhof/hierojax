@@ -1029,6 +1029,8 @@ class MdcSign extends MdcHieroglyph {
 			uniName = name.slice(0, -1) + name[name.length-1].toLowerCase();
 		if (uniName in uniGlyphs)
 			return String.fromCodePoint(uniGlyphs[uniName]);
+		else if (uniName in extGlyphs)
+			return String.fromCodePoint(extGlyphs[uniName]);
 		else
 			return Shapes.PLACEHOLDER;
 	}

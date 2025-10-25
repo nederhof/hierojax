@@ -2324,7 +2324,7 @@ class Enclosure extends Group {
 		return Group.h(options) ? ch : Shapes.rotatedChars[ch];
 	}
 	outlineSize(options) {
-		const size = shapes.emSizeOf(this.outlineCh(options), options.fontsize, 1, 1, 0);
+		const size = shapes.emSizeOf(this.outlineCh(options), options.fontsize, 1, 1, 0, false);
 		return { w: this.scale * size.w, h: this.scale * size.h };
 	}
 	resize(f) {
@@ -2405,7 +2405,6 @@ class Enclosure extends Group {
 		const size = this.size(options);
 		const bufX = ((x2Encl-x1Encl) - size.w) / 2;
 		const bufY = ((y2Encl-y1Encl) - size.h) / 2;
-		const inner = this.innerSize(options);
 		const open = this.openSize(options);
 		const close = this.closeSize(options);
 		const outline = this.outlineSize(options);
@@ -2435,8 +2434,8 @@ class Enclosure extends Group {
 			for (let i = 0; i < this.groups.length; i++) {
 				const group = this.groups[i];
 				var x2 = x1 + group.size(options).w;
-				var x3 = !this.delimClose ? x3Encl :
-					i < this.groups.length-1 ? x2 + this.scale * options.sep / 2 :
+				var x3 = i < this.groups.length-1 ? x2 + this.scale * options.sep / 2 :
+					!this.delimClose ? x3Encl :
 					this.delimCloseRect.x - this.kernCloseSize();
 				group.format(options, x0, x1, x2, x3, y0Encl,
 					y1Encl + bufY + this.thickness(),
@@ -2467,8 +2466,8 @@ class Enclosure extends Group {
 			for (let i = 0; i < this.groups.length; i++) {
 				const group = this.groups[i];
 				var y2 = y1 + group.size(options).h;
-				var y3 = !this.delimClose ? y3Encl :
-					i < this.groups.length-1 ? y2 + this.scale * options.sep / 2 :
+				var y3 = i < this.groups.length-1 ? y2 + this.scale * options.sep / 2 :
+					!this.delimClose ? y3Encl :
 					this.delimCloseRect.y - this.kernCloseSize();
 				group.format(options, x0Encl,
 					x1Encl + bufX + this.thickness(),
@@ -2628,17 +2627,17 @@ class Basic extends Group {
 				if (place in this.core.adjustments)
 					adjustments = this.core.adjustments[place];
 				const position = Shapes.insertionPosition(place, adjustments);
-				var xInit = Math.min(coreW-1, Math.round(position.x * coreW));
-				var yInit = Math.min(coreH-1, Math.round(position.y * coreH));
+				const xInit = Math.min(coreW-1, Math.round(position.x * coreW));
+				const yInit = Math.min(coreH-1, Math.round(position.y * coreH));
 				const rectInit = Shapes.openRect(corePrinted.canvas, xInit, yInit);
 				const margin = Math.round(measSize * options.sep);
 				const hull = Shapes.orthogonalHullWithBuffer(insPrinted.canvas, margin);
-				var marginL = position.x == 0 ? 0 : -hull.xMin;
-				var marginR = position.x == 1 ? 0 : hull.xMax - (hull.w-1);
-				var marginT = position.y == 0 ? 0 : -hull.yMin;
-				var marginB = position.y == 1 ? 0 : hull.yMax - (hull.h-1);
-				var insTotalW = hull.w + marginL + marginR;
-				var insTotalH = hull.h + marginT + marginB;
+				const marginL = position.x == 0 ? 0 : -hull.xMin;
+				const marginR = position.x == 1 ? 0 : hull.xMax - (hull.w-1);
+				const marginT = position.y == 0 ? 0 : -hull.yMin;
+				const marginB = position.y == 1 ? 0 : hull.yMax - (hull.h-1);
+				const insTotalW = hull.w + marginL + marginR;
+				const insTotalH = hull.h + marginT + marginB;
 				var scale = Math.min(1, rectInit.w / insTotalW, rectInit.h / insTotalH);
 				
 				/* determine initial position by dividing excess space */
@@ -2803,7 +2802,7 @@ class Overlay extends Group {
 		super();
 		this.lits1 = lits1;
 		this.lits2 = lits2;
-		this.lig = this.findLigature();
+		[this.lig, this.swap] = this.findLigature();
 		this.alt = this.lig;
 		this.adjustments = { };
 	}
@@ -2819,30 +2818,35 @@ class Overlay extends Group {
 					this.lits2[0].toString());
 	}
 	allowedPlaces() {
-		const lig = this.findLigature();
+		const [lig, swap] = this.findLigature();
 		return lig ? Shapes.allowedPlaces(lig, 0, false) : new Set(['ts', 'bs', 'te', 'be']);
 	}
 	findLigature() {
-		const chs = shapes.memoOverlayLigatures().get(this.lits1[0].ch);
-		if (chs && chs.length > 0)
-			for (const ch of chs)
-				if (this.matchLigature(ch))
-					return ch;
-		return null;
+		const ch1 = shapes.memoOverlayLigatures().get(this.lits1[0].ch);
+		const ch2 = shapes.memoOverlayLigatures().get(this.lits2[0].ch);
+		const chs = [...(ch1 || []), ...(ch2 || [])];
+		for (const ch of chs) {
+			if (Overlay.matchLigature(ch, this.lits1, this.lits2))
+				return [ch, false];
+			else if (this.lits1.length == 1 && this.lits2.length == 1 && 
+					Overlay.matchLigature(ch, this.lits2, this.lits1))
+				return [ch, true];
+		}
+		return [null, false];
 	}
-	matchLigature(ch) {
+	static matchLigature(ch, lits1, lits2) {
 		const lig = Shapes.ligatures[ch];
-		if (this.lits1.length != lig.horizontal.length || this.lits2.length != lig.vertical.length)
+		if (lits1.length != lig.horizontal.length || lits2.length != lig.vertical.length)
 			return false;
-		for (let i = 0; i < this.lits1.length; i++) {
+		for (let i = 0; i < lits1.length; i++) {
 			const sign = lig.horizontal[i];
-			const lit = this.lits1[i];
+			const lit = lits1[i];
 			if (lit.ch != sign.ch || lit.mirror != !!sign.mirror || lit.vs)
 				return false;
 		}
-		for (let i = 0; i < this.lits2.length; i++) {
+		for (let i = 0; i < lits2.length; i++) {
 			const sign = lig.vertical[i];
-			const lit = this.lits2[i];
+			const lit = lits2[i];
 			if (lit.ch != sign.ch || lit.mirror != !!sign.mirror || lit.vs)
 				return false;
 		}
@@ -2936,7 +2940,7 @@ class Overlay extends Group {
 		this.areas = [];
 		for (let i = 0; i < lig.horizontal.length; i++) {
 			const s = lig.horizontal[i];
-			const damage = this.lits1[i].damage;
+			const damage = this.swap ? this.lits2[i].damage : this.lits1[i].damage;
 			const xMin = i == 0 ? x0 : this.x + s.x * this.w;
 			const xMid = this.x + (s.x + s.w / 2) * this.w;
 			const xMax = i == lig.horizontal.length-1 ? x3 : this.x + (s.x + s.w) * this.w;
@@ -2945,7 +2949,7 @@ class Overlay extends Group {
 		}
 		for (let i = 0; i < lig.vertical.length; i++) {
 			const s = lig.vertical[i];
-			const damage = this.lits2[i].damage;
+			const damage = this.swap ? this.lits1[i].damage : this.lits2[i].damage;
 			const xMid = this.x + (s.x + s.w / 2) * this.w;
 			const yMin = i == 0 ? y0 : this.y + s.y * this.h;
 			const yMid = this.y + (s.y + s.h / 2) * this.h;
@@ -3414,7 +3418,7 @@ Shapes.insertions = {
 \u{13197}: [{ be: { y: 0.6 } }],
 \u{13198}: [{ te: { y: 0.5 } }],
 \u{131A1}: [{ bs: { }, te: { } }],
-\u{131A3}: [{ b: { } }],
+\u{131A3}: [{ glyph: '\u{E4AF}', b: { } }],
 \u{131AE}: [{ ts: { }, te: { }, }, { glyph: '\u{E48B}', ts: { }, bs: { }, te: { }, be: { } }],
 \u{131AF}: [{ ts: { }, te: { } }, { glyph: '\u{E48C}', ts: { }, bs: { }, te: { }, be: { } }],
 \u{131B0}: [{ bs: { }, te: { } }],
@@ -3564,98 +3568,122 @@ Shapes.insertions = {
 \u{13426}: [{ b: { } }],
 \u{13427}: [{ ts: { }, bs: { }, te: { }, be: { } }],
 \u{13428}: [{ bs: { } }],
-'\uE506': [{ ts: { }, bs: { y: 0.7 }, te: { }, be: { }, t: {x: 0.6} }, 
+'\uE506': [{ ts: { }, bs: { y: 0.7 }, te: { }, be: { }, t: { x: 0.6 } }, 
 			{ glyph: '\uE507', ts: { }, bs: { y: 0.7 }, te: { }, be: { }, m: { x: 0.6, y: 0.6 } }],
 }
  
 Shapes.rotations = {
-\u{13091}: { 90: 0 },
-\u{13093}: { 180: 0 },
-\u{1310F}: { 90: 0 },
-\u{13117}: { 270: 0 },
-\u{1311C}: { 90: 0 },
-\u{13121}: { 90: 0 },
-\u{13127}: { 90: 0 },
-\u{13132}: { 180: 0 },
-\u{13139}: { 90: 0, 180: 0, 270: 0 },
-\u{13183}: { 270: 0 },
-\u{13187}: { 180: 0 },
-\u{131A0}: { 90: 0, 270: 0 },
-\u{131B1}: { 90: 0, 180: 0 },
-\u{131B8}: { 90: 0 },
-\u{131B9}: { 90: 0 },
-\u{131BA}: { 270: 0 },
-\u{131CB}: { 90: 0 },
-\u{131E0}: { 90: 0 },
-\u{131EE}: { 180: 0, 270: 0 },
-\u{131F8}: { 180: 0 },
-\u{131F9}: { 90: 0, 180: 0 },
-\u{131FA}: { 90: 0, 180: 0 },
-\u{13216}: { 270: 0 },
-\u{13257}: { 180: 0 },
-\u{1327B}: { 90: 0, 270: 0 },
-\u{1327F}: { 90: 0, 180: 0 },
-\u{13285}: { 90: 0 },
-\u{1328C}: { 90: 0 },
-\u{132A4}: { 180: 0, 270: 0 },
-\u{132AA}: { 90: 0 },
-\u{132CB}: { 90: 0 },
-\u{132DC}: { 90: 0 },
-\u{132E7}: { 90: 0, 270: 0 },
-\u{132E9}: { 270: 0 },
-\u{132F8}: { 270: 0 },
-\u{132FD}: { 270: 0 },
-\u{13302}: { 270: 0 },
-\u{13303}: { 270: 0 },
-\u{13307}: { 90: 0 },
-\u{13308}: { 180: 0 },
-\u{13310}: { 270: 0 },
-\u{13311}: { 270: 0 },
-\u{13312}: { 180: 0, 270: 0 },
-\u{13313}: { 180: 0, 270: 0 },
-\u{13314}: { 180: 0, 270: 0 },
-\u{1331B}: { 90: 0, 180: 0 },
-\u{1331C}: { 270: 0 },
-\u{13321}: { 180: 0, 270: 0 },
-\u{13322}: { 90: 0, 180: 0 },
-\u{13331}: { 180: 0, 270: 0 },
-\u{13338}: { 45: -15, 315: 5 },
-\u{1333C}: { 90: 0 },
-\u{1334A}: { 270: 0 },
-\u{13361}: { 270: 0 },
-\u{13373}: { 270: 0 },
-\u{13377}: { 90: 0 },
-\u{13378}: { 90: 0 },
-\u{1337D}: { 270: 0 },
-\u{13385}: { 270: 0 },
-\u{13399}: { 90: 0 },
-\u{1339A}: { 90: 0 },
-\u{133AF}: { 270: 0 },
-\u{133B0}: { 270: 0 },
-\u{133BF}: { 270: 0 },
-\u{133D3}: { 90: 0 },
-\u{133DB}: { 270: 0 },
-\u{133DD}: { 270: 0 },
-\u{133E5}: { 90: 0 },
-\u{133E7}: { 90: 0 },
-\u{133E8}: { 180: 0 },
-\u{133F2}: { 90: 0 },
-\u{133F5}: { 90: 0 },
-\u{133F6}: { 90: 0 },
-\u{13416}: { 90: 0 },
-\u{13419}: { 90: 0, 180: 0, 270: 0 },
-\u{1341A}: { 90: 0 },
-\u{13423}: { 90: 0 },
-\u{1342C}: { 270: 0 },
-\u{1342E}: { 270: 0 },
+'\u{13012}': { 45: -15 },
+'\u{13091}': { 90: 0 },
+'\u{13093}': { 180: 0 },
+'\u{130B8}': { 45: -20 },
+'\u{130BA}': { 45: -20 },
+'\u{1310F}': { 90: 0, 45: -15 },
+'\u{13117}': { 270: 0 },
+'\u{1311C}': { 90: 0 },
+'\u{13121}': { 90: 0 },
+'\u{13127}': { 90: 0 },
+'\u{1312F}': { 45: -5, 315: 10 },
+'\u{13132}': { 180: 0 },
+'\u{13139}': { 90: 0, 180: 0, 270: 0, 45: 0, 135: 0, 225: 0, 315: 0 },
+'\u{13183}': { 270: 0 },
+'\u{13184}': { 45: -20, 315: 20 },
+'\u{13187}': { 180: 0 },
+'\u{1319C}': { 45: 0 },
+'\u{1319D}': { 45: -15 },
+'\u{1319F}': { 45: -15 },
+'\u{131A0}': { 90: 0, 270: 0 },
+'\u{131B1}': { 90: 0, 180: 0, 45: 0 },
+'\u{131B8}': { 90: 0 },
+'\u{131B9}': { 90: 0 },
+'\u{131BA}': { 270: 0 },
+'\u{131CB}': { 90: 0 },
+'\u{131DB}': { 45: -25, 315: 25 },
+'\u{131E0}': { 90: 0 },
+'\u{131EE}': { 180: 0, 270: 0, 315: 15 },
+'\u{131F8}': { 180: 0 },
+'\u{131F9}': { 90: 0, 180: 0 },
+'\u{131FA}': { 90: 0, 180: 0 },
+'\u{13205}': { 45: -15, 315: 15 },
+'\u{13216}': { 270: 0 },
+'\u{13257}': { 180: 0 },
+'\u{1327B}': { 90: 0, 270: 0 },
+'\u{1327F}': { 90: 0, 180: 0 },
+'\u{13285}': { 90: 0 },
+'\u{1328B}': { 180: 0 },
+'\u{1328C}': { 90: 0 },
+'\u{13296}': { 45: 0 },
+'\u{132A4}': { 180: 0, 270: 0, 315: 0 },
+'\u{132AA}': { 90: 0 },
+'\u{132CB}': { 90: 0 },
+'\u{132DC}': { 90: 0 },
+'\u{132E7}': { 90: 0, 270: 0 },
+'\u{132E9}': { 270: 0, 315: -15 },
+'\u{132F8}': { 270: 0 },
+'\u{132FD}': { 270: 0 },
+'\u{13302}': { 270: 0 },
+'\u{13303}': { 270: 0 },
+'\u{13307}': { 90: 0 },
+'\u{13308}': { 180: 0 },
+'\u{13310}': { 270: 0 },
+'\u{13311}': { 270: 0 },
+'\u{13312}': { 180: 0, 270: 0 },
+'\u{13313}': { 180: 0, 270: 0 },
+'\u{13314}': { 180: 0, 270: 0 },
+'\u{1331B}': { 90: 0, 180: 0 },
+'\u{1331C}': { 270: 0 },
+'\u{13321}': { 180: 0, 270: 0 },
+'\u{13322}': { 90: 0, 180: 0 },
+'\u{1332B}': { 315: 25 },
+'\u{13331}': { 180: 0, 270: 0 },
+'\u{13338}': { 45: -15, 315: 5 },
+'\u{1333C}': { 90: 0 },
+'\u{1334A}': { 270: 0 },
+'\u{13361}': { 270: 0 },
+'\u{13370}': { 315: 5 },
+'\u{13371}': { 315: 0 },
+'\u{13373}': { 270: 0 },
+'\u{13377}': { 90: 0 },
+'\u{13378}': { 90: 0 },
+'\u{1337D}': { 270: 0 },
+'\u{13385}': { 270: 0 },
+'\u{13399}': { 90: 0 },
+'\u{1339A}': { 90: 0 },
+'\u{133AF}': { 270: 0 },
+'\u{133B0}': { 270: 0 },
+'\u{133BF}': { 270: 0 },
+'\u{133D3}': { 90: 0 },
+'\u{133DB}': { 270: 0 },
+'\u{133DD}': { 270: 0 },
+'\u{133E4}': { 90: 0 },
+'\u{133E5}': { 90: 0 },
+'\u{133E7}': { 90: 0 },
+'\u{133E8}': { 180: 0 },
+'\u{133EE}': { 90: 0 },
+'\u{133F2}': { 90: 0 },
+'\u{133F5}': { 90: 0 },
+'\u{133F6}': { 90: 0 },
+'\u{1340D}': { 135: 0 },
+'\u{13416}': { 90: 0 },
+'\u{13419}': { 90: 0, 180: 0, 270: 0, 45: -30, 315: 30 },
+'\u{1341A}': { 90: 0 },
+'\u{13423}': { 90: 0 },
+'\u{1342C}': { 270: 0 },
+'\u{1342E}': { 270: 0 },
+'\u{13BE8}': { 90: 0 },
+'\u{13BE9}': { 90: 0 },
+'\u{13BEA}': { 90: 0 },
+'\u{13F1F}': { 180: 0 },
+'\u{13F72}': { 90: 0 },
+'\u{14274}': { 180: 0, 270: 0, 225: 25, 315: 25 },
 };
  
 Shapes.ligatures = {
-\u{130C1}: {
+'\u{130C1}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{130C0}', x: 0.2, y: 0, w: 0.5, h: 1 } ],
 	vertical: [ { ch: '\u{1309D}', x: 0, y: 0.3, w: 1, h: 0.25 } ] },
-\u{13174}: {
+'\u{13174}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{13171}', x: 0.2, y: 0, w: 0.65, h: 1 } ],
 	vertical: [ { ch: '\u{1309D}', x: 0, y: 0.1, w: 1, h: 0.25 } ] },
@@ -3664,7 +3692,11 @@ Shapes.ligatures = {
 	alt: true,
 	horizontal: [ { ch: '\u{13171}', x: 0.2, y: 0, w: 0.65, h: 1 } ],
 	vertical: [ { ch: '\u{1309D}', x: 0, y: 0.3, w: 1, h: 0.25 } ] },
-\u{13175}: {
+'\u{13B8B}': {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{13103}', x: 0, y: 0, w: 0.8, h: 1 } ],
+	vertical: [ { ch: '\u{1308B}', x: 0.1, y: 0.75, w: 0.9, h: 0.2 } ] },
+'\u{13175}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{13171}', x: 0.2, y: 0, w: 0.65, h: 1 } ],
 	vertical: [ { ch: '\u{1309E}', x: 0, y: 0.05, w: 1, h: 0.25 } ] },
@@ -3673,11 +3705,11 @@ Shapes.ligatures = {
 	alt: true,
 	horizontal: [ { ch: '\u{13171}', x: 0.2, y: 0, w: 0.65, h: 1 } ],
 	vertical: [ { ch: '\u{1309E}', x: 0, y: 0.25, w: 1, h: 0.25 } ] },
-\u{13176}: {
+'\u{13176}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{13171}', x: 0.05, y: 0, w: 0.8, h: 1 } ],
 	vertical: [ { ch: '\u{13333}', x: 0, y: 0, w: 1, h: 0.6 } ] },
-\u{131AE}: {
+'\u{131AE}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{131AD}', x: 0.2, y: 0, w: 0.6, h: 1 } ],
 	vertical: [ { ch: '\u{131B1}', x: 0, y: 0.7, w: 1, h: 0.3 } ] },
@@ -3686,7 +3718,7 @@ Shapes.ligatures = {
 	alt: true,
 	horizontal: [ { ch: '\u{131AD}', x: 0.2, y: 0, w: 0.6, h: 1 } ],
 	vertical: [ { ch: '\u{131B1}', x: 0, y: 0.35, w: 1, h: 0.3 } ] },
-\u{131AF}: {
+'\u{131AF}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{131AD}', x: 0.25, y: 0, w: 0.45, h: 1 } ],
 	vertical: [ { ch: '\u{13191}', x: 0, y: 0.6, w: 1, h: 0.4 } ] },
@@ -3695,15 +3727,15 @@ Shapes.ligatures = {
 	alt: true,
 	horizontal: [ { ch: '\u{131AD}', x: 0.25, y: 0, w: 0.45, h: 1 } ],
 	vertical: [ { ch: '\u{13191}', x: 0, y: 0.3, w: 1, h: 0.4 } ] },
-\u{131C6}: {
+'\u{131C6}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{131C5}', x: 0.25, y: 0, w: 0.4, h: 1 } ],
 	vertical: [ { ch: '\u{13193}', x: 0, y: 0.1, w: 1, h: 0.85 } ] },
-\u{131D8}: {
+'\u{131D8}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{131D7}', x: 0.2, y: 0, w: 0.55, h: 1 } ],
 	vertical: [ { ch: '\u{1309D}', x: 0, y: 0.1, w: 1, h: 0.3 } ] },
-\u{132A3}: {
+'\u{132A3}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{132A2}', x: 0.3, y: 0, w: 0.4, h: 1 } ],
 	vertical: [ { ch: '\u{1309D}', x: 0, y: 0.55, w: 1, h: 0.25 } ] },
@@ -3712,15 +3744,15 @@ Shapes.ligatures = {
 	alt: true,
 	horizontal: [ { ch: '\u{132A2}', x: 0.3, y: 0, w: 0.4, h: 1 } ],
 	vertical: [ { ch: '\u{1309D}', x: 0, y: 0.25, w: 1, h: 0.25 } ] },
-\u{132A5}: {
+'\u{132A5}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{132A4}', x: 0.3, y: 0, w: 0.25, h: 1 } ],
 	vertical: [ { ch: '\u{13191}', x: 0, y: 0.2, w: 1, h: 0.4 } ] },
-\u{132DF}: {
+'\u{132DF}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{130C0}', x: 0.1, y: 0, w: 0.45, h: 1 } ],
 	vertical: [ { ch: '\u{132DE}', x: 0, y: 0.25, w: 1, h: 0.5 } ] },
-\u{132E0}: {
+'\u{132E0}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{13309}', x: 0.35, y: 0, w: 0.25, h: 1 } ],
 	vertical: [ { ch: '\u{132DE}', x: 0, y: 0.5, w: 1, h: 0.5 } ] },
@@ -3729,7 +3761,7 @@ Shapes.ligatures = {
 	alt: true,
 	horizontal: [ { ch: '\u{13309}', x: 0.35, y: 0, w: 0.25, h: 1 } ],
 	vertical: [ { ch: '\u{132DE}', x: 0, y: 0.3, w: 1, h: 0.5 } ] },
-\u{132E1}: {
+'\u{132E1}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{13300}', x: 0.30, y: 0, w: 0.3, h: 1 } ],
 	vertical: [ { ch: '\u{132DE}', x: 0, y: 0.4, w: 1, h: 0.5 } ] },
@@ -3738,11 +3770,11 @@ Shapes.ligatures = {
 	alt: true,
 	horizontal: [ { ch: '\u{13300}', x: 0.30, y: 0, w: 0.3, h: 1 } ],
 	vertical: [ { ch: '\u{132DE}', x: 0, y: 0.3, w: 1, h: 0.5 } ] },
-\u{132F5}: {
+'\u{132F5}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{132F4}', x: 0.4, y: 0, w: 0.25, h: 1 } ],
 	vertical: [ { ch: '\u{13191}', x: 0, y: 0.2, w: 1, h: 0.3 } ] },
-\u{132F6}: {
+'\u{132F6}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{132F4}', x: 0.3, y: 0, w: 0.25, h: 1 } ],
 	vertical: [ { ch: '\u{13333}', x: 0, y: 0.1, w: 1, h: 0.8 } ] },
@@ -3751,7 +3783,7 @@ Shapes.ligatures = {
 	alt: true,
 	horizontal: [ { ch: '\u{132F4}', x: 0.3, y: 0, w: 0.25, h: 1 } ],
 	vertical: [ { ch: '\u{13333}', x: 0, y: 0.1, w: 1, h: 0.6 } ] },
-\u{1330C}: {
+'\u{1330C}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{13309}', x: 0.35, y: 0, w: 0.3, h: 1 } ],
 	vertical: [ { ch: '\u{13193}', x: 0, y: 0.2, w: 1, h: 0.8 } ] },
@@ -3760,7 +3792,7 @@ Shapes.ligatures = {
 	alt: true,
 	horizontal: [ { ch: '\u{13309}', x: 0.35, y: 0, w: 0.3, h: 1 } ],
 	vertical: [ { ch: '\u{13193}', x: 0, y: 0.2, w: 1, h: 0.6 } ] },
-\u{1330D}: {
+'\u{1330D}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{13309}', x: 0.35, y: 0, w: 0.3, h: 1 } ],
 	vertical: [ { ch: '\u{13193}', x: 0, y: 0.1, w: 1, h: 0.8 },
@@ -3771,19 +3803,19 @@ Shapes.ligatures = {
 	horizontal: [ { ch: '\u{13309}', x: 0.35, y: 0, w: 0.3, h: 1 } ],
 	vertical: [ { ch: '\u{13193}', x: 0, y: 0.1, w: 1, h: 0.7 },
 				{ ch: '\u{13193}', x: 0, y: 0.4, w: 0.8, h: 0.4 } ] },
-\u{1332D}: {
+'\u{1332D}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{132F4}', x: 0.35, y: 0, w: 0.25, h: 1 } ],
 	vertical: [ { ch: '\u{1332B}', x: 0, y: 0.2, w: 1, h: 0.4 } ] },
-\u{1332F}: {
+'\u{1332F}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{132F4}', x: 0.35, y: 0, w: 0.25, h: 1 } ],
 	vertical: [ { ch: '\u{1332E}', x: 0, y: 0.3, w: 1, h: 0.5 } ] },
-\u{1335A}: {
+'\u{1335A}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{13359}', x: 0.25, y: 0, w: 0.45, h: 1 } ],
 	vertical: [ { ch: '\u{13191}', x: 0, y: 0.4, w: 1, h: 0.3 } ] },
-\u{1339E}: {
+'\u{1339E}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{1339D}', x: 0.2, y: 0, w: 0.45, h: 1 } ],
 	vertical: [ { ch: '\u{133A1}', x: 0, y: 0.3, w: 1, h: 0.3 } ] },
@@ -3834,6 +3866,14 @@ Shapes.ligatures = {
 	horizontal: [ { ch: '\u{130C0}', x: 0, y: 0, w: 0.45, h: 1 },
 				{ ch: '\u{130C0}', x: 0.45, y: 0, w: 0.45, h: 1 } ],
 	vertical: [ { ch: '\u{13283}', x: 0.2, y: 0.05, w: 0.8, h: 0.2 } ] },
+'\u{13B88}': { 
+	type: 'overlay',
+	horizontal: [ { ch: '\u{13B87}', x: 0, y: 0, w: 0.85, h: 1 } ],
+	vertical: [ { ch: '\u{1308B}', x: 0.1, y: 0.7, w: 0.9, h: 0.25 } ] },
+'\u{13B89}': {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{13B87}', x: 0.05, y: 0, w: 0.9, h: 1 } ],
+	vertical: [ { ch: '\u{1341D}', x: 0, y: 0.75, w: 1, h: 0.2 } ] },
 }
  
 class HieroJax {
@@ -8951,8 +8991,8 @@ Aa70:0x14205,
 Aa80:0x143FA};
  
 const mdcNames = {
-'A133': { str: '\u{13007}', kind: 'literal' },
-'A58B': { str: '\u{13043}', kind: 'literal' },
+'A133': { str: '\u{13007}', kind: 'literal' }, // not exact equivalent
+'A58B': { str: '\u{13043}', kind: 'literal' }, // matched Unicode 5.2 form but not Unicode 16 form
 'US1C2BEXTU': { str: '\u{1305D}', kind: 'literal' },
 'US1C2CEXTU': { str: '\u{1305E}', kind: 'literal' },
 'US1C13EXTU': { str: '\u{1306A}', kind: 'literal' },
@@ -8992,14 +9032,12 @@ const mdcNames = {
 'US1M12GEXTU': { str: '\u{131C3}', kind: 'literal' },
 'US1M12HEXTU': { str: '\u{131C4}', kind: 'literal' },
 'US1M17AEXTU': { str: '\u{131CC}', kind: 'literal' },
-'nn': { str: '\u{131D2}', kind: 'literal' },
 'US1M31AEXTU': { str: '\u{131DE}', kind: 'literal' },
 'US1M33BEXTU': { str: '\u{131E2}', kind: 'literal' },
 'US1M40AEXTU': { str: '\u{131EA}', kind: 'literal' },
-'N102': { str: '\u{13201}', kind: 'literal' },
-'O239': { str: '\u{13202}', kind: 'literal' },
-'xAst': { str: '\u{1320A}', kind: 'literal' },
-'O54': { str: '\u{13251}', kind: 'literal' },
+'N102': { str: '\u{13201}', kind: 'literal' }, // non-atomic
+'O239': { str: '\u{13202}', kind: 'literal' }, // non-atomic
+'O54': { str: '\u{13251}', kind: 'literal' }, // non-atomic
 'US1O6AEXTU': { str: '\u{13258}', kind: 'singleton' },
 'US1O6BEXTU': { str: '\u{13259}', kind: 'singleton' },
 'US1O6CEXTU': { str: '\u{1325A}', kind: 'singleton' },
@@ -9008,8 +9046,8 @@ const mdcNames = {
 'US1O6FEXTU': { str: '\u{1325D}', kind: 'singleton' },
 'US1O10BEXTU': { str: '\u{13263}', kind: 'literal' },
 'US248O10CEXTU': { str: '\u{13264}', kind: 'literal' },
-'O190': { str: '\u{13277}', kind: 'literal' },
-'O29v': { str: '\u{1327C}', kind: 'literal' },
+'O190': { str: '\u{13277}', kind: 'literal' }, // current code-charts corrupted
+'O29v': { str: '\u{1327C}', kind: 'literal' }, // rotation
 'US1O30AEXTU': { str: '\u{1327E}', kind: 'literal' },
 'US1O33AEXTU': { str: '\u{13282}', kind: 'singleton' },
 'US1O36AEXTU': { str: '\u{13286}', kind: 'singleton' },
@@ -9017,27 +9055,22 @@ const mdcNames = {
 'US1O36CEXTU': { str: '\u{13288}', kind: 'singleton' },
 'US1O36DEXTU': { str: '\u{13289}', kind: 'singleton' },
 'US1P3AEXTU': { str: '\u{1329F}', kind: 'literal' },
-'R16B': { str: '\u{132C3}', kind: 'literal' },
-'T63B': { str: '\u{132CE}', kind: 'literal' },
+'R16B': { str: '\u{132C3}', kind: 'literal' }, // not exact equivalent
+'T63B': { str: '\u{132CE}', kind: 'literal' }, // not exact equivalent
 'US1S14BEXTU': { str: '\u{132E2}', kind: 'literal' },
-'iw': { str: '\u{132F0}', kind: 'literal' },
 'US1S26BEXTU': { str: '\u{132F1}', kind: 'literal' },
 'US1S35ABEXTU': { str: '\u{132FB}', kind: 'literal' },
-'T60': { str: '\u{13316}', kind: 'literal' },
+'T60': { str: '\u{13316}', kind: 'literal' }, // UniKemet maps this to U+14212
 'US1T33AEXTU': { str: '\u{1332F}', kind: 'literal' },
 'US1U6AEXTU': { str: '\u{13339}', kind: 'literal' },
 'US1U6BEXTU': { str: '\u{1333A}', kind: 'literal' },
 'Ff7': { str: '\u{13357}', kind: 'literal' },
-'O30U': { str: '\u{13361}', kind: 'literal' },
-'200': { str: '\u{13363}', kind: 'literal' },
-'300': { str: '\u{13364}', kind: 'literal' },
-'400': { str: '\u{13365}', kind: 'literal' },
+'O30U': { str: '\u{1327D}\uFE01', kind: 'group' }, 
 'US1V1DEXTU': { str: '\u{13366}', kind: 'literal' },
 'US1V1EEXTU': { str: '\u{13367}', kind: 'literal' },
 'US1V1FEXTU': { str: '\u{13368}', kind: 'literal' },
 'US1V1GEXTU': { str: '\u{13369}', kind: 'literal' },
 'US1V1HEXTU': { str: '\u{1336A}', kind: 'literal' },
-'500': { str: '\u{1336B}', kind: 'literal' },
 'US1V11AEXTU': { str: '\u{13379}', kind: 'singleton' },
 'US1V11BEXTU': { str: '\u{1337A}', kind: 'singleton' },
 'US1V11CEXTU': { str: '\u{1337B}', kind: 'singleton' },
@@ -9050,12 +9083,7 @@ const mdcNames = {
 'US1V20FEXTU': { str: '\u{1338C}', kind: 'literal' },
 'US1V20GEXTU': { str: '\u{1338D}', kind: 'literal' },
 'US1V20HEXTU': { str: '\u{1338E}', kind: 'literal' },
-'20': { str: '\u{1338F}', kind: 'literal' },
-'30': { str: '\u{13390}', kind: 'literal' },
-'40': { str: '\u{13391}', kind: 'literal' },
-'50': { str: '\u{13392}', kind: 'literal' },
-'V81': { str: '\u{1339E}', kind: 'literal' },
-'nb': { str: '\u{133A0}', kind: 'literal' },
+'V81': { str: '\u{1339E}', kind: 'literal' }, // non-atomic
 'US1V33AEXTU': { str: '\u{133A5}', kind: 'literal' },
 'US1V40AEXTU': { str: '\u{133AE}', kind: 'literal' },
 'US1W14AEXTU': { str: '\u{133C0}', kind: 'literal' },
@@ -9065,7 +9093,7 @@ const mdcNames = {
 'US1X6AEXTU': { str: '\u{133D7}', kind: 'literal' },
 'Y1v': { str: '\u{133DB}\uFE02', kind: 'group' },
 'US1Z2AEXTU': { str: '\u{133E6}', kind: 'literal' },
-'N33AV': { str: '\u{133EC}', kind: 'literal' },
+'N33AV': { str: '\u{133EC}', kind: 'literal' }, // rotation
 'Ff203': { str: '\u{133F0}', kind: 'literal' },
 'US1Z13EXTU': { str: '\u{133F8}', kind: 'literal' },
 'Ff301': { str: '\u{133FA}', kind: 'literal' },
@@ -9077,9 +9105,8 @@ const mdcNames = {
 'US1Z15FEXTU': { str: '\u{13400}', kind: 'literal' },
 'US1Z15GEXTU': { str: '\u{13401}', kind: 'literal' },
 'US1Z15HEXTU': { str: '\u{13402}', kind: 'literal' },
-'5': { str: '\u{13403}', kind: 'literal' },
-'Z1A': { str: '\u{13404}', kind: 'literal' },
-'Z4B': { str: '\u{13405}', kind: 'literal' },
+'Z1A': { str: '\u{13404}', kind: 'literal' }, // rotation
+'Z4B': { str: '\u{13405}', kind: 'literal' }, // rotation
 'US1Z16BEXTU': { str: '\u{13406}', kind: 'literal' },
 'US1Z16CEXTU': { str: '\u{13407}', kind: 'literal' },
 'US1Z16DEXTU': { str: '\u{13408}', kind: 'literal' },
@@ -9088,10 +9115,9 @@ const mdcNames = {
 'US1Z16GEXTU': { str: '\u{1340B}', kind: 'literal' },
 'US1Z16HEXTU': { str: '\u{1340C}', kind: 'literal' },
 'US1Aa7AEXTU': { str: '\u{13414}', kind: 'literal' },
-'F51B': { str: '\u{13139}\uFE00\u{13440}', kind: 'group' },
+'F51B': { str: '\u{13139}\uFE00\u{13440}', kind: 'group' }, // rotation
 'G20A': { str: '\u{13C2E}\u{13436}\u{1309D}', kind: 'group' },
 'P8h': { str: '\u{132A4}\uFE02', kind: 'group' },
-'nTrw': { str: '\u{140FC}', kind: 'literal' },
 };
  
 const mdcNamesUniKemet = {
@@ -12958,7 +12984,7 @@ const mdcMnemonics = {
 '2': 'Z4a',
 '3': 'Z2a',
 '4': 'Z15c',
-'5': 'Z15d',
+'5': 'Z15i',
 '20': 'V20a',
 '30': 'V20b',
 '40': 'V20c',
@@ -12966,10 +12992,12 @@ const mdcMnemonics = {
 '200': 'V1a',
 '300': 'V1b',
 '400': 'V1c',
-'500': 'V1d',
+'500': 'V1i',
 'wnm': 'Z11',
 '`': 'Z14',
 'K': 'S46',
+'nTrw': 'R8a',
+'nn': 'M22a',
 };
  
 const MdcLigatures = {
@@ -14194,6 +14222,8 @@ class MdcSign extends MdcHieroglyph {
 			uniName = name.slice(0, -1) + name[name.length-1].toLowerCase();
 		if (uniName in uniGlyphs)
 			return String.fromCodePoint(uniGlyphs[uniName]);
+		else if (uniName in extGlyphs)
+			return String.fromCodePoint(extGlyphs[uniName]);
 		else
 			return Shapes.PLACEHOLDER;
 	}

@@ -19,14 +19,15 @@ The motivation is that the standard interpretation of the
 controls is sometimes unsatisfactory.
 This corresponds to <a href="ligatures.json">ligatures.json</a>.
 At present, all ligatures are overlays, but later we may consider insertions as well.
-The translation is only effective if overlays are normalized to have 
-narrow tall signs as first argument and wide short signs as second argument.
-In the future, the normalization may be different for overlays with a single sign as first argument 
-and a single sign as second argument, by assuming the code points occur in numerical order.
 </p>
 <p>
 One challenge is to translate any shading of the constituent signs to areas in
 the ligature. For this reason, each constituent sign comes with its bounding box.
+</p>
+<p>
+For an overlay with a single sign as first argument and a single sign as second argument, the
+rendering will be the same regardless of the order of the two signs.
+There is a proposal to normalize such overlays to have the code points in numerical order.
 </p>
 
 <ul id='ligatures'>

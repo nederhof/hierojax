@@ -43,7 +43,7 @@ function ligatureCanvas(ch, lig) {
 	const ctx = canvas.getContext('2d');
 	lig.horizontal.concat(lig.vertical).forEach(s => printRectangle(ctx, w, h, s))
 	Shapes.prepareFont(ctx, hieroSize, 'black');
-	ctx.fillText(ch, margin, margin + hieroSize);
+	ctx.fillText(ch, margin, margin + h)
 	return canvas;
 }
 

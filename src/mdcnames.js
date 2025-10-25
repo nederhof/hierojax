@@ -1,6 +1,6 @@
 const mdcNames = {
-'A133': { str: '\u{13007}', kind: 'literal' },
-'A58B': { str: '\u{13043}', kind: 'literal' },
+'A133': { str: '\u{13007}', kind: 'literal' }, // not exact equivalent
+'A58B': { str: '\u{13043}', kind: 'literal' }, // matched Unicode 5.2 form but not Unicode 16 form
 'US1C2BEXTU': { str: '\u{1305D}', kind: 'literal' },
 'US1C2CEXTU': { str: '\u{1305E}', kind: 'literal' },
 'US1C13EXTU': { str: '\u{1306A}', kind: 'literal' },
@@ -40,14 +40,12 @@ const mdcNames = {
 'US1M12GEXTU': { str: '\u{131C3}', kind: 'literal' },
 'US1M12HEXTU': { str: '\u{131C4}', kind: 'literal' },
 'US1M17AEXTU': { str: '\u{131CC}', kind: 'literal' },
-'nn': { str: '\u{131D2}', kind: 'literal' },
 'US1M31AEXTU': { str: '\u{131DE}', kind: 'literal' },
 'US1M33BEXTU': { str: '\u{131E2}', kind: 'literal' },
 'US1M40AEXTU': { str: '\u{131EA}', kind: 'literal' },
-'N102': { str: '\u{13201}', kind: 'literal' },
-'O239': { str: '\u{13202}', kind: 'literal' },
-'xAst': { str: '\u{1320A}', kind: 'literal' },
-'O54': { str: '\u{13251}', kind: 'literal' },
+'N102': { str: '\u{13201}', kind: 'literal' }, // non-atomic
+'O239': { str: '\u{13202}', kind: 'literal' }, // non-atomic
+'O54': { str: '\u{13251}', kind: 'literal' }, // non-atomic
 'US1O6AEXTU': { str: '\u{13258}', kind: 'singleton' },
 'US1O6BEXTU': { str: '\u{13259}', kind: 'singleton' },
 'US1O6CEXTU': { str: '\u{1325A}', kind: 'singleton' },
@@ -56,8 +54,8 @@ const mdcNames = {
 'US1O6FEXTU': { str: '\u{1325D}', kind: 'singleton' },
 'US1O10BEXTU': { str: '\u{13263}', kind: 'literal' },
 'US248O10CEXTU': { str: '\u{13264}', kind: 'literal' },
-'O190': { str: '\u{13277}', kind: 'literal' },
-'O29v': { str: '\u{1327C}', kind: 'literal' },
+'O190': { str: '\u{13277}', kind: 'literal' }, // current code-charts corrupted
+'O29v': { str: '\u{1327C}', kind: 'literal' }, // rotation
 'US1O30AEXTU': { str: '\u{1327E}', kind: 'literal' },
 'US1O33AEXTU': { str: '\u{13282}', kind: 'singleton' },
 'US1O36AEXTU': { str: '\u{13286}', kind: 'singleton' },
@@ -65,27 +63,22 @@ const mdcNames = {
 'US1O36CEXTU': { str: '\u{13288}', kind: 'singleton' },
 'US1O36DEXTU': { str: '\u{13289}', kind: 'singleton' },
 'US1P3AEXTU': { str: '\u{1329F}', kind: 'literal' },
-'R16B': { str: '\u{132C3}', kind: 'literal' },
-'T63B': { str: '\u{132CE}', kind: 'literal' },
+'R16B': { str: '\u{132C3}', kind: 'literal' }, // not exact equivalent
+'T63B': { str: '\u{132CE}', kind: 'literal' }, // not exact equivalent
 'US1S14BEXTU': { str: '\u{132E2}', kind: 'literal' },
-'iw': { str: '\u{132F0}', kind: 'literal' },
 'US1S26BEXTU': { str: '\u{132F1}', kind: 'literal' },
 'US1S35ABEXTU': { str: '\u{132FB}', kind: 'literal' },
-'T60': { str: '\u{13316}', kind: 'literal' },
+'T60': { str: '\u{13316}', kind: 'literal' }, // UniKemet maps this to U+14212
 'US1T33AEXTU': { str: '\u{1332F}', kind: 'literal' },
 'US1U6AEXTU': { str: '\u{13339}', kind: 'literal' },
 'US1U6BEXTU': { str: '\u{1333A}', kind: 'literal' },
 'Ff7': { str: '\u{13357}', kind: 'literal' },
-'O30U': { str: '\u{13361}', kind: 'literal' },
-'200': { str: '\u{13363}', kind: 'literal' },
-'300': { str: '\u{13364}', kind: 'literal' },
-'400': { str: '\u{13365}', kind: 'literal' },
+'O30U': { str: '\u{1327D}\uFE01', kind: 'group' }, 
 'US1V1DEXTU': { str: '\u{13366}', kind: 'literal' },
 'US1V1EEXTU': { str: '\u{13367}', kind: 'literal' },
 'US1V1FEXTU': { str: '\u{13368}', kind: 'literal' },
 'US1V1GEXTU': { str: '\u{13369}', kind: 'literal' },
 'US1V1HEXTU': { str: '\u{1336A}', kind: 'literal' },
-'500': { str: '\u{1336B}', kind: 'literal' },
 'US1V11AEXTU': { str: '\u{13379}', kind: 'singleton' },
 'US1V11BEXTU': { str: '\u{1337A}', kind: 'singleton' },
 'US1V11CEXTU': { str: '\u{1337B}', kind: 'singleton' },
@@ -98,12 +91,7 @@ const mdcNames = {
 'US1V20FEXTU': { str: '\u{1338C}', kind: 'literal' },
 'US1V20GEXTU': { str: '\u{1338D}', kind: 'literal' },
 'US1V20HEXTU': { str: '\u{1338E}', kind: 'literal' },
-'20': { str: '\u{1338F}', kind: 'literal' },
-'30': { str: '\u{13390}', kind: 'literal' },
-'40': { str: '\u{13391}', kind: 'literal' },
-'50': { str: '\u{13392}', kind: 'literal' },
-'V81': { str: '\u{1339E}', kind: 'literal' },
-'nb': { str: '\u{133A0}', kind: 'literal' },
+'V81': { str: '\u{1339E}', kind: 'literal' }, // non-atomic
 'US1V33AEXTU': { str: '\u{133A5}', kind: 'literal' },
 'US1V40AEXTU': { str: '\u{133AE}', kind: 'literal' },
 'US1W14AEXTU': { str: '\u{133C0}', kind: 'literal' },
@@ -113,7 +101,7 @@ const mdcNames = {
 'US1X6AEXTU': { str: '\u{133D7}', kind: 'literal' },
 'Y1v': { str: '\u{133DB}\uFE02', kind: 'group' },
 'US1Z2AEXTU': { str: '\u{133E6}', kind: 'literal' },
-'N33AV': { str: '\u{133EC}', kind: 'literal' },
+'N33AV': { str: '\u{133EC}', kind: 'literal' }, // rotation
 'Ff203': { str: '\u{133F0}', kind: 'literal' },
 'US1Z13EXTU': { str: '\u{133F8}', kind: 'literal' },
 'Ff301': { str: '\u{133FA}', kind: 'literal' },
@@ -125,9 +113,8 @@ const mdcNames = {
 'US1Z15FEXTU': { str: '\u{13400}', kind: 'literal' },
 'US1Z15GEXTU': { str: '\u{13401}', kind: 'literal' },
 'US1Z15HEXTU': { str: '\u{13402}', kind: 'literal' },
-'5': { str: '\u{13403}', kind: 'literal' },
-'Z1A': { str: '\u{13404}', kind: 'literal' },
-'Z4B': { str: '\u{13405}', kind: 'literal' },
+'Z1A': { str: '\u{13404}', kind: 'literal' }, // rotation
+'Z4B': { str: '\u{13405}', kind: 'literal' }, // rotation
 'US1Z16BEXTU': { str: '\u{13406}', kind: 'literal' },
 'US1Z16CEXTU': { str: '\u{13407}', kind: 'literal' },
 'US1Z16DEXTU': { str: '\u{13408}', kind: 'literal' },
@@ -136,8 +123,7 @@ const mdcNames = {
 'US1Z16GEXTU': { str: '\u{1340B}', kind: 'literal' },
 'US1Z16HEXTU': { str: '\u{1340C}', kind: 'literal' },
 'US1Aa7AEXTU': { str: '\u{13414}', kind: 'literal' },
-'F51B': { str: '\u{13139}\uFE00\u{13440}', kind: 'group' },
+'F51B': { str: '\u{13139}\uFE00\u{13440}', kind: 'group' }, // rotation
 'G20A': { str: '\u{13C2E}\u{13436}\u{1309D}', kind: 'group' },
 'P8h': { str: '\u{132A4}\uFE02', kind: 'group' },
-'nTrw': { str: '\u{140FC}', kind: 'literal' },
 };

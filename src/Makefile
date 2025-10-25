@@ -123,15 +123,15 @@ all: ../docs/hierojax.js ../docs/hierojaxedit.js ../docs/mdcconversion.js ../doc
 
 jsons: insertions.json rotations.json ligatures.json
 
-insertions.json: insertions.js
+insertions.json: convertinit.js insertions.js convertinsertions.js
 	cat convertinit.js insertions.js convertinsertions.js | js > insertions.json
 	cp insertions.json ../docs/
 
-rotations.json: rotations.js
+rotations.json: convertinit.js rotations.js convertrotations.js
 	cat convertinit.js rotations.js convertrotations.js | js > rotations.json
 	cp rotations.json ../docs/
 
-ligatures.json: ligatures.js
+ligatures.json: convertinit.js ligatures.js convertligatures.js
 	cat convertinit.js ligatures.js convertligatures.js | js > ligatures.json
 	cp ligatures.json ../docs/
 

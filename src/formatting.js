@@ -1472,7 +1472,7 @@ class Enclosure extends Group {
 		return Group.h(options) ? ch : Shapes.rotatedChars[ch];
 	}
 	outlineSize(options) {
-		const size = shapes.emSizeOf(this.outlineCh(options), options.fontsize, 1, 1, 0);
+		const size = shapes.emSizeOf(this.outlineCh(options), options.fontsize, 1, 1, 0, false);
 		return { w: this.scale * size.w, h: this.scale * size.h };
 	}
 	resize(f) {
@@ -1553,7 +1553,6 @@ class Enclosure extends Group {
 		const size = this.size(options);
 		const bufX = ((x2Encl-x1Encl) - size.w) / 2;
 		const bufY = ((y2Encl-y1Encl) - size.h) / 2;
-		const inner = this.innerSize(options);
 		const open = this.openSize(options);
 		const close = this.closeSize(options);
 		const outline = this.outlineSize(options);
@@ -1583,8 +1582,8 @@ class Enclosure extends Group {
 			for (let i = 0; i < this.groups.length; i++) {
 				const group = this.groups[i];
 				var x2 = x1 + group.size(options).w;
-				var x3 = !this.delimClose ? x3Encl :
-					i < this.groups.length-1 ? x2 + this.scale * options.sep / 2 :
+				var x3 = i < this.groups.length-1 ? x2 + this.scale * options.sep / 2 :
+					!this.delimClose ? x3Encl :
 					this.delimCloseRect.x - this.kernCloseSize();
 				group.format(options, x0, x1, x2, x3, y0Encl,
 					y1Encl + bufY + this.thickness(),
@@ -1615,8 +1614,8 @@ class Enclosure extends Group {
 			for (let i = 0; i < this.groups.length; i++) {
 				const group = this.groups[i];
 				var y2 = y1 + group.size(options).h;
-				var y3 = !this.delimClose ? y3Encl :
-					i < this.groups.length-1 ? y2 + this.scale * options.sep / 2 :
+				var y3 = i < this.groups.length-1 ? y2 + this.scale * options.sep / 2 :
+					!this.delimClose ? y3Encl :
 					this.delimCloseRect.y - this.kernCloseSize();
 				group.format(options, x0Encl,
 					x1Encl + bufX + this.thickness(),
@@ -1776,17 +1775,17 @@ class Basic extends Group {
 				if (place in this.core.adjustments)
 					adjustments = this.core.adjustments[place];
 				const position = Shapes.insertionPosition(place, adjustments);
-				var xInit = Math.min(coreW-1, Math.round(position.x * coreW));
-				var yInit = Math.min(coreH-1, Math.round(position.y * coreH));
+				const xInit = Math.min(coreW-1, Math.round(position.x * coreW));
+				const yInit = Math.min(coreH-1, Math.round(position.y * coreH));
 				const rectInit = Shapes.openRect(corePrinted.canvas, xInit, yInit);
 				const margin = Math.round(measSize * options.sep);
 				const hull = Shapes.orthogonalHullWithBuffer(insPrinted.canvas, margin);
-				var marginL = position.x == 0 ? 0 : -hull.xMin;
-				var marginR = position.x == 1 ? 0 : hull.xMax - (hull.w-1);
-				var marginT = position.y == 0 ? 0 : -hull.yMin;
-				var marginB = position.y == 1 ? 0 : hull.yMax - (hull.h-1);
-				var insTotalW = hull.w + marginL + marginR;
-				var insTotalH = hull.h + marginT + marginB;
+				const marginL = position.x == 0 ? 0 : -hull.xMin;
+				const marginR = position.x == 1 ? 0 : hull.xMax - (hull.w-1);
+				const marginT = position.y == 0 ? 0 : -hull.yMin;
+				const marginB = position.y == 1 ? 0 : hull.yMax - (hull.h-1);
+				const insTotalW = hull.w + marginL + marginR;
+				const insTotalH = hull.h + marginT + marginB;
 				var scale = Math.min(1, rectInit.w / insTotalW, rectInit.h / insTotalH);
 				
 				/* determine initial position by dividing excess space */
@@ -1951,7 +1950,7 @@ class Overlay extends Group {
 		super();
 		this.lits1 = lits1;
 		this.lits2 = lits2;
-		this.lig = this.findLigature();
+		[this.lig, this.swap] = this.findLigature();
 		this.alt = this.lig;
 		this.adjustments = { };
 	}
@@ -1967,30 +1966,35 @@ class Overlay extends Group {
 					this.lits2[0].toString());
 	}
 	allowedPlaces() {
-		const lig = this.findLigature();
+		const [lig, swap] = this.findLigature();
 		return lig ? Shapes.allowedPlaces(lig, 0, false) : new Set(['ts', 'bs', 'te', 'be']);
 	}
 	findLigature() {
-		const chs = shapes.memoOverlayLigatures().get(this.lits1[0].ch);
-		if (chs && chs.length > 0)
-			for (const ch of chs)
-				if (this.matchLigature(ch))
-					return ch;
-		return null;
+		const ch1 = shapes.memoOverlayLigatures().get(this.lits1[0].ch);
+		const ch2 = shapes.memoOverlayLigatures().get(this.lits2[0].ch);
+		const chs = [...(ch1 || []), ...(ch2 || [])];
+		for (const ch of chs) {
+			if (Overlay.matchLigature(ch, this.lits1, this.lits2))
+				return [ch, false];
+			else if (this.lits1.length == 1 && this.lits2.length == 1 && 
+					Overlay.matchLigature(ch, this.lits2, this.lits1))
+				return [ch, true];
+		}
+		return [null, false];
 	}
-	matchLigature(ch) {
+	static matchLigature(ch, lits1, lits2) {
 		const lig = Shapes.ligatures[ch];
-		if (this.lits1.length != lig.horizontal.length || this.lits2.length != lig.vertical.length)
+		if (lits1.length != lig.horizontal.length || lits2.length != lig.vertical.length)
 			return false;
-		for (let i = 0; i < this.lits1.length; i++) {
+		for (let i = 0; i < lits1.length; i++) {
 			const sign = lig.horizontal[i];
-			const lit = this.lits1[i];
+			const lit = lits1[i];
 			if (lit.ch != sign.ch || lit.mirror != !!sign.mirror || lit.vs)
 				return false;
 		}
-		for (let i = 0; i < this.lits2.length; i++) {
+		for (let i = 0; i < lits2.length; i++) {
 			const sign = lig.vertical[i];
-			const lit = this.lits2[i];
+			const lit = lits2[i];
 			if (lit.ch != sign.ch || lit.mirror != !!sign.mirror || lit.vs)
 				return false;
 		}
@@ -2084,7 +2088,7 @@ class Overlay extends Group {
 		this.areas = [];
 		for (let i = 0; i < lig.horizontal.length; i++) {
 			const s = lig.horizontal[i];
-			const damage = this.lits1[i].damage;
+			const damage = this.swap ? this.lits2[i].damage : this.lits1[i].damage;
 			const xMin = i == 0 ? x0 : this.x + s.x * this.w;
 			const xMid = this.x + (s.x + s.w / 2) * this.w;
 			const xMax = i == lig.horizontal.length-1 ? x3 : this.x + (s.x + s.w) * this.w;
@@ -2093,7 +2097,7 @@ class Overlay extends Group {
 		}
 		for (let i = 0; i < lig.vertical.length; i++) {
 			const s = lig.vertical[i];
-			const damage = this.lits2[i].damage;
+			const damage = this.swap ? this.lits1[i].damage : this.lits2[i].damage;
 			const xMid = this.x + (s.x + s.w / 2) * this.w;
 			const yMin = i == 0 ? y0 : this.y + s.y * this.h;
 			const yMid = this.y + (s.y + s.h / 2) * this.h;
