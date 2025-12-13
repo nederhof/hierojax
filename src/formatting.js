@@ -1387,7 +1387,7 @@ class Horizontal extends Group {
 
 class Enclosure extends Group {
 	type; // 'plain' or 'walled'
-	groups; // array of Vertical/Horizontal/Enclosure/Basic/Overlay/Literal/Singleton/Blank/Lost
+	groups; // array of Vertical/Horizontal/Enclosure/Basic/Overlay/Literal/Blank/Lost
 	delimOpen; // character/null
 	damageOpen; // 0 -- 15
 	delimClose; // character/null

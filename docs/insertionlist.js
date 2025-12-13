@@ -102,7 +102,7 @@ function printInsertion(ch) {
 	const li = document.createElement('li');
 	if (!isLigature) {
 		const span = document.createElement('span');
-		span.innerHTML = '0x' + ch.codePointAt(0).toString(16).toUpperCase();
+		span.innerHTML = 'U+' + ch.codePointAt(0).toString(16).toUpperCase();
 		li.appendChild(span);
 	}
 	if (glyphs.length > 0 && 'glyph' in glyphs[0])

@@ -22,6 +22,33 @@ function expandedSpan(txt) {
 	return hiero;
 }
 
+function codepoints(txt) {
+	const points = document.createElement('span');
+	points.className = 'codepoints';
+	for (const ch of txt) {
+		var sym = '';
+		var isName = false;
+		if (ch == '\u{13437}' || ch == '\u{13438}') {
+			continue;
+		} else if (ch == '\u{13436}') {
+			sym = ' +  ';
+		} else if (ch == '\u{13431}') {
+			sym = '* ';
+		} else if (ch == '\u{13430}') {
+			sym = ': ';
+		} else {
+			sym = 'U+' + ch.codePointAt(0).toString(16).toUpperCase() + ' ';
+			isName = true;
+		}
+		const elem = document.createElement('span');
+		elem.innerText = sym;
+		if (isName)
+			elem.className = 'name';
+		points.appendChild(elem);
+	}
+	return points;
+}
+
 function printRectangle(ctx, wLig, hLig, sign) {
 	ctx.strokeStyle = 'blue';
 	const x = margin + Math.round(wLig * sign.x);
@@ -55,6 +82,7 @@ function printLigaturesPerExpanded(exp, ligatures) {
 			li.appendChild(ligatureCanvas(lig.ch, lig.lig))
 		li.appendChild(document.createTextNode(' \u21A4 '));
 		li.appendChild(expandedSpan(exp));
+		li.appendChild(codepoints(exp));
 	});
 	$('ligatures').appendChild(li);
 }
@@ -68,11 +96,21 @@ function printLigatures() {
 			expandedToChars.set(expanded, []);
 		expandedToChars.get(expanded).push({ ch, lig });
 	}
-	const expandeds = [...expandedToChars.keys()].sort();
+	const expandeds = [...expandedToChars.keys()].sort((a,b) => {
+		aGlyphs = stripBrackets(a);
+		bGlyphs = stripBrackets(b);
+		if (aGlyphs < bGlyphs) return -1;
+		else if (bGlyphs < aGlyphs) return 1;
+		else return a < b ? -1 : b < a ? 1 : 0;
+	});
 	for (let expanded of expandeds) {
 		const ligs = expandedToChars.get(expanded);
 		printLigaturesPerExpanded(expanded, ligs);
 	}
+}
+
+function stripBrackets(s) {
+	return s.replace(/[\u{13437}\u{13438}]/gu, '').replace(/\u{13436}/gu, ' ');
 }
 
 window.addEventListener("DOMContentLoaded", () => {

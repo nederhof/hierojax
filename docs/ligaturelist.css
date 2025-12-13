@@ -5,3 +5,12 @@ span {
 canvas {
 	vertical-align: top;
 }
+
+.codepoints {
+	font-size: 12px;
+	margin-left: 20px;
+}
+
+.name {
+	font-weight: bold;
+}

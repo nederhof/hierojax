@@ -32,7 +32,6 @@ class ResGlobals {
 	}
 	clone() {
 		var copy = new ResGlobals(this.direction, this.size);
-		copy.size = this.size;
 		copy.color = this.color;
 		copy.shade = this.shade;
 		copy.sep = this.sep;
@@ -576,7 +575,7 @@ class ResOp extends ResPart {
 			else if (arg.isPattern())
 				this.shades.push(arg.lhs);
 			else if (isFirst && arg.isSizeUnit())
-				this.size = this.rhs;
+				this.size = arg.rhs;
 			else
 				arg.error('Op');
 		}
@@ -730,20 +729,20 @@ class ResNamedglyph extends ResPart {
 		if (this.name == 'close')
 			this.name = 'V11b';
 		if (this.name in uniOpens) {
-			if (this.mirrored())
-				warnings.push('Cannot mirror singletons')
+			if (this.mirrored() || this.vs())
+				warnings.push('Cannot mirror or rotate singletons')
 			return { group: new Singleton(String.fromCodePoint(uniOpens[this.name]), this.shading()),
 						warnings };
 		}
 		if (this.name in uniCloses) {
-			if (this.mirrored())
-				warnings.push('Cannot mirror singletons')
+			if (this.mirrored() || this.vs())
+				warnings.push('Cannot mirror or rotate singletons')
 			return { group: new Singleton(String.fromCodePoint(uniCloses[this.name]), this.shading()),
 						warnings };
 		}
 		if (this.name[0] == '"') {
-			if (this.mirrored() || this.shading())
-				warnings.push('Cannot mirror or shade brackets');
+			if (this.mirrored() || this.vs() || this.shading())
+				warnings.push('Cannot mirror or rotate or shade brackets');
 			const ch = this.name[1];
 			switch (ch) {
 				case '[':
@@ -767,8 +766,7 @@ class ResNamedglyph extends ResPart {
 		const ch = ResNamedglyph.nameToChar(this.name);
 		if (ch == Shapes.PLACEHOLDER)
 			warnings.push('Cannot translate named glyph: ' + this.name);
-		return { group: new Literal(ResNamedglyph.nameToChar(this.name),
-						this.vs(), this.mirrored(), this.shading()), warnings };
+		return { group: new Literal(ch, this.vs(), this.mirrored(), this.shading()), warnings };
 	}
 	static nameToChar(name) {
 		if (name in uniMnemonics)
@@ -820,8 +818,7 @@ class ResEmptyglyph extends ResPart {
 		if (this.shade == true) {
 			args.push('shade');
 			noPointArgs = true;
-		}
-		if (this.shade == false) {
+		} else if (this.shade == false) {
 			args.push('noshade');
 			noPointArgs = true;
 		}
@@ -890,7 +887,7 @@ class ResBox extends ResPart {
 			else if (arg.isRealNonZero('scale'))
 				this.scale = arg.rhs;
 			else if (arg.isColor())
-				this.color = arg.rhs;
+				this.color = arg.lhs;
 			else if (arg.is('shade'))
 				this.shade = true;
 			else if (arg.is('noshade'))
@@ -943,7 +940,7 @@ class ResBox extends ResPart {
 			args.push('undersep=' + ResArg.realStr(this.undersep));
 		if (this.oversep != null)
 			args.push('oversep=' + ResArg.realStr(this.oversep));
-		var s = this.type + ResArg.argsStr(args) +
+		var s = this.name + ResArg.argsStr(args) +
 			'(' + this.sw1.toString() +
 			(this.hiero == null ? '' : this.hiero.toString()) +
 			')';
@@ -965,6 +962,9 @@ class ResBox extends ResPart {
 			globals = this.notes[i].propagate(globals);
 		return this.sw2.update(globals);
 	}
+	mirrored() {
+		return this.mirror != null ? this.mirror : this.globals.mirror;
+	}
 	nColor() {
 		return this.hiero != null ? this.hiero.nColor() : super.nColor();
 	}
@@ -983,7 +983,7 @@ class ResBox extends ResPart {
 		var delimClose = '\u{1337A}';
 		switch (this.name) {
 			case 'cartouche':
-				if (this.mirror) {
+				if (this.mirrored()) {
 					delimOpen = '\u{1342F}';
 					delimClose = '\u{1337B}';
 				}
@@ -992,7 +992,7 @@ class ResBox extends ResPart {
 					delimClose = '\u{1337B}';
 				break;
 			case 'serekh':
-				if (this.mirror)
+				if (this.mirrored())
 					warnings.push('Cannot mirror serekh');
 				delimOpen = '\u{13258}';
 				delimClose = '\u{13282}';
@@ -1007,7 +1007,7 @@ class ResBox extends ResPart {
 				delimClose = '\u{1325D}';
 				break;
 			case 'Hwtopenover':
-				if (this.mirror) {
+				if (this.mirrored()) {
 					delimOpen = '\u{13258}';
 					delimClose = '\u{1325B}';
 				} else {
@@ -1016,7 +1016,7 @@ class ResBox extends ResPart {
 				}
 				break;
 			case 'Hwtopenunder':
-				if (this.mirror) {
+				if (this.mirrored()) {
 					delimOpen = '\u{13258}';
 					delimClose = '\u{1325C}';
 				} else {
@@ -1025,7 +1025,7 @@ class ResBox extends ResPart {
 				}
 				break;
 			case 'Hwtcloseover':
-				if (this.mirror) {
+				if (this.mirrored()) {
 					delimOpen = '\u{1325A}';
 					delimClose = '\u{1325D}';
 				} else {
@@ -1034,7 +1034,7 @@ class ResBox extends ResPart {
 				}
 				break;
 			case 'Hwtcloseunder':
-				if (this.mirror) {
+				if (this.mirrored()) {
 					delimOpen = '\u{13259}';
 					delimClose = '\u{1325D}';
 				} else {
