@@ -51,13 +51,13 @@ INTEGER [0-9]+
 
 '^'	return 'OMIT';
 
-'\\r1'	return 'ROTATE-90';
+'\\r1'	return 'ROTATE-270';
 '\\r2'	return 'ROTATE-180';
-'\\r3'	return 'ROTATE-270';
+'\\r3'	return 'ROTATE-90';
 '\\r4'	return 'ROTATE-360';
-'\\t1'	return 'ROTATE-90-MIRROR';
+'\\t1'	return 'ROTATE-270-MIRROR';
 '\\t2'	return 'ROTATE-180-MIRROR';
-'\\t3'	return 'ROTATE-270-MIRROR';
+'\\t3'	return 'ROTATE-90-MIRROR';
 '\\t4'	return 'ROTATE-360-MIRROR';
 '\\t'	return 'ROTATE-90-MIRROR';
 '\\R'{INTEGER}	return 'ROTATE-DEGREES';

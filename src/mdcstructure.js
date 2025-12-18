@@ -55,7 +55,6 @@ class MdcLine {
 		this.parts = parts;
 		this.propagateToggles();
 		this.propagateGroupShading();
-		// this.splitByColor();
 	}
 	propagateToggles() {
 		var state = new MdcState();
@@ -79,20 +78,6 @@ class MdcLine {
 				part.propagateGroupShading();
 		}
 	}
-/*
-	splitByColor() {
-		let i = 0;
-		for (let i = 0; i < this.parts.length; i++) {
-			const part = this.parts[i];
-			if (part instanceof MdcFragment) {
-				const parts = part.splitByColor();
-				if (parts.length > 1) {
-					this.parts.splice(i, 1, ...parts);
-				}
-			}
-		}
-	}
-*/
 }
 
 class MdcFragment {
@@ -181,16 +166,6 @@ class MdcFragment {
 		}
 		fragments.push(new MdcFragment(this.groups.slice(j)));
 		return fragments;
-/*
-		var red = this.groups[0].isRed();
-		for (let i = 1; i < this.groups.length; i++) {
-			if (this.groups[i].isRed() != red) {
-				return [new MdcFragment(this.groups.slice(0, i)),
-						new MdcFragment(this.groups.slice(i))];
-			}
-		}
-		return [this];
-*/
 	}
 	static strToGroup(str) {
 		return syntax.parse(str).groups[0];
@@ -201,12 +176,12 @@ class MdcPart {
 	nColor() {
 		return { black: 0, red: 0 };
 	}
-	propagateGroupShading(corners) {
-		this.quadratCorners = corners;
-	}
 	propagateToggles(state) {
 		this.state = state;
 		return state;
+	}
+	propagateGroupShading(corners) {
+		this.quadratCorners = corners;
 	}
 	static cornersToShading(corners) {
 		var shading = 0;
@@ -486,8 +461,6 @@ class MdcVertical extends MdcPart {
 			case Literal:
 			case Blank:
 			case Lost:
-			case BracketOpen:
-			case BracketClose:
 			case Vertical:
 				return true;
 			default:
@@ -553,7 +526,6 @@ class MdcHorizontal extends MdcPart {
 		return { black, red };
 	}
 	toGroup() {
-		const groups = MdcHorizontal.expand(this.subgroups());
 		if (this.groups.length > 2) {
 			const first = this.groups[0].chainedLeaf();
 			const last = this.groups[this.groups.length-1].chainedLeaf();
@@ -568,6 +540,7 @@ class MdcHorizontal extends MdcPart {
 				}
 			}
 		}
+		const groups = MdcHorizontal.expand(this.subgroups());
 		if (groups.length >= 2) {
 			const groupsProper = groups.filter(g =>
 				!(g instanceof BracketOpen || g instanceof BracketClose));
@@ -590,8 +563,6 @@ class MdcHorizontal extends MdcPart {
 			case Literal:
 			case Blank:
 			case Lost:
-			case BracketOpen:
-			case BracketClose:
 			case Vertical:
 				return true;
 			default:
