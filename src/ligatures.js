@@ -217,6 +217,15 @@ Shapes.ligatures = {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{13359}', x: 0.25, y: 0, w: 0.45, h: 1 } ],
 	vertical: [ { ch: '\u{13191}', x: 0, y: 0.4, w: 1, h: 0.3 } ] },
+'\u{13393}': {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{13386}', x: 0.3, y: 0, w: 0.45, h: 1 } ],
+	vertical: [ { ch: '\u{13193}', x: 0, y: 0.1, w: 1, h: 0.9 } ] },
+'\u{1432F}': {
+	type: 'overlay',
+	alt: true,
+	horizontal: [ { ch: '\u{13386}', x: 0.3, y: 0, w: 0.45, h: 0.45 } ],
+	vertical: [ { ch: '\u{13193}', x: 0, y: 0, w: 1, h: 1 } ] },
 '\u{1339E}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{1339D}', x: 0.2, y: 0, w: 0.45, h: 1 } ],

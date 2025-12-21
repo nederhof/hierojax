@@ -945,12 +945,8 @@ class BasicNode extends Node {
 		return Group.INSERTION_PLACES.filter(p => this.group[p]);
 	}
 	static initial(core, group) {
-		var place = 'ts';
-		if (core instanceof Literal) {
-			const places = Shapes.allowedPlaces(core.ch, core.rotationCoarse(), false);
-			if (places.size > 0)
-				place = places.values().next().value;
-		}
+		const places = core.allowedPlaces()
+		const place = places.length > 0 ? 'ts' : places.values().next().value;
 		var insertions = {};
 		insertions[place] = group;
 		return new Basic(core, insertions);

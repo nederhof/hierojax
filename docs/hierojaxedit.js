@@ -3343,6 +3343,7 @@ Shapes.insertions = {
 \u{1311E}: [{ b: { x: 0.4 } }],
 \u{13122}: [{ bs: { }, te: { } }],
 \u{13126}: [{ te: { } }],
+\u{13125}: [{ glyph: '\u{13BDF}', bs: { y: 0.7 }, be: { y: 0.7 } }],
 \u{1312A}: [{ glyph: '\u{E487}', b: { } }],
 \u{1312B}: [{ glyph: '\u{E488}', b: { } }],
 \u{13138}: [{ ts: { }, bs: { }, be: { }, te: { } }],
@@ -3544,6 +3545,7 @@ Shapes.insertions = {
 \u{1337C}: [{ b: { } }],
 \u{1337D}: [{ bs: { } }],
 \u{1337E}: [{ bs: { }, te: { } }],
+\u{13393}: [{ bs: { }, te: { } }, { glyph: '\u{1432F}', b: { }, te: { } }],
 \u{13394}: [{ b: { x: 0.4 } }],
 \u{13395}: [{ b: { x: 0.4 } }],
 \u{13396}: [{ b: { x: 0.4 } }],
@@ -4229,6 +4231,15 @@ Shapes.ligatures = {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{13359}', x: 0.25, y: 0, w: 0.45, h: 1 } ],
 	vertical: [ { ch: '\u{13191}', x: 0, y: 0.4, w: 1, h: 0.3 } ] },
+'\u{13393}': {
+	type: 'overlay',
+	horizontal: [ { ch: '\u{13386}', x: 0.3, y: 0, w: 0.45, h: 1 } ],
+	vertical: [ { ch: '\u{13193}', x: 0, y: 0.1, w: 1, h: 0.9 } ] },
+'\u{1432F}': {
+	type: 'overlay',
+	alt: true,
+	horizontal: [ { ch: '\u{13386}', x: 0.3, y: 0, w: 0.45, h: 0.45 } ],
+	vertical: [ { ch: '\u{13193}', x: 0, y: 0, w: 1, h: 1 } ] },
 '\u{1339E}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{1339D}', x: 0.2, y: 0, w: 0.45, h: 1 } ],
@@ -11386,12 +11397,8 @@ class BasicNode extends Node {
 		return Group.INSERTION_PLACES.filter(p => this.group[p]);
 	}
 	static initial(core, group) {
-		var place = 'ts';
-		if (core instanceof Literal) {
-			const places = Shapes.allowedPlaces(core.ch, core.rotationCoarse(), false);
-			if (places.size > 0)
-				place = places.values().next().value;
-		}
+		const places = core.allowedPlaces()
+		const place = places.length > 0 ? 'ts' : places.values().next().value;
 		var insertions = {};
 		insertions[place] = group;
 		return new Basic(core, insertions);
