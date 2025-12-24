@@ -11398,7 +11398,7 @@ class BasicNode extends Node {
 	}
 	static initial(core, group) {
 		const places = core.allowedPlaces()
-		const place = places.length > 0 ? 'ts' : places.values().next().value;
+		const place = places.size == 0 ? 'ts' : places.values().next().value;
 		var insertions = {};
 		insertions[place] = group;
 		return new Basic(core, insertions);
