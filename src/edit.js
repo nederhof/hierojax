@@ -959,6 +959,11 @@ class BasicNode extends Node {
 	}
 	insertChild(group) {
 		const address = this.address().concat(this.places().length * 2 + 2);
+		this.extend(group);
+		this.recreate();
+		tree.setFocusAddress(address);
+	}
+	extend(group) {
 		var place = null;
 		for (let p of this.allowedPlaces())
 			if (!this.group[p]) {
@@ -972,8 +977,7 @@ class BasicNode extends Node {
 					break;
 				}
 		this.group[place] = group;
-		this.recreate();
-		tree.setFocusAddress(address);
+		return this.group;
 	}
 	replaceChild(old, group) {
 		const address = old.address();
@@ -2156,7 +2160,10 @@ class Edit {
 				const childNum = node.childNumber();
 				const sibling1 = node.siblings()[childNum-1];
 				const sibling2 = node.siblings()[childNum+1];
-				return sibling1.isCore() && sibling2.isInsertion();
+				return (sibling1.isCore() || 
+						((sibling1 instanceof BasicNode) &&
+							sibling1.group.places().length < Group.INSERTION_PLACES.length)) && 
+						sibling2.isInsertion();
 			case LiteralNode:
 				return !node.usedInOverlay() && !node.usedAsCore();
 			case BasicNode:
@@ -2174,10 +2181,14 @@ class Edit {
 			case FragmentOpNode:
 			case VerticalOpNode:
 			case HorizontalOpNode: {
-				const address = node.address();
-				const siblings = node.siblings();
-				const index = node.childNumber();
-				node.replaceOp(BasicNode.initial(siblings[index-1].group, siblings[index+1].group));
+				const childNum = node.childNumber();
+				const sibling1 = node.siblings()[childNum-1];
+				const sibling2 = node.siblings()[childNum+1];
+				const address = sibling1.address();
+				if (sibling1.isCore())
+					node.replaceOp(BasicNode.initial(sibling1.group, sibling2.group));
+				else
+					node.replaceOp(sibling1.extend(sibling2.group));
 				tree.setFocusAddress(address);
 				break;
 			}
@@ -2263,6 +2274,7 @@ class Edit {
 		next.group.ch = tmp;
 		node.redrawToRoot();
 		next.redrawToRoot();
+		node.setEditing();
 		preview.update();
 	}
 	static canDoDelete() {
