@@ -13,7 +13,7 @@
 Groups are generally constructed from the bottom up, and from left to right
 (or right to left, depending on the text direction).
 One can use a combination of mouse clicks and keyboard input.
-Starting with an empty encoding, after pressing <b>Clear</b>, an example is:
+Starting with an empty encoding, after clicking on <b>Clear</b>, an example is:
 <ol>
 <li> Type <b>l</b> (the lower-case letter 'ell') or click on <b>literal</b>, and type <tt>sw</tt> into the text field
 <li> Type <b>-</b> (hyphen) or click on <b>append</b>
@@ -35,7 +35,7 @@ Next we want to move the ideogram marker (Z1) to the bottom right corner:
 <li> Select <b>be</b> to indicate the place of insertion, or alternatively
 press <tt>c</tt> until the place of insertion becomes <b>be</b>
 </ol>
-One can also enter an existing Unicode sequence into the text panel and press
+One can also enter an existing Unicode sequence into the text panel and click on
 <b>Parse</b>.
 
 <h2>Structure of the page</h2>
@@ -54,13 +54,13 @@ The panel for changing the text direction
 is located in the top-left or top-right corner of the page, immediately next
 to the preview panel.
 One may select the desired text direction
-by pressing one of the four relevant buttons.
-The direction affects the view but not the encoding 
+by clicking on one of the four relevant buttons.
+The direction affects the view but not the encoding
 itself.
 
 <h3>Preview panel</h3>
 
-The preview panel presents a fragment in graphical form, as it would
+The preview panel presents a fragment in graphical form, approximately as it would
 appear to the reader of a printed document or web page.
 
 <h3>Tree panel</h3>
@@ -73,8 +73,7 @@ The focus is the target of edit operations.
 In the tree panel, the focus is indicated by a thick blue boundary
 around a node, as opposed to a thin gray boundary.
 In the preview panel, the top-most group containing the current focus is
-indicated by blue lines. The current focus can also be 
-between two groups.
+indicated by blue lines. The current focus can also be between two groups.
 <p>
 Top-level groups are separated by nodes labeled '<b>-</b>'. These are not part
 of the encoding, but serve to make certain structural changes.
@@ -94,10 +93,10 @@ Only those buttons are shown that are relevant to the current focus.
 
 The text panel contains the Unicode fragment. This fragment is updated every time
 an edit is made, for example through the buttons in the control panel.
-Alternatively, one can edit the text panel and press
+Alternatively, one can edit the text panel and click on
 <b>Parse</b>, which updates the preview and tree panels.
-By pressing <b>Clear</b>, one obtains an empty fragment.
-By pressing <b>Copy</b>, the encoding is copied to the clipboard, if you wish
+By clicking on <b>Clear</b>, one obtains an empty fragment.
+By clicking on <b>Copy</b>, the encoding is copied to the clipboard, if you wish
 to include the encoding in another document.
 
 <h2>Editing</h2>
@@ -109,14 +108,14 @@ change the structure of a fragment:
 <ul>
 <li> <b>literal</b> creates a new group initially consisting of a sign, or changes a
 'blank' or 'lost' symbol into a sign.
-<li> <b>blank</b> and <b>lost</b> and <b>singleton</b> similarly create 
+<li> <b>blank</b> and <b>lost</b> and <b>singleton</b> similarly create
 new blanks, placeholders for lost signs and stand-alone enclosure caps.
 <li> <b>append</b> creates a new group following the current group,
 initially consisting of a single sign.
 <li> <b>prepend</b> creates a new group preceding the current group.
-<li> '<b>*</b>' generally appends a new subgroup of a horizontal group, 
+<li> '<b>*</b>' generally appends a new subgroup of a horizontal group,
 initially consisting of a single sign.
-If the current focus is another operator such as '<b>:</b>' however, 
+If the current focus is another operator such as '<b>:</b>' however,
 then the two groups on either side are combined into a horizontal group.
 <li> '<b>:</b>' behaves similarly, but for vertical groups.
 <li> '<b>+</b>' and '<b>;</b>' can be used to insert a new subgroup
@@ -126,7 +125,7 @@ and vertical group, respectively.
 <li> <b>overlay</b> and <b>insert</b> generally create
 a new element in the structure, of which the current focus becomes the
 first argument; the second argument initially consists of a sign.
-If the current focus is another operator such as '<b>:</b>' however, 
+If the current focus is another operator such as '<b>:</b>' however,
 then the two groups on either side become the two arguments of an overlay or insert,
 respectively.
 <li> <b>enclosure</b> creates an enclosure around a previously created group.
@@ -134,7 +133,7 @@ Note that at least one group from among the enclosed groups must exist first bef
 enclosure itself can be created.
 <li> <b>swap</b> swaps the name of the current literal and that of
 the next one.
-<li> <b>delete</b> generally removes the node with the current focus. 
+<li> <b>delete</b> generally removes the node with the current focus.
 This may lead to further changes to preserve the integrity of the syntax.
 Larger groups need to be deleted one element at a time. In order to delete a
 literal preceded or followed by brackets, the brackets first need to be removed.
@@ -150,7 +149,7 @@ top-level group, respectively.
 Buttons that change the structure of groups
 can be activated by entering characters such as
 '<b>*</b>', '<b>:</b>',
-the <b>Delete</b> key for <b>delete</b>, 
+the <b>Delete</b> key for <b>delete</b>,
 '<b>b</b>' for <b>blank</b>, etc.
 (See the letters on the buttons that are underlined.)
 For signs, '<b>d</b>' makes a sign 'damaged', '<b>m</b>' makes it
@@ -158,7 +157,7 @@ mirrored, and '<b>r</b>' chooses the next rotation.
 For insertions, '<b>c</b>' selects the next available place,
 for lost signs, '<b>x</b>' toggles the expansion, etc.
 <p>
-The above keyboard shortcuts will work if the browser's focus is 
+The above keyboard shortcuts will work if the browser's focus is
 on the preview or tree panels, which is indicated by a blue dotted border
 around the preview or tree panels.
 <p>
@@ -170,42 +169,41 @@ can be transferred to the name field by pressing the space bar.
 The name of a sign can be entered as a 'Gardiner name', or for some signs as a
 'mnemonic', as for example <tt>sw</tt> in place of <tt>M23</tt>.
 After typing the name of a sign, typing <tt>-</tt> (hyphen) is the same as
-pressing <b>append</b>; similarly one may type <tt>*</tt>, <tt>:</tt>,
+clicking on <b>append</b>; similarly one may type <tt>*</tt>, <tt>:</tt>,
 <tt>+</tt>, <tt>;</tt>.
 
 <h2>Sign chooser</h2>
 
 The following is relevant when the editor's focus is on a sign (literal).
 <p>
-The menu of signs is activated by clicking <b>menu</b>, or by entering
+The menu of signs is activated by clicking on <b>menu</b>, or by entering
 '<b>u</b>' when the browser's focus is on the preview or tree panels, or
 by entering '<b>u</b>' into an otherwise empty name field.
 <p>
-By clicking the tabs at the top of the window, one may view categories of
+By clicking on the tabs at the top of the window, one may view categories of
 signs according to Gardiner's sign list. Three extra tabs show collections
-of signs according to shape. 
-Alternatively, one may navigate through the tabs
-using the four arrow keys. 
+of signs according to shape.
+Alternatively, one may navigate through the tabs using the four arrow keys.
 A sign is selected by clicking on it.
 <p>
 One may also type the name of a sign, by keyboard presses of letters and digits
-(there is no need for the <b>Shift</b> key). The name will appear in the 
+(there is no need for the <b>Shift</b> key). The name will appear in the
 upper left corner.
 After entering the first letter (or the first two letters for 'NL', 'NU',
 'Aa'), signs in the relevant category will appear.
-One may then type the remaining digits, and possibly more letters, 
+One may then type the remaining digits, and possibly more letters,
 and press <b>Enter</b> to select the sign.
 Typed characters can be erased by pressing <b>Backspace</b>;
-this is not needed for switching between categories however:
-by pressing '<b>a</b>', then then '<b>b</b>', 
+this is not needed for switching between categories however.
+For example, by pressing '<b>a</b>' and then '<b>b</b>',
 one switches from category 'A' directly to category 'B'.
-By pressing <b>Esc</b>, or by clicking on the upper right corner of the menu, 
+By pressing <b>Esc</b>, or by clicking on the upper right corner of the menu,
 one exits the sign chooser without having selected a sign.
 <p>
-Information on signs can be obtained by clicking <b>info on</b> and moving the 
-mouse over a sign. 
+Information on signs can be obtained by clicking <b>info on</b> and moving the
+mouse over a sign.
 Alternatively, this functionality can be switched on/off by pressing the space bar.
-The information is presented in the right or left half of the 
+The information is presented in the right or left half of the
 screen if the mouse moves over a sign in the left or right half, respectively.
 <p>
 In the sign menu, one can search for signs on the basis of their transliteration. A keyboard shortcut to
