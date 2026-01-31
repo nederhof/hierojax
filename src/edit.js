@@ -2160,9 +2160,9 @@ class Edit {
 				const childNum = node.childNumber();
 				const sibling1 = node.siblings()[childNum-1];
 				const sibling2 = node.siblings()[childNum+1];
-				return (sibling1.isCore() || 
+				return (sibling1.isCore() ||
 						((sibling1 instanceof BasicNode) &&
-							sibling1.group.places().length < Group.INSERTION_PLACES.length)) && 
+							sibling1.group.places().length < Group.INSERTION_PLACES.length)) &&
 						sibling2.isInsertion();
 			case LiteralNode:
 				return !node.usedInOverlay() && !node.usedAsCore();
@@ -2397,17 +2397,23 @@ class Edit {
 		} else if (name.slice(-1) == ';') {
 			Edit.doSemicolon();
 			return;
-		} else if (name in uniGlyphs) {
-			codepoint = uniGlyphs[name];
-		} else if (name in extGlyphs) {
-			codepoint = extGlyphs[name];
+		} else if (Edit.nameToCharInsensitive(name)) {
+			codepoint = Edit.nameToCharInsensitive(name);
 		} else if (name in uniMnemonics) {
-			codepoint = uniGlyphs[uniMnemonics[name]];
+			codepoint = Edit.nameToChar(uniMnemonics[name]);
 		} else if (name == '') {
 			codepoint = 0xFFFD;
-		} else if (name == 'u') {
-			$('name-text').value = '';
+		} else if (name.slice(-1) == ' ') {
+			$('name-text').value = name.slice(0, -1);
 			signMenu.show();
+			return;
+		} else if (name.slice(-1) == '<') {
+			$('name-text').value = name.slice(0, -1);
+			editHistory.undo();
+			return;
+		} else if (name.slice(-1) == '>') {
+			$('name-text').value = name.slice(0, -1);
+			editHistory.redo();
 			return;
 		} else {
 			return;
@@ -2416,6 +2422,22 @@ class Edit {
 		tree.focus.group.ch = String.fromCodePoint(codepoint);
 		tree.focus.showAllowedRotations();
 		Edit.redrawFocus();
+	}
+	static nameToChar(name) {
+		if (name in uniGlyphs)
+			return uniGlyphs[name];
+		else if (name in extGlyphs)
+			return extGlyphs[name];
+		else
+			return null;
+	}
+	static nameToCharInsensitive(name) {
+		if (/^[a-ik-z][0-9]/.test(name))
+			return Edit.nameToChar(name[0].toUpperCase() + name.slice(1));
+		else if (/^(nl|nu)[0-9]/.test(name))
+			return Edit.nameToChar(name.slice(0, 2).toUpperCase() + name.slice(2));
+		else if (/^aa[0-9]/.test(name))
+			return Edit.nameToChar('Aa' + name.slice(2));
 	}
 	static adjustNameOnEnter(e) {
 		if (e.keyCode == 13)
@@ -2808,6 +2830,8 @@ class Edit {
 			case 'c': Edit.adjustPlaceNext(); break;
 			case 'x': Edit.adjustExpandToggle(); break;
 			case 'z': Edit.adjustSizeToggle(); break;
+			case '<': editHistory.undo(); break;
+			case '>': editHistory.redo(); break;
 			default: return;
 		}
 		e.preventDefault();

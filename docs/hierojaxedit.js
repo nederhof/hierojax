@@ -925,6 +925,7 @@ class Shapes {
 		const w = plane.w;
 		const h = plane.h;
 		const margins = Shapes.margins(plane);
+		const slant = Math.round(dist / Math.sqrt(2));
 		var xMins = [];
 		var xMaxs = [];
 		var yMins = [];
@@ -940,13 +941,21 @@ class Shapes {
 		function addBufferedVertical(x, yMin, yMax) {
 			for (let y = yMin; y <= yMax; y++) {
 				xMins[y] = Math.min(xMins[y], x - dist);
+				xMins[y-slant] = Math.min(xMins[y-slant], x - slant);
+				xMins[y+slant] = Math.min(xMins[y+slant], x - slant);
 				xMaxs[y] = Math.max(xMaxs[y], x + dist);
+				xMaxs[y-slant] = Math.max(xMaxs[y-slant], x + slant);
+				xMaxs[y+slant] = Math.max(xMaxs[y+slant], x + slant);
 			}
 		}
 		function addBufferedHorizontal(xMin, xMax, y) {
 			for (let x = xMin; x <= xMax; x++) {
 				yMins[x] = Math.min(yMins[x], y - dist);
+				yMins[x-slant] = Math.min(yMins[x-slant], y - slant);
+				yMins[x+slant] = Math.min(yMins[x+slant], y - slant);
 				yMaxs[x] = Math.max(yMaxs[x], y + dist);
+				yMaxs[x-slant] = Math.max(yMaxs[x-slant], y + slant);
+				yMaxs[x+slant] = Math.max(yMaxs[x+slant], y + slant);
 			}
 		}
 		if (margins.t == h) {
@@ -1018,7 +1027,7 @@ class Shapes {
 		const xMax = getMax(xMaxs);
 		const yMin = getMin(yMins);
 		const yMax = getMax(yMaxs);
-		return { w, h, xMins, xMaxs, yMins, yMaxs, xMin, xMax, yMin, yMax };
+		return { w, h, xMins, xMaxs, yMins, yMaxs, xMin, xMax, yMin, yMax, dist };
 	}
 	static prepareFont(ctx, fontSize, color) {
 		ctx.font = fontSize.toString() + 'px Hieroglyphic';
@@ -1179,63 +1188,103 @@ class Shapes {
 		var r = Number.MAX_SAFE_INTEGER;
 		var t = Number.MIN_SAFE_INTEGER;
 		var b = Number.MAX_SAFE_INTEGER;
-		const lMax = pHull.x - hull.xMin;
-		const rMax = hull.xMax - pHull.x;
-		const tMax = pHull.y - hull.yMin;
-		const bMax = hull.yMax - pHull.y;
-		const wMax = Math.ceil(Math.max(lMax, rMax) * (scale - scalePrev)) + 1;
-		const hMax = Math.ceil(Math.max(tMax, bMax) * (scale - scalePrev)) + 1;
-		for (let x = 0; x < hull.w; x++) {
+		t = Shapes.distancesBottommost(plane, hull, pPlane, pHull, scalePrev, scale, t,
+			Math.round(pHull.x), hull.w + hull.dist, 1);
+		t = Shapes.distancesBottommost(plane, hull, pPlane, pHull, scalePrev, scale, t,
+			Math.round(pHull.x)-1, -hull.dist-1, -1);
+		b = Shapes.distancesTopmost(plane, hull, pPlane, pHull, scalePrev, scale, b,
+			Math.round(pHull.x), hull.w + hull.dist, 1);
+		b = Shapes.distancesTopmost(plane, hull, pPlane, pHull, scalePrev, scale, b,
+			Math.round(pHull.x)-1, -hull.dist-1, -1);
+		l = Shapes.distancesRightmost(plane, hull, pPlane, pHull, scalePrev, scale, l,
+			Math.round(pHull.y), hull.h + hull.dist, 1);
+		l = Shapes.distancesRightmost(plane, hull, pPlane, pHull, scalePrev, scale, l,
+			Math.round(pHull.y)-1, -hull.dist, -1);
+		r = Shapes.distancesLeftmost(plane, hull, pPlane, pHull, scalePrev, scale, r,
+			Math.round(pHull.y), hull.h + hull.dist, 1);
+		r = Shapes.distancesLeftmost(plane, hull, pPlane, pHull, scalePrev, scale, r,
+			Math.round(pHull.y)-1, -hull.dist, -1);
+		return { l, r, t, b };
+	}
+	static distancesBottommost(plane, hull, pPlane, pHull, scalePrev, scale, t, first, last, incr) {
+		for (let x = first; incr > 0 ? x < last : x > last; x += incr) {
 			const xPlane = Math.round(pPlane.x + (x - pHull.x) * scale);
 			const yMin = hull.yMins[x];
 			if (yMin <= pHull.y) {
 				const distPrev = (pHull.y - yMin) * scalePrev;
 				const dist = (pHull.y - yMin) * scale;
-				const yPlane = Math.round(pPlane.y - dist);
-				const yPlaneMin = Math.round(pPlane.y - dist - Math.max(dist-distPrev, hMax));
+				const yPlaneMin = Math.round(pPlane.y - dist);
 				const yPlaneMax = Math.round(pPlane.y - distPrev);
-				const bottomMost = Shapes.bottomMostDark(plane, xPlane, yPlaneMin, yPlaneMax);
-				if (!isNaN(bottomMost))
-					t = Math.max(t, bottomMost - yPlane + 1);
+				const bottomMost = Shapes.bottomMostDark(plane, xPlane, yPlaneMin, Math.round(pPlane.y));
+				if (!isNaN(bottomMost)) {
+					if (bottomMost < yPlaneMax+1)
+						t = Math.max(t, bottomMost - yPlaneMin + 1);
+					else
+						break;
+				}
 			}
+		}
+		return t;
+	}
+	static distancesTopmost(plane, hull, pPlane, pHull, scalePrev, scale, b, first, last, incr) {
+		for (let x = first; incr > 0 ? x < last : x > last; x += incr) {
+			const xPlane = Math.round(pPlane.x + (x - pHull.x) * scale);
 			const yMax = hull.yMaxs[x];
 			if (yMax >= pHull.y) {
 				const distPrev = (yMax - pHull.y) * scalePrev;
 				const dist = (yMax - pHull.y) * scale;
-				const yPlane = Math.round(pPlane.y + dist);
 				const yPlaneMin = Math.round(pPlane.y + distPrev);
-				const yPlaneMax = Math.round(pPlane.y + dist + Math.max(dist-distPrev, hMax));
-				const topMost = Shapes.topMostDark(plane, xPlane, yPlaneMin, yPlaneMax);
-				if (!isNaN(topMost))
-					b = Math.min(b, topMost - yPlane - 1);
+				const yPlaneMax = Math.round(pPlane.y + dist);
+				const topMost = Shapes.topMostDark(plane, xPlane, Math.round(pPlane.y), yPlaneMax);
+				if (!isNaN(topMost)) {
+					if (topMost > yPlaneMin-1)
+						b = Math.min(b, topMost - yPlaneMax - 1);
+					else
+						break;
+				}
 			}
 		}
-		for (let y = 0; y < hull.h; y++) {
+		return b;
+	}
+	static distancesRightmost(plane, hull, pPlane, pHull, scalePrev, scale, l, first, last, incr) {
+		for (let y = first; incr > 0 ? y < last : y > last; y += incr) {
 			const yPlane = Math.round(pPlane.y + (y - pHull.y) * scale);
 			const xMin = hull.xMins[y];
 			if (xMin <= pHull.x) {
 				const distPrev = (pHull.x - xMin) * scalePrev;
 				const dist = (pHull.x - xMin) * scale;
-				const xPlane = Math.round(pPlane.x - dist);
-				const xPlaneMin = Math.round(pPlane.x - dist - Math.max(dist-distPrev, wMax));
+				const xPlaneMin = Math.round(pPlane.x - dist);
 				const xPlaneMax = Math.round(pPlane.x - distPrev);
-				const rightMost = Shapes.rightMostDark(plane, xPlaneMin, xPlaneMax, yPlane);
-				if (!isNaN(rightMost))
-					l = Math.max(l, rightMost - xPlane + 1);
+				const rightMost = Shapes.rightMostDark(plane, xPlaneMin, Math.round(pPlane.x), yPlane);
+				if (!isNaN(rightMost)) {
+					if (rightMost < xPlaneMax+1)
+						l = Math.max(l, rightMost - xPlaneMin + 1);
+					else
+						break;
+				}
 			}
+		}
+		return l;
+	}
+	static distancesLeftmost(plane, hull, pPlane, pHull, scalePrev, scale, r, first, last, incr) {
+		for (let y = first; incr > 0 ? y < last : y > last; y += incr) {
+			const yPlane = Math.round(pPlane.y + (y - pHull.y) * scale);
 			const xMax = hull.xMaxs[y];
 			if (xMax >= pHull.x) {
 				const distPrev = (xMax - pHull.x) * scalePrev;
 				const dist = (xMax - pHull.x) * scale;
-				const xPlane = Math.round(pPlane.x + dist);
 				const xPlaneMin = Math.round(pPlane.x + distPrev);
-				const xPlaneMax = Math.round(pPlane.x + dist + Math.max(dist-distPrev, wMax));
-				const leftMost = Shapes.leftMostDark(plane, xPlaneMin, xPlaneMax, yPlane);
-				if (!isNaN(leftMost))
-					r = Math.min(r, leftMost - xPlane - 1);
+				const xPlaneMax = Math.round(pPlane.x + dist);
+				const leftMost = Shapes.leftMostDark(plane, Math.round(pPlane.x), xPlaneMax, yPlane);
+				if (!isNaN(leftMost)) {
+					if (leftMost > xPlaneMin-1)
+						r = Math.min(r, leftMost - xPlaneMax - 1);
+					else
+						break;
+				}
 			}
 		}
-		return { l, r, t, b };
+		return r;
 	}
 	static displacement(plane, hull, pPlane, pHull, scalePrev, scale) {
 		const dist = Shapes.distances(plane, hull, pPlane, pHull, scalePrev, scale);
@@ -2266,14 +2315,14 @@ class Enclosure extends Group {
 	}
 	size(options) {
 		if (Group.h(options)) {
-			const w = this.openSize(options).w + this.kernOpenSize() + 
+			const w = this.openSize(options).w + this.kernOpenSize() +
 						this.innerSize(options).w +
 						this.kernCloseSize() + this.closeSize(options).w;
 			const h = this.outlineSize(options).h;
 			return { w, h };
 		} else {
 			const w = this.outlineSize(options).w;
-			const h = this.openSize(options).h + this.kernOpenSize() + 
+			const h = this.openSize(options).h + this.kernOpenSize() +
 						this.innerSize(options).h +
 						this.kernCloseSize() + this.closeSize(options).h;
 			return { w, h };
@@ -2604,130 +2653,32 @@ class Basic extends Group {
 	}
 	fit(options, w, h) {
 		const measOptions = Group.measureOptions(options);
-		const measSize = measOptions.fontsize;
-		this.core.fit(options, Infinity, Infinity);
-		const coreSize = this.core.size(options);
-		this.core.format(measOptions, 0, 0, coreSize.w, coreSize.w, 0, 0, coreSize.h, coreSize.h);
-		const corePrinted = new PrintedCanvasWithoutExtras(measSize, coreSize.w, coreSize.h);
-		this.core.print(measOptions, corePrinted);
-		const coreW = corePrinted.canvas.width;
-		const coreH = corePrinted.canvas.height;
+		const printed = Basic.measPrinted(measOptions, this.core);
+		const coreW = printed.canvas.width;
+		const coreH = printed.canvas.height;
 		for (const place of Group.INSERTION_PLACES)
 			if (this[place]) {
-				const corePlane = place == 'm' ?
-					Shapes.planeRestricted(corePrinted.canvas) :
-					Shapes.planeExtended(corePrinted.canvas);
-				/* determine initial scale based on blank rectangle */
-				this[place].fit(options, Infinity, Infinity);
-				const insSize = this[place].size(options);
-				this[place].format(measOptions, 0, 0, insSize.w, insSize.w, 0, 0, insSize.h, insSize.h);
-				const insPrinted = new PrintedCanvasWithoutExtras(measSize, insSize.w, insSize.h);
-				this[place].print(measOptions, insPrinted);
+				const group = this[place];
 				var adjustments = { };
 				if (place in this.core.adjustments)
 					adjustments = this.core.adjustments[place];
 				const position = Shapes.insertionPosition(place, adjustments);
-				const xInit = Math.min(coreW-1, Math.round(position.x * coreW));
-				const yInit = Math.min(coreH-1, Math.round(position.y * coreH));
-				const rectInit = Shapes.openRect(corePrinted.canvas, xInit, yInit);
-				const margin = Math.round(measSize * options.sep);
-				const hull = Shapes.orthogonalHullWithBuffer(insPrinted.canvas, margin);
-				const marginL = position.x == 0 ? 0 : -hull.xMin;
-				const marginR = position.x == 1 ? 0 : hull.xMax - (hull.w-1);
-				const marginT = position.y == 0 ? 0 : -hull.yMin;
-				const marginB = position.y == 1 ? 0 : hull.yMax - (hull.h-1);
-				const insTotalW = hull.w + marginL + marginR;
-				const insTotalH = hull.h + marginT + marginB;
-				var scale = Math.min(1, rectInit.w / insTotalW, rectInit.h / insTotalH);
-				
-				/* determine initial position by dividing excess space */
-				const remainderW = rectInit.w - scale * insTotalW;
-				const remainderH = rectInit.h - scale * insTotalH;
-				switch (position.x) {
-					case 0:
-						var remainderL = 0;
-						var remainderR = remainderW;
-						break;
-					case 1:
-						var remainderL = remainderW;
-						var remainderR = 0;
-						break;
-					default:
-						var remainderL = remainderW / 2;
-						var remainderR = remainderW / 2;
-				}
-				switch (position.y) {
-					case 0:
-						var remainderT = 0;
-						var remainderB = remainderH;
-						break;
-					case 1:
-						var remainderT = remainderH;
-						var remainderB = 0;
-						break;
-					default:
-						var remainderT = remainderH / 2;
-						var remainderB = remainderH / 2;
-				}
-				var rect = { x0: rectInit.x + remainderL, x1: rectInit.x+rectInit.w - remainderR,
-						y0: rectInit.y + remainderT, y1: rectInit.y+rectInit.h - remainderB };
-				var pPlane = { };
-				var pHull = { };
-				switch (position.x) {
-					case 0:
-						pPlane.x = rect.x0;
-						pHull.x = 0;
-						break;
-					case 1:
-						pPlane.x = rect.x1;
-						pHull.x = hull.w-1;
-						break;
-					default:
-						pPlane.x = (rect.x0+rect.x1) / 2;
-						pHull.x = hull.w/2;
-				}
-				switch (position.y) {
-					case 0:
-						pPlane.y = rect.y0;
-						pHull.y = 0;
-						break;
-					case 1:
-						pPlane.y = rect.y1;
-						pHull.y = hull.h-1;
-						break;
-					default:
-						pPlane.y = (rect.y0+rect.y1) / 2;
-						pHull.y = hull.h/2;
-				}
-
-				/* try grow until scale is 1, or scale is big enough while protruding, in number of steps */
-				const incrFactor = 1.1; /* increase in scale between steps */
-				const minScale = 0.15;
-				const nSteps = Math.ceil(-Math.log(scale) / Math.log(incrFactor));
-				const steps = [...Array(nSteps).keys()].map(x => x+1);
-				const scalings = steps.map(i => scale * (1/scale) ** (i/nSteps));
-				for (let i = 0; i < scalings.length; i++) {
-					const scaleNew = scalings[i];
-					const disp = Shapes.displacement(corePlane, hull, pPlane, pHull, scale, scaleNew);
-					if (disp) {
-						pPlane = { x: pPlane.x + disp.x, y: pPlane.y + disp.y };
-					} else if (scale > minScale) {
-						break;
-					}
-					const rectNew = {
-						x0: pPlane.x - pHull.x * scaleNew,
-						x1: pPlane.x + (hull.w-pHull.x) * scaleNew,
-						y0: pPlane.y - pHull.y * scaleNew,
-						y1: pPlane.y + (hull.h-pHull.y) * scaleNew };
-					if (scale >= 0.55 && (rectNew.x0 <= -1 || rectNew.x1 >= coreW+1 || rectNew.y0 <= -1 || rectNew.y1 >= coreH+1))
-						break;
-					scale = scaleNew;
-					rect = rectNew;
-				}
-
-				this[place].resize(scale);
-				this[place].rect = { x0: rect.x0 / coreW, x1: rect.x1 / coreW,
-						y0: rect.y0 / coreH, y1: rect.y1 / coreH };
+				const insPrinted = Basic.measPrinted(measOptions, group);
+				var [hull, rectInit, insW, insH] =
+					Basic.fitInsertedHull(measOptions, printed.canvas, insPrinted.canvas, position);
+				rectInit = this.modifyRect(rectInit, place);
+				var scale = Math.min(1, rectInit.w / insW, rectInit.h / insH);
+				var [rect, pPlane, pHull] =
+					Basic.fitInsertedPosition(position, hull, rectInit, insW, insH, scale);
+				const corePlane = place == 'm' ?
+					Shapes.planeRestricted(printed.canvas) :
+					Shapes.planeExtended(printed.canvas);
+				[scale, rect] = Basic.fitGrow(hull, scale, rect, pPlane, pHull, corePlane);
+				group.resize(scale);
+				const insRect  = Basic.removeMargins(position, hull, scale, rect);
+				group.rect = { x0: insRect.x / coreW, y0: insRect.y / coreH,
+						x1: (insRect.x+insRect.w) / coreW, y1: (insRect.y+insRect.h) / coreH };
+				this.addInserted(printed, measOptions, group, place);
 			}
 		var x0 = 0;
 		var x1 = 1;
@@ -2742,6 +2693,122 @@ class Basic extends Group {
 			}
 		this.extension = { l: -x0, r: x1-1, t: -y0, b: y1-1, w: x1-x0, h: y1-y0 };
 		super.fit(options, w, h);
+	}
+	static measPrinted(measOptions, group) {
+		const measSize = measOptions.fontsize;
+		group.fit(measOptions, Infinity, Infinity);
+		const size = group.size(measOptions);
+		group.format(measOptions, 0, 0, size.w, size.w, 0, 0, size.h, size.h);
+		const printed = new PrintedCanvasWithoutExtras(measSize, size.w, size.h);
+		group.print(measOptions, printed);
+		return printed;
+	}
+	addInserted(printed, measOptions, group, place) {
+		const size = this.core.size(measOptions);
+		const rect = group.rect;
+		const x0 = rect.x0 * size.w;
+		const x1 = rect.x1 * size.w;
+		const y0 = rect.y0 * size.h;
+		const y1 = rect.y1 * size.h;
+		group.format(measOptions, x0, x0, x1, x1, y0, y0, y1, y1);
+		group.print(measOptions, printed);
+	}
+	static fitInsertedHull(measOptions, coreCanvas, insCanvas, position) {
+		const coreW = coreCanvas.width;
+		const coreH = coreCanvas.height;
+		const xInit = Math.min(coreW-1, Math.round(position.x * coreW));
+		const yInit = Math.min(coreH-1, Math.round(position.y * coreH));
+		const rectInit = Shapes.openRect(coreCanvas, xInit, yInit);
+		const margin = Math.round(measOptions.fontsize * measOptions.sep);
+		const hull = Shapes.orthogonalHullWithBuffer(insCanvas, margin);
+		const marginL = position.x == 0 ? 0 : -hull.xMin;
+		const marginR = position.x == 1 ? 0 : hull.xMax - (hull.w-1);
+		const marginT = position.y == 0 ? 0 : -hull.yMin;
+		const marginB = position.y == 1 ? 0 : hull.yMax - (hull.h-1);
+		const insW = hull.w + marginL + marginR;
+		const insH = hull.h + marginT + marginB;
+		return [hull, rectInit, insW, insH];
+	}
+	modifyRect(rect, place) {
+		const dist = Math.round(0.2 * rect.h);
+		if (this.core instanceof Literal) {
+			if (place == 't' && Shapes.topupChars.has(this.core.ch))
+				return { x: rect.x, y: rect.y - dist, w: rect.w, h: rect.h + dist };
+			if (place == 'b' && Shapes.bottomdownChars.has(this.core.ch))
+				return { x: rect.x, y: rect.y + dist, w: rect.w, h: rect.h + dist };
+		}
+		return rect;
+	}
+	static fitInsertedPosition(position, hull, rectInit, insW, insH, scale) {
+		const remainderW = rectInit.w - scale * insW;
+		const remainderH = rectInit.h - scale * insH;
+		switch (position.x) {
+			case 0: var remainderL = 0, remainderR = remainderW; break;
+			case 1: var remainderL = remainderW, remainderR = 0; break;
+			default: var remainderL = remainderW / 2, remainderR = remainderW / 2;
+		}
+		switch (position.y) {
+			case 0: var remainderT = 0, remainderB = remainderH; break;
+			case 1: var remainderT = remainderH, remainderB = 0; break;
+			default: var remainderT = remainderH / 2, remainderB = remainderH / 2;
+		}
+		var rect = { x: rectInit.x + remainderL, y: rectInit.y + remainderT, 
+				w: rectInit.w - remainderW, h: rectInit.h - remainderH };
+		var pPlane = { };
+		var pHull = { };
+		switch (position.x) {
+			case 0: pPlane.x = rect.x, pHull.x = 0; break;
+			case 1: pPlane.x = rect.x + rect.w, pHull.x = hull.w-1; break;
+			default: pPlane.x = rect.x + rect.w/2, pHull.x = hull.w/2;
+		}
+		switch (position.y) {
+			case 0: pPlane.y = rect.y, pHull.y = 0; break;
+			case 1: pPlane.y = rect.y + rect.h, pHull.y = hull.h-1; break;
+			default: pPlane.y = rect.y + rect.h/2, pHull.y = hull.h/2;
+		}
+		return [rect, pPlane, pHull];
+	}
+	static fitGrow(hull, scale, rect, pPlane, pHull, corePlane) {
+		const incrFactor = 1.1; /* increase in scale between steps */
+		const minScale = 0.15;
+		const nSteps = Math.ceil(-Math.log(scale) / Math.log(incrFactor));
+		const steps = [...Array(nSteps).keys()].map(x => x+1);
+		const scalings = steps.map(i => scale * (1/scale) ** (i/nSteps));
+		for (let i = 0; i < scalings.length; i++) {
+			const scaleNew = scalings[i];
+			const disp = Shapes.displacement(corePlane, hull, pPlane, pHull, scale, scaleNew);
+			if (disp) {
+				pPlane = { x: pPlane.x + disp.x, y: pPlane.y + disp.y };
+			} else if (scale > minScale) {
+				break;
+			}
+			const rectNew = {
+				x: pPlane.x - pHull.x * scaleNew, y: pPlane.y - pHull.y * scaleNew,
+				w: hull.w * scaleNew, h: hull.h * scaleNew };
+			if (scale >= 0.55 && (rectNew.x <= -1 || rectNew.y <= -1 ||
+				rectNew.x + rectNew.w >= corePlane.w+1 || rectNew.y + rectNew.h >= corePlane.h+1))
+				break;
+			scale = scaleNew;
+			rect = rectNew;
+		}
+		return [scale, rect];
+	}
+	static removeMargins(position, hull, scale, rect) {
+		const w = hull.w * scale;
+		const h = hull.h * scale;
+		const remainW = rect.w - w;
+		const remainH = rect.h - h;
+		switch (position.x) {
+			case 0: var x = rect.x; break;
+			case 1: var x = rect.x + remainW; break;
+			default: var x = rect.x + remainW / 2;
+		}
+		switch (position.y) {
+			case 0: var y = rect.y; break;
+			case 1: var y = rect.y + remainH; break;
+			default: var y = rect.y + remainH / 2;
+		}
+		return { x, y, w, h };
 	}
 	format(options, x0, x1, x2, x3, y0, y1, y2, y3) {
 		const size = this.size(options);
@@ -2828,7 +2895,7 @@ class Overlay extends Group {
 		for (const ch of chs) {
 			if (Overlay.matchLigature(ch, this.lits1, this.lits2))
 				return [ch, false];
-			else if (this.lits1.length == 1 && this.lits2.length == 1 && 
+			else if (this.lits1.length == 1 && this.lits2.length == 1 &&
 					Overlay.matchLigature(ch, this.lits2, this.lits1))
 				return [ch, true];
 		}
@@ -2853,7 +2920,7 @@ class Overlay extends Group {
 		return true;
 	}
 	chooseAltGlyph(places) {
-		if (this.lig && this.lig in Shapes.insertions) { 
+		if (this.lig && this.lig in Shapes.insertions) {
 			for (const alt of Shapes.insertions[this.lig]) {
 				if (places.every(p => p in alt)) {
 					if ('glyph' in alt)
@@ -3045,7 +3112,7 @@ class Literal extends Group {
 		const bufX = ((x2-x1) - size.w) / 2;
 		const bufY = ((y2-y1) - size.h) / 2;
 		this.x = x1 + bufX;
-		this.y = y1 + (options.align == 'bottom' ? ((y2-y1) - size.h) : bufY);
+		this.y = options.align == 'bottom' ? y2 - size.h : y1 + bufY;
 		this.w = size.w;
 		this.h = size.h;
 		const xShade = this.x + this.w / 2;
@@ -3413,9 +3480,9 @@ Shapes.insertions = {
 \u{1318F}: [{ bs: { y: 0.6 }, te: { } }],
 \u{13190}: [{ bs: { }, te: { } }],
 \u{13191}: [{ t: { } }],
-\u{13193}: [{ bs: { }, b: { x: 0.4, y: 0.8 }, t: { } }],
-\u{13194}: [{ bs: { }, b: { x: 0.4, y: 0.8 }, t: { } }],
-\u{13195}: [{ bs: { }, b: { x: 0.4, y: 0.8 }, t: { x: 0.7 } }],
+\u{13193}: [{ bs: { }, b: { x: 0.4, y: 0.9 }, t: { } }],
+\u{13194}: [{ bs: { }, b: { x: 0.4, y: 0.9 }, t: { } }],
+\u{13195}: [{ bs: { }, b: { x: 0.4, y: 0.9 }, t: { x: 0.7 } }],
 \u{13196}: [{ t: { } }],
 \u{13197}: [{ be: { y: 0.6 } }],
 \u{13198}: [{ te: { y: 0.5 } }],
@@ -3839,7 +3906,7 @@ Shapes.insertions = {
 '\u{13D0A}': [{ te: { } }],
 '\u{13D0E}': [{ bs: { y: 0.7 }, te: { } }],
 '\u{13D68}': [{ bs: { x: 0.2 }, t: { x: 0.7 } }],
-'\u{13D70}': [{ bs: { }, b: { x: 0.3 }, t: { x: 0.6 } }],
+'\u{13D70}': [{ bs: { }, b: { x: 0.4, y: 0.9 }, t: { x: 0.6 } }],
 '\u{13D74}': [{ b: { } }],
 '\u{13DA0}': [{ te: { } }],
 '\u{13DA1}': [{ te: { } }],
@@ -3913,7 +3980,10 @@ Shapes.insertions = {
 '\uE506': [{ ts: { }, bs: { y: 0.7 }, te: { }, be: { }, t: { x: 0.6 } }, 
 			{ glyph: '\uE507', ts: { }, bs: { y: 0.7 }, te: { }, be: { }, m: { x: 0.6, y: 0.6 } }],
 '\uE508': [{ m: { y: 0.2 } }],
-}
+};
+
+Shapes.topupChars = new Set('\u{13093}\u{13094}\u{1310B}\u{1310C}\u{132F2}\u{139A0}\u{139A1}');
+Shapes.bottomdownChars = new Set('\u{13098}\u{131ED}\u{13250}\u{1326B}\u{1336F}\u{13421}\u{13EB7}');
  
 Shapes.rotations = {
 '\u{13012}': { 45: -15 },
@@ -12621,9 +12691,9 @@ class Edit {
 				const childNum = node.childNumber();
 				const sibling1 = node.siblings()[childNum-1];
 				const sibling2 = node.siblings()[childNum+1];
-				return (sibling1.isCore() || 
+				return (sibling1.isCore() ||
 						((sibling1 instanceof BasicNode) &&
-							sibling1.group.places().length < Group.INSERTION_PLACES.length)) && 
+							sibling1.group.places().length < Group.INSERTION_PLACES.length)) &&
 						sibling2.isInsertion();
 			case LiteralNode:
 				return !node.usedInOverlay() && !node.usedAsCore();
@@ -12858,17 +12928,23 @@ class Edit {
 		} else if (name.slice(-1) == ';') {
 			Edit.doSemicolon();
 			return;
-		} else if (name in uniGlyphs) {
-			codepoint = uniGlyphs[name];
-		} else if (name in extGlyphs) {
-			codepoint = extGlyphs[name];
+		} else if (Edit.nameToCharInsensitive(name)) {
+			codepoint = Edit.nameToCharInsensitive(name);
 		} else if (name in uniMnemonics) {
-			codepoint = uniGlyphs[uniMnemonics[name]];
+			codepoint = Edit.nameToChar(uniMnemonics[name]);
 		} else if (name == '') {
 			codepoint = 0xFFFD;
-		} else if (name == 'u') {
-			$('name-text').value = '';
+		} else if (name.slice(-1) == ' ') {
+			$('name-text').value = name.slice(0, -1);
 			signMenu.show();
+			return;
+		} else if (name.slice(-1) == '<') {
+			$('name-text').value = name.slice(0, -1);
+			editHistory.undo();
+			return;
+		} else if (name.slice(-1) == '>') {
+			$('name-text').value = name.slice(0, -1);
+			editHistory.redo();
 			return;
 		} else {
 			return;
@@ -12877,6 +12953,22 @@ class Edit {
 		tree.focus.group.ch = String.fromCodePoint(codepoint);
 		tree.focus.showAllowedRotations();
 		Edit.redrawFocus();
+	}
+	static nameToChar(name) {
+		if (name in uniGlyphs)
+			return uniGlyphs[name];
+		else if (name in extGlyphs)
+			return extGlyphs[name];
+		else
+			return null;
+	}
+	static nameToCharInsensitive(name) {
+		if (/^[a-ik-z][0-9]/.test(name))
+			return Edit.nameToChar(name[0].toUpperCase() + name.slice(1));
+		else if (/^(nl|nu)[0-9]/.test(name))
+			return Edit.nameToChar(name.slice(0, 2).toUpperCase() + name.slice(2));
+		else if (/^aa[0-9]/.test(name))
+			return Edit.nameToChar('Aa' + name.slice(2));
 	}
 	static adjustNameOnEnter(e) {
 		if (e.keyCode == 13)
@@ -13269,6 +13361,8 @@ class Edit {
 			case 'c': Edit.adjustPlaceNext(); break;
 			case 'x': Edit.adjustExpandToggle(); break;
 			case 'z': Edit.adjustSizeToggle(); break;
+			case '<': editHistory.undo(); break;
+			case '>': editHistory.redo(); break;
 			default: return;
 		}
 		e.preventDefault();
