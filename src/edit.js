@@ -2438,6 +2438,8 @@ class Edit {
 			return Edit.nameToChar(name.slice(0, 2).toUpperCase() + name.slice(2));
 		else if (/^aa[0-9]/.test(name))
 			return Edit.nameToChar('Aa' + name.slice(2));
+		else
+			return Edit.nameToChar(name);
 	}
 	static adjustNameOnEnter(e) {
 		if (e.keyCode == 13)
