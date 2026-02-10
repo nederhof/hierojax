@@ -1718,20 +1718,28 @@ class PrintedDOM extends PrintedAny {
 	}
 }
 
+const SVGns = 'http://www.w3.org/2000/svg';
+
 class PrintedSVG extends PrintedAny {
 	constructor(element, w, h, wAccum, hAccum, reversed, options) {
 		super(element, w, h, wAccum, hAccum, reversed, options);
-		this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+		this.svg = document.createElementNS(SVGns, 'svg');
 		this.svg.setAttribute('width', this.width());
 		this.svg.setAttribute('height', this.height());
 		if (this.options.border && !this.options.separated)
 			this.svg.classList.add('hierojax-border');
 		if (options.standalone) {
-			const style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+			const style = document.createElementNS(SVGns, 'style');
 			style.setAttribute('type', 'text/css');
 			style.innerHTML = PrintedSVG.internalCSS();
 			this.svg.appendChild(style);
 		}
+		this.spans = document.createElementNS(SVGns, 'text');
+		this.spans.setAttribute('x', 0);
+		this.spans.setAttribute('y', 0);
+		if (this.reversed)
+			this.spans.setAttribute('transform', 'scale(-1,1)');
+		this.svg.appendChild(this.spans);
 		this.element.appendChild(this.svg);
 	}
 	width() {
@@ -1742,31 +1750,47 @@ class PrintedSVG extends PrintedAny {
 	}
 	addSign(ch, scale, xScale, yScale, rotate, mirror, rect, properties) {
 		const x = this.reverse(rect.x, rect.w);
-		mirror = this.reversed ^ mirror;
+		const mirror_any = this.reversed ^ mirror;
 		const fontSize = this.emToPx(scale);
 		const fontSizeStr = fontSize.toFixed(2);
 		const xPx = this.emToPx(x);
 		const yPx = this.emToPx(rect.y);
 		const xScaleStr = xScale.toFixed(2);
 		const yScaleStr = yScale.toFixed(2);
-		const meas = PrintedAny.correctedMeasurement(ch, fontSize, xScale, yScale, rotate, mirror, properties);
-		const sign = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-		sign.setAttribute('class', properties.unselectable ? 'hierojax-svg-visual' : 'hierojax-svg-sign');
-		sign.innerHTML = ch;
-		sign.style.setProperty('font-size', fontSizeStr + 'px');
-		sign.style.setProperty('line-height', fontSizeStr + 'px');
-		sign.setAttribute('fill', properties.bracket ? this.options.bracketcolor : this.options.signcolor);
-		var transforms = '';
-		transforms += 'translate(' +
-			(xPx + meas.widthScaled/2 - meas.x).toFixed(2) + ' ' +
-			(yPx - meas.heightScaled/2 + meas.h - meas.y).toFixed(2) + ') ';
-		transforms += 'scale(' + (mirror ? -xScaleStr : xScaleStr) + ' ' + yScaleStr + ') ';
-		if (rotate)
-			transforms += 'rotate(' + rotate.toString() + ') ';
-		sign.setAttribute('x', (-meas.width/2).toFixed(2));
-		sign.setAttribute('y', (meas.height/2).toFixed(2));
-		sign.setAttribute('transform', transforms);
-		this.svg.appendChild(sign);
+		const meas = PrintedAny.correctedMeasurement(ch, fontSize, xScale, yScale, rotate, mirror_any, properties);
+		const xTrans = (xPx + meas.widthScaled/2 - meas.x).toFixed(2);
+		const yTrans = (yPx - meas.heightScaled/2 + meas.h - meas.y).toFixed(2);
+		if (rotate || mirror || xScale != 1 || yScale != 1) {
+			var transforms = '';
+			transforms += 'translate(' + xTrans + ' ' + yTrans + ') ';
+			transforms += 'scale(' + (mirror_any ? -xScaleStr : xScaleStr) + ' ' + yScaleStr + ') ';
+			if (rotate)
+				transforms += 'rotate(' + rotate.toString() + ') ';
+			const sign = document.createElementNS(SVGns, 'text');
+			sign.setAttribute('class', 'hierojax-svg-visual');
+			sign.innerHTML = ch;
+			sign.setAttribute('x', (-meas.width/2).toFixed(2));
+			sign.setAttribute('y', (meas.height/2).toFixed(2));
+			sign.style.setProperty('font-size', fontSizeStr + 'px');
+			sign.style.setProperty('line-height', fontSizeStr + 'px');
+			sign.setAttribute('fill', properties.bracket ? this.options.bracketcolor : this.options.signcolor);
+			sign.setAttribute('transform', transforms);
+			this.svg.appendChild(sign);
+			if (!properties.unselectable)
+				this.addHidden(ch);
+		} else {
+			const span = document.createElementNS(SVGns, 'tspan');
+			span.setAttribute('class', properties.unselectable ? 'hierojax-svg-visual' : 'hierojax-svg-sign');
+			span.innerHTML = ch;
+			span.setAttribute('x', (-meas.width/2).toFixed(2));
+			span.setAttribute('y', (meas.height/2).toFixed(2));
+			span.style.setProperty('font-size', fontSizeStr + 'px');
+			span.style.setProperty('line-height', fontSizeStr + 'px');
+			span.setAttribute('fill', properties.bracket ? this.options.bracketcolor : this.options.signcolor);
+			span.setAttribute('dx', this.reversed ? -xTrans : xTrans);
+			span.setAttribute('dy', yTrans);
+			this.spans.appendChild(span);
+		}
 	}
 	addShading(x, y, w, h) {
 		x = this.reverse(x, w);
@@ -1776,7 +1800,7 @@ class PrintedSVG extends PrintedAny {
 		const yMax = Math.round(this.emToPx(y+h));
 		const width = xMax - xMin;
 		const height = yMax - yMin;
-		const shade = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+		const shade = document.createElementNS(SVGns, 'rect');
 		if (this.options.shadepattern == 'uniform') {
 			shade.setAttribute('class', 'hierojax-svg-uniform');
 		} else {
@@ -1790,23 +1814,24 @@ class PrintedSVG extends PrintedAny {
 		this.svg.insertBefore(shade, this.svg.firstChild);
 	}
 	addHidden(s) {
-		const hidden = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+		const hidden = document.createElementNS(SVGns, 'tspan');
 		hidden.setAttribute('class', 'hierojax-svg-hidden');
+		hidden.setAttribute('fill', 'transparent');
 		hidden.innerHTML = s;
-		this.svg.appendChild(hidden);
+		this.spans.appendChild(hidden);
 	}
 	shadePattern(offset) {
 		const id = 'hierojax-svg-id' + offset;
 		if (document.getElementById(id))
 			return id;
-		const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-		const pattern = document.createElementNS('http://www.w3.org/2000/svg', 'pattern');
+		const defs = document.createElementNS(SVGns, 'defs');
+		const pattern = document.createElementNS(SVGns, 'pattern');
 		pattern.setAttribute('id', id);
 		pattern.setAttribute('patternUnits', 'userSpaceOnUse');
 		pattern.setAttribute('width', '4');
 		pattern.setAttribute('height', '4');
 		pattern.setAttribute('patternTransform', 'translate(' + -offset + ' 0)');
-		const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+		const path = document.createElementNS(SVGns, 'path');
 		path.setAttribute('d', 'M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2');
 		path.setAttribute('class', 'hierojax-svg-hatching');
 		pattern.appendChild(path);
@@ -1831,8 +1856,8 @@ class PrintedSVG extends PrintedAny {
 	font-family: NewGardiner;
 	user-select: none;
 	-ms-user-select: none;
+	-moz-user-select: none;
 	-webkit-user-select: none;
-	pointer-events: none;
 }
 .hierojax-svg-hatching {
 	stroke: gray;
@@ -1842,7 +1867,9 @@ class PrintedSVG extends PrintedAny {
 	fill: gray;
 }
 .hierojax-svg-hidden {
-	font-size: 0;
+	fill-opacity: 0;
+	stroke-opacity: 0;
+	user-select: all;
 }`;
 	}
 }
@@ -3304,7 +3331,7 @@ class BracketClose extends Group {
 }
  
 Shapes.insertions = {
-\u{13000}: [{ bs: { y: 0.6 } }],
+\u{13000}: [{ ts: { }, bs: { y: 0.6 } }],
 \u{13010}: [{ bs: { } }],
 \u{13011}: [{ bs: { } }],
 \u{13013}: [{ ts: { y: 0.3 } }],
@@ -3488,6 +3515,7 @@ Shapes.insertions = {
 \u{13198}: [{ te: { y: 0.5 } }],
 \u{131A1}: [{ bs: { }, te: { } }],
 \u{131A3}: [{ glyph: '\u{E4AF}', b: { } }],
+\u{131A4}: [{ b: { x: 0.6 } }],
 \u{131AE}: [{ ts: { }, te: { }, }, { glyph: '\u{E48B}', ts: { }, bs: { }, te: { }, be: { } }],
 \u{131AF}: [{ ts: { }, te: { } }, { glyph: '\u{E48C}', ts: { }, bs: { }, te: { }, be: { } }],
 \u{131B0}: [{ bs: { }, te: { } }],
@@ -3552,8 +3580,10 @@ Shapes.insertions = {
 \u{132BF}: [{ bs: { }, te: { }, be: { } }],
 \u{132D1}: [{ ts: { }, be: { } }],
 \u{132C1}: [{ ts: { }, bs: { }, te: { }, be: { } }],
+\u{132C0}: [{ te: { } }],
 \u{132C7}: [{ bs: { }, be: { } }],
 \u{132D2}: [{ ts: { }, te: { } }],
+\u{132D5}: [{ t: { x: 0.6 }, ts: { y: 0.3 } }],
 \u{132DE}: [{ b: { } }],
 \u{132E0}: [{ ts: { }, te: { } }, { glyph: '\u{E497}', ts: { }, bs: { }, te: { }, be: { } }],
 \u{132E1}: [{ ts: { }, te: { } }, { glyph: '\u{E498}', ts: { }, bs: { }, te: { }, be: { } }],

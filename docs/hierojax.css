@@ -17,7 +17,6 @@
 	direction: rtl;
 }
 
-
 .hierojax-hrl-container svg, .hierojax-hrl-container canvas {
 	direction: ltr;
 }
@@ -85,9 +84,9 @@
 .hierojax-svg-visual {
 	font-family: Hieroglyphic;
 	user-select: none;
-	-ms-user-select: none;
 	-webkit-user-select: none;
-	pointer-events: none;
+	-ms-user-select: none;
+	-moz-user-select: none;
 }
 
 .hierojax-svg-hatching {
@@ -100,7 +99,11 @@
 }
 
 .hierojax-svg-hidden {
+	fill-opacity: 0;
+	stroke-opacity: 0;
+	color: transparent;
 	font-size: 0;
+	user-select: all;
 }
 
 .hierojax-canvas-hidden {
