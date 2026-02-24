@@ -2205,17 +2205,29 @@ class Overlay extends Group {
 			this.printLigature(options, printed);
 			return;
 		}
-		if (this.lits1.length > 1)
+		if (this.lits1.length > 1) {
 			printed.addHidden(Group.BEGIN_SEGMENT);
-		this.lits1.forEach(g => g.print(options, printed));
-		if (this.lits1.length > 1)
+			this.lits1.forEach((g, i) => {
+				g.print(options, printed);
+				if (i < this.lits1.length -1)
+					printed.addHidden(Group.HOR);
+			});
 			printed.addHidden(Group.END_SEGMENT);
+		} else {
+			this.lits1[0].print(options, printed);
+		}
 		printed.addHidden(Group.OVERLAY);
-		if (this.lits2.length > 1)
+		if (this.lits2.length > 1) {
 			printed.addHidden(Group.BEGIN_SEGMENT);
-		this.lits2.forEach(g => g.print(options, printed));
-		if (this.lits2.length > 1)
+			this.lits2.forEach((g, i) => {
+				g.print(options, printed);
+				if (i < this.lits2.length -1)
+					printed.addHidden(Group.VER);
+			});
 			printed.addHidden(Group.END_SEGMENT);
+		} else {
+			this.lits2[0].print(options, printed);
+		}
 	}
 	printLigature(options, printed) {
 		printed.addHidden(this.toString());

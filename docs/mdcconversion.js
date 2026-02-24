@@ -1816,7 +1816,6 @@ class PrintedSVG extends PrintedAny {
 	addHidden(s) {
 		const hidden = document.createElementNS(SVGns, 'tspan');
 		hidden.setAttribute('class', 'hierojax-svg-hidden');
-		hidden.setAttribute('fill', 'transparent');
 		hidden.innerHTML = s;
 		this.spans.appendChild(hidden);
 	}
@@ -1855,20 +1854,22 @@ class PrintedSVG extends PrintedAny {
 .hierojax-svg-visual {
 	font-family: NewGardiner;
 	user-select: none;
-	-ms-user-select: none;
-	-moz-user-select: none;
 	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
 }
 .hierojax-svg-hatching {
 	stroke: gray;
 	stroke-width: 1;
 }
 .hierojax-svg-uniform {
-	fill: gray;
+	fill: darkgray;
 }
 .hierojax-svg-hidden {
 	fill-opacity: 0;
 	stroke-opacity: 0;
+	color: transparent;
+	font-size: 0;
 	user-select: all;
 }`;
 	}
@@ -3056,17 +3057,29 @@ class Overlay extends Group {
 			this.printLigature(options, printed);
 			return;
 		}
-		if (this.lits1.length > 1)
+		if (this.lits1.length > 1) {
 			printed.addHidden(Group.BEGIN_SEGMENT);
-		this.lits1.forEach(g => g.print(options, printed));
-		if (this.lits1.length > 1)
+			this.lits1.forEach((g, i) => {
+				g.print(options, printed);
+				if (i < this.lits1.length -1)
+					printed.addHidden(Group.HOR);
+			});
 			printed.addHidden(Group.END_SEGMENT);
+		} else {
+			this.lits1[0].print(options, printed);
+		}
 		printed.addHidden(Group.OVERLAY);
-		if (this.lits2.length > 1)
+		if (this.lits2.length > 1) {
 			printed.addHidden(Group.BEGIN_SEGMENT);
-		this.lits2.forEach(g => g.print(options, printed));
-		if (this.lits2.length > 1)
+			this.lits2.forEach((g, i) => {
+				g.print(options, printed);
+				if (i < this.lits2.length -1)
+					printed.addHidden(Group.VER);
+			});
 			printed.addHidden(Group.END_SEGMENT);
+		} else {
+			this.lits2[0].print(options, printed);
+		}
 	}
 	printLigature(options, printed) {
 		printed.addHidden(this.toString());
