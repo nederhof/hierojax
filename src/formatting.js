@@ -569,22 +569,46 @@ class Shapes {
 		}
 		return mirrored;
 	}
-	memoOverlayLigatures() {
-		if (!this.overlayLigatures) {
-			this.overlayLigatures = new Map();
-			for (const ch in Shapes.ligatures) {
-				const lig = Shapes.ligatures[ch];
-				if (lig.type == 'overlay' && !lig.alt) {
-					const horizontal = lig.horizontal;
-					const vertical = lig.vertical;
-					const first = horizontal[0].ch;
-					if (!this.overlayLigatures.has(first))
-						this.overlayLigatures.set(first, []);
-					this.overlayLigatures.get(first).push(ch);
-				}
+	memoLigatures() {
+		this.overlayLigatures = new Map();
+		this.verticalLigatures = new Map();
+		this.horizontalLigatures = new Map();
+		for (const ch in Shapes.ligatures) {
+			const lig = Shapes.ligatures[ch];
+			if (lig.type == 'overlay' && !lig.alt) {
+				const horizontal = lig.horizontal;
+				const vertical = lig.vertical;
+				const first = horizontal[0].ch;
+				if (!this.overlayLigatures.has(first))
+					this.overlayLigatures.set(first, []);
+				this.overlayLigatures.get(first).push(ch);
+			} else if (lig.type == 'vertical' && !lig.alt) {
+				const key = lig.groups.map(g => g.ch).join('');
+				if (!this.verticalLigatures.has(key))
+					this.verticalLigatures.set(key, []);
+				this.verticalLigatures.get(key).push(ch);
+			} else if (lig.type == 'horizontal' && !lig.alt) {
+				const key = lig.groups.map(g => g.ch).join('');
+				if (!this.horizontalLigatures.has(key))
+					this.horizontalLigatures.set(key, []);
+				this.horizontalLigatures.get(key).push(ch);
 			}
 		}
+	}
+	memoOverlayLigatures() {
+		if (!this.overlayLigatures)
+			this.memoLigatures();
 		return this.overlayLigatures;
+	}
+	memoVerticalLigatures() {
+		if (!this.verticalLigatures)
+			this.memoLigatures();
+		return this.verticalLigatures;
+	}
+	memoHorizontalLigatures() {
+		if (!this.horizontalLigatures)
+			this.memoLigatures();
+		return this.horizontalLigatures;
 	}
 }
 const shapes = new Shapes();
@@ -1263,15 +1287,49 @@ class Vertical extends Group {
 	constructor(groups) {
 		super();
 		this.groups = groups;
+		this.chooseAltGlyph();
 	}
 	toString() {
 		return this.groups.map(g => g.toString()).join(Group.VER);
 	}
+	chooseAltGlyph() {
+		this.alt = null;
+		if (this.groups.every(g => g instanceof Literal)) {
+			const key = this.groups.map(lit => lit.ch).join('');
+			const chs = shapes.memoVerticalLigatures().get(key) || [];
+			for (const ch of chs) {
+				if (this.matchLigature(ch)) {
+					this.alt = ch;
+					return;
+				}
+			}
+		}
+	}
+	matchLigature(ch) {
+		const lig = Shapes.ligatures[ch];
+		if (this.groups.length != lig.groups.length)
+			return false;
+		for (let i = 0; i < this.groups.length; i++) {
+			const sign = lig.groups[i];
+			const lit = this.groups[i];
+			if (lit.ch != sign.ch || lit.mirror != !!sign.mirror || lit.vs)
+				return false;
+		}
+		return true;
+	}
 	size(options) {
+		if (this.alt)
+			return this.sizeLigature(options);
 		const sizes = this.groups.map(g => g.size(options));
 		const w = getMax(sizes.map(s => s.w));
 		const h = getSum(sizes.map(s => s.h)) +
 			this.scale * options.sep * (this.groups.length-1);
+		return { w, h };
+	}
+	sizeLigature(options) {
+		const size = shapes.emSizeOf(this.alt, options.fontsize, 1, 1, 0, false);
+		const w = size.w * this.scale;
+		const h = size.h * this.scale;
 		return { w, h };
 	}
 	netHeight(options) {
@@ -1286,6 +1344,10 @@ class Vertical extends Group {
 		super.fit(options, w, h);
 	}
 	format(options, x0, x1, x2, x3, y0, y1, y2, y3) {
+		if (this.alt) {
+			this.formatLigature(options, x0, x1, x2, x3, y0, y1, y2, y3);
+			return;
+		}
 		const netHeight = this.netHeight(options);
 		const buf = ((y2-y1) - netHeight) / (this.groups.length-1 + this.nestedVerticalSpaces());
 		for (let i = 0; i < this.groups.length; i++) {
@@ -1301,6 +1363,26 @@ class Vertical extends Group {
 			group.format(options, x0, x1, x2, x3, y0, y1, y4, y5);
 			y0 = y5;
 			y1 = y4 + buf;
+		}
+	}
+	formatLigature(options, x0, x1, x2, x3, y0, y1, y2, y3) {
+		const lig = Shapes.ligatures[this.alt];
+		const size = this.size(options);
+		const bufX = ((x2-x1) - size.w) / 2;
+		const bufY = ((y2-y1) - size.h) / 2;
+		this.x = x1 + bufX;
+		this.y = y1 + (options.align == 'bottom' ? ((y2-y1) - size.h) : bufY);
+		this.w = size.w;
+		this.h = size.h;
+		this.areas = [];
+		for (let i = 0; i < lig.groups.length; i++) {
+			const s = lig.groups[i];
+			const damage = this.groups[i].damage;
+			const xMid = this.x + (s.x + s.w / 2) * this.w;
+			const yMin = i == 0 ? y0 : this.y + s.y * this.h;
+			const yMid = this.y + (s.y + s.h / 2) * this.h;
+			const yMax = i == lig.groups.length-1 ? y3 : this.y + (s.y + s.h) * this.h;
+			this.areas.push(...Group.damageAreas(damage, x0, xMid, x3, yMin, yMid, yMax));
 		}
 	}
 	nestedVerticalSpaces() {
@@ -1345,12 +1427,22 @@ class Vertical extends Group {
 		return group.size(options).h;
 	}
 	print(options, printed) {
+		if (this.alt) {
+			this.printLigature(options, printed);
+			return;
+		}
 		for (let i = 0; i < this.groups.length; i++) {
 			if (i > 0)
 				printed.addHidden(Group.VER);
 			const group = this.groups[i];
 			group.print(options, printed);
 		}
+	}
+	printLigature(options, printed) {
+		printed.addHidden(this.toString());
+		printed.addSign(this.alt, this.scale, 1, 1, 0, false, this, { unselectable: true });
+		for (const area of this.areas)
+			printed.addShading(area.x, area.y, area.w, area.h);
 	}
 }
 
@@ -1359,6 +1451,7 @@ class Horizontal extends Group {
 	constructor(groups) {
 		super();
 		this.groups = groups;
+		this.chooseAltGlyph();
 	}
 	toString() {
 		var s = '';
@@ -1374,13 +1467,46 @@ class Horizontal extends Group {
 		}
 		return s;
 	}
+	chooseAltGlyph() {
+		this.alt = null;
+		if (this.groups.every(g => g instanceof Literal)) {
+			const key = this.groups.map(lit => lit.ch).join('');
+			const chs = shapes.memoHorizontalLigatures().get(key) || [];
+			for (const ch of chs) {
+				if (this.matchLigature(ch)) {
+					this.alt = ch;
+					return;
+				}
+			}
+		}
+	}
+	matchLigature(ch) {
+		const lig = Shapes.ligatures[ch];
+		if (this.groups.length != lig.groups.length)
+			return false;
+		for (let i = 0; i < this.groups.length; i++) {
+			const sign = lig.groups[i];
+			const lit = this.groups[i];
+			if (lit.ch != sign.ch || lit.mirror != !!sign.mirror || lit.vs)
+				return false;
+		}
+		return true;
+	}
 	size(options) {
+		if (this.alt)
+			return this.sizeLigature(options);
 		const sizes = this.groups
 				.filter(g => !(g instanceof BracketOpen || g instanceof BracketClose))
 				.map(g => g.size(options));
 		const w = getSum(sizes.map(s => s.w)) +
 			this.scale * options.sep * (sizes.length-1);
 		const h = getMax(sizes.map(s => s.h));
+		return { w, h };
+	}
+	sizeLigature(options) {
+		const size = shapes.emSizeOf(this.alt, options.fontsize, 1, 1, 0, false);
+		const w = size.w * this.scale;
+		const h = size.h * this.scale;
 		return { w, h };
 	}
 	netWidth(options) {
@@ -1397,6 +1523,10 @@ class Horizontal extends Group {
 		super.fit(options, w, h);
 	}
 	format(options, x0, x1, x2, x3, y0, y1, y2, y3) {
+		if (this.alt) {
+			this.formatLigature(options, x0, x1, x2, x3, y0, y1, y2, y3);
+			return;
+		}
 		const properGroups = this.properGroups();
 		if (properGroups.length == 1) {
 			const first = this.groups[0];
@@ -1442,10 +1572,34 @@ class Horizontal extends Group {
 			}
 		}
 	}
+	formatLigature(options, x0, x1, x2, x3, y0, y1, y2, y3) {
+		const lig = Shapes.ligatures[this.alt];
+		const size = this.size(options);
+		const bufX = ((x2-x1) - size.w) / 2;
+		const bufY = ((y2-y1) - size.h) / 2;
+		this.x = x1 + bufX;
+		this.y = y1 + (options.align == 'bottom' ? ((y2-y1) - size.h) : bufY);
+		this.w = size.w;
+		this.h = size.h;
+		this.areas = [];
+		for (let i = 0; i < lig.groups.length; i++) {
+			const s = lig.groups[i];
+			const damage = this.groups[i].damage;
+			const xMin = i == 0 ? x0 : this.x + s.x * this.w;
+			const xMid = this.x + (s.x + s.w / 2) * this.w;
+			const xMax = i == lig.groups.length-1 ? x3 : this.x + (s.x + s.w) * this.w;
+			const yMid = this.y + (s.y + s.h / 2) * this.h;
+			this.areas.push(...Group.damageAreas(damage, xMin, xMid, xMax, y0, yMid, y3));
+		}
+	}
 	properGroups() {
 		return this.groups.filter(g => !(g instanceof BracketOpen || g instanceof BracketClose));
 	}
 	print(options, printed) {
+		if (this.alt) {
+			this.printLigature(options, printed);
+			return;
+		}
 		for (let i = 0; i < this.groups.length; i++) {
 			const group = this.groups[i];
 			if (i > 0 && !(this.groups[i-1] instanceof BracketOpen) &&
@@ -1459,6 +1613,12 @@ class Horizontal extends Group {
 				group.print(options, printed);
 			}
 		}
+	}
+	printLigature(options, printed) {
+		printed.addHidden(this.toString());
+		printed.addSign(this.alt, this.scale, 1, 1, 0, false, this, { unselectable: true });
+		for (const area of this.areas)
+			printed.addShading(area.x, area.y, area.w, area.h);
 	}
 }
 
@@ -1851,7 +2011,7 @@ class Basic extends Group {
 					Shapes.planeExtended(printed.canvas);
 				[scale, rect] = Basic.fitGrow(hull, scale, rect, pPlane, pHull, corePlane);
 				group.resize(scale);
-				const insRect  = Basic.removeMargins(position, hull, scale, rect);
+				const insRect = Basic.removeMargins(position, hull, scale, rect);
 				group.rect = { x0: insRect.x / coreW, y0: insRect.y / coreH,
 						x1: (insRect.x+insRect.w) / coreW, y1: (insRect.y+insRect.h) / coreH };
 				this.addInserted(printed, measOptions, group, place);

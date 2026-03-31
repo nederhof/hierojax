@@ -12,7 +12,7 @@ function fieldToHex(obj) {
 function fieldsToHex(obj) {
 	var objHex = {};
 	for (const key in obj) {
-		if (key == "horizontal" || key == "vertical")
+		if (key == "horizontal" || key == "vertical" || key == "groups")
 			objHex[key] = obj[key].map(fieldToHex);
 		else
 			objHex[key] = obj[key];

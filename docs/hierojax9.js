@@ -4077,6 +4077,15 @@ Shapes.ligatures = {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{131D7}', x: 0.2, y: 0, w: 0.55, h: 1 } ],
 	vertical: [ { ch: '\u{1309D}', x: 0, y: 0.1, w: 1, h: 0.3 } ] },
+'\uE509': {
+	type: 'vertical',
+	groups: [ { ch: '\u{13193}', x: 0.1, y: 0, w: 0.9, h: 0.85 },
+				{ ch: '\u{13193}', x: 0, y: 0.15, w: 0.9, h: 0.85 } ] },
+'\uE50A': {
+	type: 'vertical',
+	groups: [ { ch: '\u{13193}', x: 0.1, y: 0, w: 0.9, h: 0.80 },
+				{ ch: '\u{13193}', x: 0, y: 0.15, w: 0.9, h: 0.85 },
+				{ ch: '\u{133CF}', x: 0.20, y: 0.75, w: 0.45, h: 0.25 } ] },
 '\uE508': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{13257}', x: 0.30, y: 0, w: 0.4, h: 1 } ],
@@ -4187,6 +4196,11 @@ Shapes.ligatures = {
 	alt: true,
 	horizontal: [ { ch: '\u{13386}', x: 0.3, y: 0, w: 0.45, h: 0.45 } ],
 	vertical: [ { ch: '\u{13193}', x: 0, y: 0, w: 1, h: 1 } ] },
+'\u{E50B}': {
+	type: 'horizontal',
+	groups: [ { ch: '\u{1339B}', x: 0, y: 0, w: 0.3, h: 1 },
+				{ ch: '\u{13328}', x: 0.3, y: 0.25, w: 0.45, h: 0.40 },
+				{ ch: '\u{130C0}', x: 0.55, y: 0, w: 0.45, h: 1 } ] },
 '\u{1339E}': {
 	type: 'overlay',
 	horizontal: [ { ch: '\u{1339D}', x: 0.2, y: 0, w: 0.45, h: 1 } ],
