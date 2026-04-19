@@ -1,0 +1,32 @@
+@font-face { 
+	font-family: 'Hieroglyphic';
+	src: url('NewGardiner.otf') format('opentype');
+	font-feature-settings: 'liga';
+}
+
+.grammar {
+	font-family: "Courier New", Courier, monospace;
+	white-space: pre;
+}
+
+.grammar .nt {
+	color: #0057b8;
+	font-weight: bold;
+}
+
+.grammar .t {
+	font-family: Hieroglyphic;
+	font-size: 20px;
+	letter-spacing: 2px;
+}
+
+.grammar .op {
+	color: #aa0000;
+	font-weight: bold;
+}
+
+td.h {
+	font-family: Hieroglyphic;
+	font-size: 20px;
+	letter-spacing: 2px;
+}

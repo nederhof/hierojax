@@ -135,7 +135,7 @@ ligatures.json: convertinit.js ligatures.js convertligatures.js
 	cat convertinit.js ligatures.js convertligatures.js | js > ligatures.json
 	cp ligatures.json ../docs/
 
-texts: ../docs/texts/hierojax.css ../docs/texts/hierojax.js ../docs/texts/NewGardiner.ttf
+texts: ../docs/texts/hierojax.css ../docs/texts/hierojax.js ../docs/texts/NewGardiner.otf
 
 ../docs/texts/hierojax.css: ../docs/hierojax.css
 	cp ../docs/hierojax.css ../docs/texts/
@@ -143,8 +143,8 @@ texts: ../docs/texts/hierojax.css ../docs/texts/hierojax.js ../docs/texts/NewGar
 ../docs/texts/hierojax.js: ../docs/hierojax.js
 	cp ../docs/hierojax.js ../docs/texts/
 
-../docs/texts/NewGardiner.ttf: ../docs/NewGardiner.ttf
-	cp ../docs/NewGardiner.ttf ../docs/texts/
+../docs/texts/NewGardiner.otf: ../docs/NewGardiner.otf
+	cp ../docs/NewGardiner.otf ../docs/texts/
 
 clean:
 	rm -f ../docs/util.js

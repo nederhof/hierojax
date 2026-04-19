@@ -3306,7 +3306,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	preview = new Preview();
 	tree = new Tree();
 	signMenu = new SignMenu();
-	Edit.make(Shapes.PLACEHOLDER, [0]);
+	Edit.make('', [0]);
 	Edit.doNameFocus();
 	embedded = new Embedded();
 });

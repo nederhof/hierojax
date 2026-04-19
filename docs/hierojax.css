@@ -1,6 +1,6 @@
 @font-face {
 	font-family: 'Hieroglyphic';
-	src: url('NewGardiner.ttf') format('truetype');
+	src: url('NewGardiner.otf') format('opentype');
 }
 
 .hierojax-source {

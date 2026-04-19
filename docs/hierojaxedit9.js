@@ -1788,7 +1788,7 @@ class PrintedSVG extends PrintedAny {
 		return `
 @font-face {
 	font-family: 'NewGardiner';
-	src: url('${font}') format('truetype');
+	src: url('${font}') format('opentype');
 }
 .hierojax-svg-sign {
 	font-family: NewGardiner;
@@ -1812,7 +1812,7 @@ class PrintedSVG extends PrintedAny {
 }`;
 	}
 }
-PrintedSVG.EXTERNAL_FONT = 'NewGardiner.ttf';
+PrintedSVG.EXTERNAL_FONT = 'NewGardiner.otf';
 
 class Group {
 	scale;
@@ -4231,7 +4231,7 @@ class HieroJax {
 
 	startLoadingFonts() {
 		const hierojax = this;
-		this.fonts = [ new FontFace('Hieroglyphic', 'url(NewGardiner.ttf)') ];
+		this.fonts = [ new FontFace('Hieroglyphic', 'url(NewGardiner.otf)') ];
 		this.nFonts = this.fonts.length;
 		this.nFontsLoaded = 0;
 		this.fonts.forEach(f => { f.load().then((font) => {
