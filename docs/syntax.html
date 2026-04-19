@@ -162,6 +162,18 @@
 <span class='nt'>walled-closing-delimiter</span> ::= <span class='t'>&#x13287;</span> <span class='op'>|</span> <span class='t'>&#x13289;</span>
 <span class='nt'>damaged</span> ::= <span class='t'>&#x13447;</span> <span class='op'>|</span> <span class='t'>&#x13448;</span> <span class='op'>|</span> <span class='t'>&#x13449;</span> <span class='op'>|</span> <span class='t'>&#x1344A;</span> <span class='op'>|</span> <span class='t'>&#x1344B;</span> <span class='op'>|</span> <span class='t'>&#x1344C;</span> <span class='op'>|</span> <span class='t'>&#x1344D;</span> <span class='op'>|</span> <span class='t'>&#x1344E;</span> <span class='op'>|</span> <span class='t'>&#x1344F;</span> <span class='op'>|</span> <span class='t'>&#x13450;</span> <span class='op'>|</span> <span class='t'>&#x13451;</span> <span class='op'>|</span> <span class='t'>&#x13452;</span> <span class='op'>|</span> <span class='t'>&#x13453;</span> <span class='op'>|</span> <span class='t'>&#x13454;</span> <span class='op'>|</span> <span class='t'>&#x13455;</span>
 </pre>
+<p>
+Ambiguity in the grammar is resolved as follows:
+<ul>
+<li>A <span class='nt'>plain-opening</span> or <span class='nt'>walled-opening</span> just before
+<span class='t'>&#x1343C;</span> or <span class='t'>&#x1343E;</span>
+is considered to be part of an <span class='nt'>enclosure</span>
+rather than a <span class='nt'>singleton</span>.</li>
+<li>A <span class='nt'>plain-closing</span> or <span class='nt'>walled-closing</span> just after
+<span class='t'>&#x1343D;</span> or <span class='t'>&#x1343F;</span> is considered to be part of an 
+<span class='nt'>enclosure</span> rather than a <span class='nt'>singleton</span>.</li>
+</ul>
+This can be achieved by lexical analysis with a longest-match strategy.
 
 <h2>Links</h2>
 

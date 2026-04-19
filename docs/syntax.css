@@ -9,18 +9,18 @@
 	white-space: pre;
 }
 
-.grammar .nt {
+.nt {
 	color: #0057b8;
 	font-weight: bold;
 }
 
-.grammar .t {
+.t {
 	font-family: Hieroglyphic;
 	font-size: 20px;
 	letter-spacing: 2px;
 }
 
-.grammar .op {
+.op {
 	color: #aa0000;
 	font-weight: bold;
 }
