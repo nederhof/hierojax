@@ -106,14 +106,14 @@
 <table>
 <tr><td>U+005B</td><td class='h'>&#x005B;</td><td>LEFT SQUARE BRACKET</td></tr>
 <tr><td>U+005D</td><td class='h'>&#x005D;</td><td>RIGHT SQUARE BRACKET</td></tr>
-<tr><td>U+2E22</td><td class='h'>&#x2E22;</td><td>TOP LEFT HALF BRACKET</td></tr>
-<tr><td>U+2E23</td><td class='h'>&#x2E23;</td><td>TOP RIGHT HALF BRACKET</td></tr>
-<tr><td>U+27E8</td><td class='h'>&#x27E8;</td><td>MATHEMATICAL LEFT ANGLE BRACKET</td></tr>
-<tr><td>U+27E9</td><td class='h'>&#x27E9;</td><td>MATHEMATICAL RIGHT ANGLE BRACKET</td></tr>
 <tr><td>U+007B</td><td class='h'>&#x007B;</td><td>LEFT CURLY BRACKET</td></tr>
 <tr><td>U+007D</td><td class='h'>&#x007D;</td><td>RIGHT CURLY BRACKET</td></tr>
 <tr><td>U+27E6</td><td class='h'>&#x27E6;</td><td>MATHEMATICAL LEFT WHITE SQUARE BRACKET</td></tr>
 <tr><td>U+27E7</td><td class='h'>&#x27E7;</td><td>MATHEMATICAL RIGHT WHITE SQUARE BRACKET</td></tr>
+<tr><td>U+27E8</td><td class='h'>&#x27E8;</td><td>MATHEMATICAL LEFT ANGLE BRACKET</td></tr>
+<tr><td>U+27E9</td><td class='h'>&#x27E9;</td><td>MATHEMATICAL RIGHT ANGLE BRACKET</td></tr>
+<tr><td>U+2E22</td><td class='h'>&#x2E22;</td><td>TOP LEFT HALF BRACKET</td></tr>
+<tr><td>U+2E23</td><td class='h'>&#x2E23;</td><td>TOP RIGHT HALF BRACKET</td></tr>
 </table>
 
 <h2>Grammar</h2>
@@ -129,8 +129,8 @@
     <span class='nt'>hor-subgroup</span> <span class='nt'>close-bracket</span> <span class='op'>(</span> <span class='t'>&#x13431;</span> <span class='op'>[</span> <span class='nt'>open-bracket</span> <span class='op'>]</span> <span class='nt'>hor-subgroup</span> <span class='op'>[</span> <span class='nt'>close-bracket</span> <span class='op'>]</span> <span class='op'>)<sup>*</sup></span> <span class='op'>|</span>
     <span class='nt'>hor-subgroup</span> <span class='op'>(</span> <span class='t'>&#x13431;</span> <span class='op'>[</span> <span class='nt'>open-bracket</span> <span class='op'>]</span> <span class='nt'>hor-subgroup</span> <span class='op'>[</span> <span class='nt'>close-bracket</span> <span class='op'>]</span> <span class='op'>)<sup>+</sup></span> 
 <span class='nt'>hor-subgroup</span> ::= <span class='t'>&#x13437;</span> <span class='nt'>ver-group</span> <span class='t'>&#x13438;</span> <span class='op'>|</span> <span class='nt'>basic-group</span>
-<span class='nt'>open-bracket</span> ::= <span class='t'>&#x005B;</span> <span class='op'>|</span> <span class='t'>&#x2E22;</span> <span class='op'>|</span> <span class='t'>&#x27E8;</span> <span class='op'>|</span> <span class='t'>&#x007B;</span> <span class='op'>|</span> <span class='t'>&#x27E6;</span>
-<span class='nt'>close-bracket</span> ::= <span class='t'>&#x005D;</span> <span class='op'>|</span> <span class='t'>&#x2E23;</span> <span class='op'>|</span> <span class='t'>&#x27E9;</span> <span class='op'>|</span> <span class='t'>&#x007D;</span> <span class='op'>|</span> <span class='t'>&#x27E7;</span>
+<span class='nt'>open-bracket</span> ::= <span class='t'>&#x005B;</span> <span class='op'>|</span> <span class='t'>&#x007B;</span> <span class='op'>|</span> <span class='t'>&#x27E6;</span> <span class='op'>|</span> <span class='t'>&#x27E8;</span> <span class='op'>|</span> <span class='t'>&#x2E22;</span>
+<span class='nt'>close-bracket</span> ::= <span class='t'>&#x005D;</span> <span class='op'>|</span> <span class='t'>&#x007D;</span> <span class='op'>|</span> <span class='t'>&#x27E9;</span> <span class='op'>|</span> <span class='t'>&#x27E7;</span> <span class='op'>|</span> <span class='t'>&#x2E23;</span>
 <span class='nt'>basic-group</span> ::= <span class='nt'>core-group</span> <span class='op'>|</span> <span class='nt'>insert-group</span> <span class='op'>|</span> <span class='nt'>placeholder</span> <span class='op'>|</span> <span class='nt'>enclosure</span>
 <span class='nt'>insert-group</span> ::= <span class='nt'>core-group</span> <span class='nt'>insertion</span>
 <span class='nt'>insertion</span> ::= 
