@@ -121,14 +121,14 @@
 <pre class='grammar'>
 <span class='nt'>fragment</span> ::= <span class='op'>(</span> <span class='nt'>top-group</span> <span class='op'>)<sup>*</sup></span>
 <span class='nt'>top-group</span> ::= <span class='nt'>group</span> <span class='op'>|</span> <span class='nt'>singleton</span>
-<span class='nt'>group</span> ::= <span class='nt'>ver-group</span> <span class='op'>|</span> <span class='nt'>hor-group</span> <span class='op'>|</span> <span class='nt'>basic-group</span>
-<span class='nt'>ver-group</span> ::= <span class='nt'>ver-subgroup</span> <span class='op'>(</span> <span class='t'>&#x13430;</span> <span class='nt'>ver-subgroup</span> <span class='op'>)<sup>+</sup></span>
-<span class='nt'>ver-subgroup</span> ::= <span class='nt'>hor-group</span> <span class='op'>|</span> <span class='nt'>basic-group</span>
-<span class='nt'>hor-group</span> ::= 
-    <span class='nt'>open-bracket</span> <span class='nt'>hor-subgroup</span> <span class='op'>[</span> <span class='nt'>close-bracket</span> <span class='op'>]</span> <span class='op'>(</span> <span class='t'>&#x13431;</span> <span class='op'>[</span> <span class='nt'>open-bracket</span> <span class='op'>]</span> <span class='nt'>hor-subgroup</span> <span class='op'>[</span> <span class='nt'>close-bracket</span> <span class='op'>]</span> <span class='op'>)<sup>*</sup></span> <span class='op'>|</span>
-    <span class='nt'>hor-subgroup</span> <span class='nt'>close-bracket</span> <span class='op'>(</span> <span class='t'>&#x13431;</span> <span class='op'>[</span> <span class='nt'>open-bracket</span> <span class='op'>]</span> <span class='nt'>hor-subgroup</span> <span class='op'>[</span> <span class='nt'>close-bracket</span> <span class='op'>]</span> <span class='op'>)<sup>*</sup></span> <span class='op'>|</span>
-    <span class='nt'>hor-subgroup</span> <span class='op'>(</span> <span class='t'>&#x13431;</span> <span class='op'>[</span> <span class='nt'>open-bracket</span> <span class='op'>]</span> <span class='nt'>hor-subgroup</span> <span class='op'>[</span> <span class='nt'>close-bracket</span> <span class='op'>]</span> <span class='op'>)<sup>+</sup></span> 
-<span class='nt'>hor-subgroup</span> ::= <span class='t'>&#x13437;</span> <span class='nt'>ver-group</span> <span class='t'>&#x13438;</span> <span class='op'>|</span> <span class='nt'>basic-group</span>
+<span class='nt'>group</span> ::= <span class='nt'>vertical-group</span> <span class='op'>|</span> <span class='nt'>horizontal-group</span> <span class='op'>|</span> <span class='nt'>basic-group</span>
+<span class='nt'>vertical-group</span> ::= <span class='nt'>vertical-subgroup</span> <span class='op'>(</span> <span class='t'>&#x13430;</span> <span class='nt'>vertical-subgroup</span> <span class='op'>)<sup>+</sup></span>
+<span class='nt'>vertical-subgroup</span> ::= <span class='nt'>horizontal-group</span> <span class='op'>|</span> <span class='nt'>basic-group</span>
+<span class='nt'>horizontal-group</span> ::= 
+    <span class='nt'>open-bracket</span> <span class='nt'>horizontal-subgroup</span> <span class='op'>[</span> <span class='nt'>close-bracket</span> <span class='op'>]</span> <span class='op'>(</span> <span class='t'>&#x13431;</span> <span class='op'>[</span> <span class='nt'>open-bracket</span> <span class='op'>]</span> <span class='nt'>horizontal-subgroup</span> <span class='op'>[</span> <span class='nt'>close-bracket</span> <span class='op'>]</span> <span class='op'>)<sup>*</sup></span> <span class='op'>|</span>
+    <span class='nt'>horizontal-subgroup</span> <span class='nt'>close-bracket</span> <span class='op'>(</span> <span class='t'>&#x13431;</span> <span class='op'>[</span> <span class='nt'>open-bracket</span> <span class='op'>]</span> <span class='nt'>horizontal-subgroup</span> <span class='op'>[</span> <span class='nt'>close-bracket</span> <span class='op'>]</span> <span class='op'>)<sup>*</sup></span> <span class='op'>|</span>
+    <span class='nt'>horizontal-subgroup</span> <span class='op'>(</span> <span class='t'>&#x13431;</span> <span class='op'>[</span> <span class='nt'>open-bracket</span> <span class='op'>]</span> <span class='nt'>horizontal-subgroup</span> <span class='op'>[</span> <span class='nt'>close-bracket</span> <span class='op'>]</span> <span class='op'>)<sup>+</sup></span> 
+<span class='nt'>horizontal-subgroup</span> ::= <span class='t'>&#x13437;</span> <span class='nt'>vertical-group</span> <span class='t'>&#x13438;</span> <span class='op'>|</span> <span class='nt'>basic-group</span>
 <span class='nt'>open-bracket</span> ::= <span class='t'>&#x005B;</span> <span class='op'>|</span> <span class='t'>&#x007B;</span> <span class='op'>|</span> <span class='t'>&#x27E6;</span> <span class='op'>|</span> <span class='t'>&#x27E8;</span> <span class='op'>|</span> <span class='t'>&#x2E22;</span>
 <span class='nt'>close-bracket</span> ::= <span class='t'>&#x005D;</span> <span class='op'>|</span> <span class='t'>&#x007D;</span> <span class='op'>|</span> <span class='t'>&#x27E9;</span> <span class='op'>|</span> <span class='t'>&#x27E7;</span> <span class='op'>|</span> <span class='t'>&#x2E23;</span>
 <span class='nt'>basic-group</span> ::= <span class='nt'>core-group</span> <span class='op'>|</span> <span class='nt'>insert-group</span> <span class='op'>|</span> <span class='nt'>placeholder</span> <span class='op'>|</span> <span class='nt'>enclosure</span>
@@ -141,10 +141,10 @@
     <span class='t'>&#x13439;</span> <span class='nt'>in-group</span> <span class='op'>[</span> <span class='t'>&#x1343A;</span> <span class='nt'>in-group</span> <span class='op'>]</span> <span class='op'>[</span> <span class='t'>&#x1343B;</span> <span class='nt'>in-group</span> <span class='op'>]</span> <span class='op'>|</span>
     <span class='t'>&#x1343A;</span> <span class='nt'>in-group</span> <span class='op'>[</span> <span class='t'>&#x1343B;</span> <span class='nt'>in-group</span> <span class='op'>]</span> <span class='op'>|</span>
     <span class='t'>&#x1343B;</span> <span class='nt'>in-group</span> 
-<span class='nt'>in-group</span> ::= <span class='t'>&#x13437;</span> <span class='nt'>ver-group</span> <span class='t'>&#x13438;</span> <span class='op'>|</span> <span class='t'>&#x13437;</span> <span class='nt'>hor-group</span> <span class='t'>&#x13438;</span> <span class='op'>|</span> <span class='t'>&#x13437;</span> <span class='nt'>insert-group</span> <span class='t'>&#x13438;</span> <span class='op'>|</span> <span class='nt'>core-group</span> <span class='op'>|</span> <span class='nt'>placeholder</span> <span class='op'>|</span> <span class='nt'>enclosure</span>
-<span class='nt'>core-group</span> ::= <span class='nt'>flat-hor-group</span> <span class='t'>&#x13436;</span> <span class='nt'>flat-ver-group</span> <span class='op'>|</span> <span class='nt'>literal</span>
-<span class='nt'>flat-hor-group</span> ::= <span class='t'>&#x13437;</span> <span class='nt'>literal</span> <span class='op'>(</span> <span class='t'>&#x13431;</span> <span class='nt'>literal</span> <span class='op'>)<sup>+</sup></span> <span class='t'>&#x13438;</span> <span class='op'>|</span> <span class='nt'>literal</span>
-<span class='nt'>flat-ver-group</span> ::= <span class='t'>&#x13437;</span> <span class='nt'>literal</span> <span class='op'>(</span> <span class='t'>&#x13430;</span> <span class='nt'>literal</span> <span class='op'>)<sup>+</sup></span> <span class='t'>&#x13438;</span> <span class='op'>|</span> <span class='nt'>literal</span>
+<span class='nt'>in-group</span> ::= <span class='t'>&#x13437;</span> <span class='nt'>vertical-group</span> <span class='t'>&#x13438;</span> <span class='op'>|</span> <span class='t'>&#x13437;</span> <span class='nt'>horizontal-group</span> <span class='t'>&#x13438;</span> <span class='op'>|</span> <span class='t'>&#x13437;</span> <span class='nt'>insert-group</span> <span class='t'>&#x13438;</span> <span class='op'>|</span> <span class='nt'>core-group</span> <span class='op'>|</span> <span class='nt'>placeholder</span> <span class='op'>|</span> <span class='nt'>enclosure</span>
+<span class='nt'>core-group</span> ::= <span class='nt'>flat-horizontal-group</span> <span class='t'>&#x13436;</span> <span class='nt'>flat-vertical-group</span> <span class='op'>|</span> <span class='nt'>literal</span>
+<span class='nt'>flat-horizontal-group</span> ::= <span class='t'>&#x13437;</span> <span class='nt'>literal</span> <span class='op'>(</span> <span class='t'>&#x13431;</span> <span class='nt'>literal</span> <span class='op'>)<sup>+</sup></span> <span class='t'>&#x13438;</span> <span class='op'>|</span> <span class='nt'>literal</span>
+<span class='nt'>flat-vertical-group</span> ::= <span class='t'>&#x13437;</span> <span class='nt'>literal</span> <span class='op'>(</span> <span class='t'>&#x13430;</span> <span class='nt'>literal</span> <span class='op'>)<sup>+</sup></span> <span class='t'>&#x13438;</span> <span class='op'>|</span> <span class='nt'>literal</span>
 <span class='nt'>literal</span> ::= <span class='nt'>sign</span> <span class='op'>[</span> <span class='t'>&#x00A0;&#xFE00;</span> <span class='op'>|</span> <span class='t'>&#x00A0;&#xFE01;</span> <span class='op'>|</span> <span class='t'>&#x00A0;&#xFE02;</span> <span class='op'>|</span> <span class='t'>&#x00A0;&#xFE03;</span> <span class='op'>|</span> <span class='t'>&#x00A0;&#xFE04;</span> <span class='op'>|</span> <span class='t'>&#x00A0;&#xFE05;</span> <span class='op'>|</span> <span class='t'>&#x00A0;&#xFE06;</span> <span class='op'>]</span> <span class='op'>[</span> <span class='t'>&#x13440;</span> <span class='op'>]</span> <span class='op'>[</span> <span class='nt'>damaged</span> <span class='op'>]</span>
 <span class='nt'>sign</span> ::= <span class='t'>&#x13000;</span> <span class='op'>|</span> <i>etc.</i>
 <span class='nt'>placeholder</span> ::= <span class='t'>&#x13441;</span> <span class='op'>|</span> <span class='t'>&#x13442;</span> <span class='op'>|</span> <span class='op'>(</span> <span class='t'>&#x13443;</span> <span class='op'>|</span> <span class='t'>&#x13444;</span> <span class='op'>|</span> <span class='t'>&#x13445;</span> <span class='op'>|</span> <span class='t'>&#x13446;</span> <span class='op'>)</span> <span class='op'>[</span> <span class='t'>&#x00A0;&#xFE00;</span> <span class='op'>]</span>
@@ -174,6 +174,111 @@ rather than a <span class='nt'>singleton</span>.</li>
 <span class='nt'>enclosure</span> rather than a <span class='nt'>singleton</span>.</li>
 </ul>
 This can be achieved by lexical analysis with a longest-match strategy.
+
+<h2>LALR(1) Grammar</h2>
+
+<p>An alternative formulation of the same syntax is given as LALR(1) grammar below, 
+for use with parser generators.</p>
+
+<pre class='grammar'>
+<span class='nt'>fragment</span> ::= <span class='nt'>top-groups</span>
+<span class='nt'>top-groups</span> ::= &#x03B5; <span class='op'>|</span> <span class='nt'>group</span> <span class='nt'>top-groups</span> <span class='op'>|</span> <span class='nt'>singleton</span> <span class='nt'>top-groups</span> 
+<span class='nt'>groups</span> ::= &#x03B5; <span class='op'>|</span> <span class='nt'>group</span> <span class='nt'>groups</span>
+<span class='nt'>group</span> ::= <span class='nt'>vertical-group</span> <span class='op'>|</span> <span class='nt'>horizontal-group</span> <span class='op'>|</span> <span class='nt'>basic-group</span> <span class='op'>|</span> <span class='nt'>literal</span>
+<span class='nt'>vertical-group</span> ::= <span class='nt'>vertical-subgroup</span> <span class='nt'>rest-vertical-group</span>
+<span class='nt'>opt-rest-vertical-group</span> ::= &#x03B5; <span class='op'>|</span> <span class='nt'>rest-vertical-group</span>
+<span class='nt'>rest-vertical-group</span> :: <span class='t'>&#x13430;</span> <span class='nt'>vertical-subgroup</span> <span class='nt'>opt-rest-vertical-group</span>
+<span class='nt'>bracketed-vertical-group</span> :: <span class='t'>&#x13437;</span> <span class='nt'>vertical-subgroup</span> <span class='nt'>rest-bracketed-vertical-group</span>
+<span class='nt'>opt-rest-bracketed-vertical-group</span> ::= &#x03B5; <span class='op'>|</span> <span class='nt'>rest-bracketed-vertical-group</span>
+<span class='nt'>rest-bracketed-vertical-group</span> :: <span class='t'>&#x13430;</span> <span class='nt'>vertical-subgroup</span> <span class='nt'>opt-rest-bracketed-vertical-group</span>
+<span class='nt'>bracketed-flat-vertical-group</span> :: <span class='t'>&#x13437;</span> <span class='nt'>literal</span> <span class='nt'>rest-bracketed-flat-vertical-group</span>
+<span class='nt'>rest-bracketed-flat-vertical-group</span> :: <span class='t'>&#x13430;</span> <span class='nt'>literal</span> <span class='nt'>rest-bracketed-flat-vertical-group</span> <span class='op'>|</span> <span class='t'>&#x13430;</span> <span class='nt'>literal</span> <span class='t'>&#x13438;</span>
+<span class='nt'>vertical-subgroup</span> ::= <span class='nt'>horizontal-group</span> <span class='op'>|</span> <span class='nt'>basic-group</span> <span class='op'>|</span> <span class='nt'>literal</span>
+<span class='nt'>horizontal-group</span> ::= 
+    <span class='nt'>horizontal-subgroup</span> <span class='nt'>rest-horizontal-group</span> <span class='op'>|</span>
+    <span class='nt'>literal</span> <span class='nt'>rest-horizontal-group</span> <span class='op'>|</span>
+    <span class='nt'>open-bracket</span> <span class='nt'>horizontal-subgroup</span> <span class='nt'>opt-close-bracket</span> <span class='nt'>opt-rest-horizontal-group</span> <span class='op'>|</span>
+    <span class='nt'>open-bracket</span> <span class='nt'>literal</span> <span class='nt'>opt-close-bracket</span> <span class='nt'>opt-rest-horizontal-group</span> <span class='op'>|</span>
+    <span class='nt'>horizontal-subgroup</span> <span class='nt'>close-bracket</span> <span class='nt'>opt-rest-horizontal-group</span> <span class='op'>|</span>
+    <span class='nt'>literal</span> <span class='nt'>close-bracket</span> <span class='nt'>opt-rest-horizontal-group</span>
+<span class='nt'>opt-rest-horizontal-group</span> ::= &#x03B5; <span class='op'>|</span> <span class='nt'>rest-horizontal-group</span>
+<span class='nt'>rest-horizontal-group</span> ::= 
+    <span class='t'>&#x13431;</span> <span class='nt'>horizontal-subgroup</span> <span class='nt'>opt-rest-horizontal-group</span> <span class='op'>|</span> 
+    <span class='t'>&#x13431;</span> <span class='nt'>literal</span> <span class='nt'>opt-rest-horizontal-group</span> <span class='op'>|</span> 
+    <span class='t'>&#x13431;</span> <span class='nt'>open-bracket</span> <span class='nt'>horizontal-subgroup</span> <span class='nt'>opt-close-bracket</span> <span class='nt'>opt-rest-horizontal-group</span> <span class='op'>|</span> 
+    <span class='t'>&#x13431;</span> <span class='nt'>open-bracket</span> <span class='nt'>literal</span> <span class='nt'>opt-close-bracket</span> <span class='nt'>opt-rest-horizontal-group</span> <span class='op'>|</span> 
+    <span class='t'>&#x13431;</span> <span class='nt'>horizontal-subgroup</span> <span class='nt'>close-bracket</span> <span class='nt'>opt-rest-horizontal-group</span> <span class='op'>|</span> 
+    <span class='t'>&#x13431;</span> <span class='nt'>literal</span> <span class='nt'>close-bracket</span> <span class='nt'>opt-rest-horizontal-group</span>
+<span class='nt'>bracketed-horizontal-group</span> ::= 
+    <span class='t'>&#x13437;</span> <span class='nt'>horizontal-subgroup</span> <span class='nt'>rest-bracketed-horizontal-group</span> <span class='op'>|</span>
+    <span class='t'>&#x13437;</span> <span class='nt'>literal</span> <span class='nt'>rest-bracketed-horizontal-group</span> <span class='op'>|</span>
+    <span class='t'>&#x13437;</span> <span class='nt'>open-bracket</span> <span class='nt'>horizontal-subgroup</span> <span class='nt'>opt-close-bracket</span> <span class='nt'>opt-rest-bracketed-horizontal-group</span> <span class='op'>|</span>
+    <span class='t'>&#x13437;</span> <span class='nt'>open-bracket</span> <span class='nt'>literal</span> <span class='nt'>opt-close-bracket</span> <span class='nt'>opt-rest-bracketed-horizontal-group</span> <span class='op'>|</span>
+    <span class='t'>&#x13437;</span> <span class='nt'>horizontal-subgroup</span> <span class='nt'>close-bracket</span> <span class='nt'>opt-rest-bracketed-horizontal-group</span> <span class='op'>|</span>
+    <span class='t'>&#x13437;</span> <span class='nt'>literal</span> <span class='nt'>close-bracket</span> <span class='nt'>opt-rest-bracketed-horizontal-group</span>
+<span class='nt'>opt-rest-bracketed-horizontal-group</span> ::= <span class='t'>&#x13438;</span> <span class='op'>|</span> <span class='nt'>rest-bracketed-horizontal-group</span>
+<span class='nt'>rest-bracketed-horizontal-group</span> ::= 
+    <span class='t'>&#x13431;</span> <span class='nt'>horizontal-subgroup</span> <span class='nt'>opt-rest-bracketed-horizontal-group</span> <span class='op'>|</span> 
+    <span class='t'>&#x13431;</span> <span class='nt'>literal</span> <span class='nt'>opt-rest-bracketed-horizontal-group</span> <span class='op'>|</span> 
+    <span class='t'>&#x13431;</span> <span class='nt'>open-bracket</span> <span class='nt'>horizontal-subgroup</span> <span class='nt'>opt-close-bracket</span> <span class='nt'>opt-rest-bracketed-horizontal-group</span> <span class='op'>|</span> 
+    <span class='t'>&#x13431;</span> <span class='nt'>open-bracket</span> <span class='nt'>literal</span> <span class='nt'>opt-close-bracket</span> <span class='nt'>opt-rest-bracketed-horizontal-group</span> <span class='op'>|</span> 
+    <span class='t'>&#x13431;</span> <span class='nt'>horizontal-subgroup</span> <span class='nt'>close-bracket</span> <span class='nt'>opt-rest-bracketed-horizontal-group</span> <span class='op'>|</span> 
+    <span class='t'>&#x13431;</span> <span class='nt'>literal</span> <span class='nt'>close-bracket</span> <span class='nt'>opt-rest-bracketed-horizontal-group</span>
+<span class='nt'>bracketed-flat-horizontal-group</span> ::= <span class='t'>&#x13437;</span> <span class='nt'>literal</span> <span class='nt'>rest-bracketed-flat-horizontal-group</span>
+<span class='nt'>rest-bracketed-flat-horizontal-group</span> :: <span class='t'>&#x13431;</span> <span class='nt'>literal</span> <span class='nt'>rest-bracketed-flat-horizontal-group</span> <span class='op'>|</span> <span class='t'>&#x13431;</span> <span class='nt'>literal</span> <span class='t'>&#x13438;</span>
+<span class='nt'>horizontal-subgroup</span> ::= <span class='nt'>bracketed-vertical-group</span> <span class='op'>|</span> <span class='nt'>basic-group</span>
+<span class='nt'>basic-group</span> ::= <span class='nt'>core-group</span> <span class='op'>|</span> <span class='nt'>insert-group</span> <span class='op'>|</span> <span class='nt'>placeholder</span> <span class='op'>|</span> <span class='nt'>enclosure</span>
+<span class='nt'>insert-group</span> ::= <span class='nt'>core-group</span> <span class='nt'>insertion</span> <span class='op'>|</span> <span class='nt'>literal</span> <span class='nt'>insertion</span>
+<span class='nt'>bracketed-insert-group</span> ::= <span class='t'>&#x13437;</span> <span class='nt'>core-group</span> <span class='nt'>insertion</span> <span class='t'>&#x13438;</span> <span class='op'>|</span> <span class='t'>&#x13437;</span> <span class='nt'>literal</span> <span class='nt'>insertion</span> <span class='t'>&#x13438;</span>
+<span class='nt'>insertion</span> ::= 
+    <span class='t'>&#x13432;</span> <span class='nt'>in-group</span> <span class='nt'>opt-bs-ins</span> <span class='nt'>opt-te-ins</span> <span class='nt'>opt-be-ins</span> <span class='nt'>opt-m-ins</span> <span class='nt'>opt-t-ins</span> <span class='nt'>opt-b-ins</span> <span class='op'>|</span>
+    <span class='t'>&#x13433;</span> <span class='nt'>in-group</span> <span class='nt'>opt-te-ins</span> <span class='nt'>opt-be-ins</span> <span class='nt'>opt-m-ins</span> <span class='nt'>opt-t-ins</span> <span class='nt'>opt-b-ins</span> <span class='op'>|</span>
+    <span class='t'>&#x13434;</span> <span class='nt'>in-group</span> <span class='nt'>opt-be-ins</span> <span class='nt'>opt-m-ins</span> <span class='nt'>opt-t-ins</span> <span class='nt'>opt-b-ins</span> <span class='op'>|</span>
+    <span class='t'>&#x13435;</span> <span class='nt'>in-group</span> <span class='nt'>opt-m-ins</span> <span class='nt'>opt-t-ins</span> <span class='nt'>opt-b-ins</span> <span class='op'>|</span>
+    <span class='t'>&#x13439;</span> <span class='nt'>in-group</span> <span class='nt'>opt-t-ins</span> <span class='nt'>opt-b-ins</span> <span class='op'>|</span>
+    <span class='t'>&#x1343A;</span> <span class='nt'>in-group</span> <span class='nt'>opt-b-ins</span> <span class='op'>|</span>
+    <span class='t'>&#x1343B;</span> <span class='nt'>in-group</span> 
+<span class='nt'>opt-bs-ins</span> ::= &#x03B5; <span class='op'>|</span> <span class='t'>&#x13433;</span> <span class='nt'>in-group</span>
+<span class='nt'>opt-te-ins</span> ::= &#x03B5; <span class='op'>|</span> <span class='t'>&#x13434;</span> <span class='nt'>in-group</span>
+<span class='nt'>opt-be-ins</span> ::= &#x03B5; <span class='op'>|</span> <span class='t'>&#x13435;</span> <span class='nt'>in-group</span>
+<span class='nt'>opt-m-ins</span> ::= &#x03B5; <span class='op'>|</span> <span class='t'>&#x13439;</span> <span class='nt'>in-group</span>
+<span class='nt'>opt-t-ins</span> ::= &#x03B5; <span class='op'>|</span> <span class='t'>&#x1343A;</span> <span class='nt'>in-group</span>
+<span class='nt'>opt-b-ins</span> ::= &#x03B5; <span class='op'>|</span> <span class='t'>&#x1343B;</span> <span class='nt'>in-group</span>
+<span class='nt'>in-group</span> ::= <span class='nt'>bracketed-vertical-group</span> <span class='op'>|</span> <span class='nt'>bracketed-horizontal-group</span> <span class='op'>|</span> <span class='nt'>bracketed-insert-group</span> <span class='op'>|</span> <span class='nt'>core-group</span> <span class='op'>|</span> <span class='nt'>literal</span> <span class='op'>|</span> <span class='nt'>placeholder</span> <span class='op'>|</span> <span class='nt'>enclosure</span>
+<span class='nt'>core-group</span> ::= <span class='nt'>flat-horizontal-group</span> <span class='t'>&#x13436;</span> <span class='nt'>flat-vertical-group</span>
+<span class='nt'>flat-horizontal-group</span> ::= <span class='nt'>bracketed-flat-horizontal-group</span> <span class='op'>|</span> <span class='nt'>literal</span>
+<span class='nt'>flat-vertical-group</span> ::= <span class='nt'>bracketed-flat-vertical-group</span> <span class='op'>|</span> <span class='nt'>literal</span>
+<span class='nt'>opt-close-bracket</span> ::= &#x03B5; <span class='op'>|</span> <span class='nt'>close-bracket</span>
+<span class='nt'>literal</span> ::= <span class='nt'>sign</span> <span class='nt'>opt-vs</span> <span class='nt'>opt-mirror</span> <span class='nt'>opt-damaged</span>
+<span class='nt'>opt-vs</span> ::= &#x03B5; <span class='op'>|</span> <span class='nt'>vs</span> 
+<span class='nt'>opt-mirror</span> ::= &#x03B5; <span class='op'>|</span> <span class='t'>&#x13440;</span> 
+<span class='nt'>opt-damaged</span> ::= &#x03B5; <span class='op'>|</span> <span class='nt'>damaged</span> 
+<span class='nt'>placeholder</span> ::= <span class='t'>&#x13441;</span> <span class='op'>|</span> <span class='t'>&#x13442;</span> <span class='op'>|</span> <span class='t'>&#x13443;</span> <span class='nt'>opt-vs</span> <span class='op'>|</span> <span class='t'>&#x13444;</span> <span class='nt'>opt-vs</span> <span class='op'>|</span> <span class='t'>&#x13445;</span> <span class='nt'>opt-vs</span> <span class='op'>|</span> <span class='t'>&#x13446;</span> <span class='nt'>opt-vs</span>
+<span class='nt'>enclosure</span> ::= <span class='nt'>plain-open</span> <span class='nt'>groups</span> <span class='nt'>plain-close</span> <span class='op'>|</span> <span class='nt'>walled-open</span> <span class='nt'>groups</span> <span class='nt'>walled-close</span>
+</pre>
+<p>If there is a variation selector in a <span class='nt'>placeholder</span>, then this must be <span class='t'>&#x00A0;&#xFE00;</span>. This could be checked following initial lexical and syntactic analysis.</p>
+<p>The following would typically be implemented by the lexical analyzer, again with a longest-match 
+strategy to disambiguate between a part of an <span class='nt'>enclosure</span> and a <span class='nt'>singleton</span>.</p>
+<pre class='grammar'>
+<span class='nt'>open-bracket</span> ::= <span class='t'>&#x005B;</span> <span class='op'>|</span> <span class='t'>&#x007B;</span> <span class='op'>|</span> <span class='t'>&#x27E6;</span> <span class='op'>|</span> <span class='t'>&#x27E8;</span> <span class='op'>|</span> <span class='t'>&#x2E22;</span>
+<span class='nt'>close-bracket</span> ::= <span class='t'>&#x005D;</span> <span class='op'>|</span> <span class='t'>&#x007D;</span> <span class='op'>|</span> <span class='t'>&#x27E9;</span> <span class='op'>|</span> <span class='t'>&#x27E7;</span> <span class='op'>|</span> <span class='t'>&#x2E23;</span>
+<span class='nt'>sign</span> ::= <span class='t'>&#x13000;</span> <span class='op'>|</span> <i>etc.</i>
+<span class='nt'>vs</span> ::= <span class='t'>&#x00A0;&#xFE00;</span> <span class='op'>|</span> <span class='t'>&#x00A0;&#xFE01;</span> <span class='op'>|</span> <span class='t'>&#x00A0;&#xFE02;</span> <span class='op'>|</span> <span class='t'>&#x00A0;&#xFE03;</span> <span class='op'>|</span> <span class='t'>&#x00A0;&#xFE04;</span> <span class='op'>|</span> <span class='t'>&#x00A0;&#xFE05;</span> <span class='op'>|</span> <span class='t'>&#x00A0;&#xFE06;</span>
+<span class='nt'>plain-open</span> ::= <span class='op'>[</span> <span class='nt'>plain-opening-delimiter</span> <span class='op'>[</span> <span class='nt'>damaged</span> <span class='op'>]</span> <span class='op'>]</span> <span class='t'>&#x1343C;</span> 
+<span class='nt'>plain-close</span> ::= <span class='t'>&#x1343D;</span> <span class='op'>[</span> <span class='nt'>plain-closing-delimiter</span> <span class='op'>[</span> <span class='nt'>damaged</span> <span class='op'>]</span> <span class='op'>]</span> 
+<span class='nt'>walled-open</span> ::= <span class='op'>[</span> <span class='nt'>walled-opening-delimiter</span> <span class='op'>[</span> <span class='nt'>damaged</span> <span class='op'>]</span> <span class='op'>]</span> <span class='t'>&#x1343E;</span> 
+<span class='nt'>walled-close</span> ::= <span class='t'>&#x1343F;</span> <span class='op'>[</span> <span class='nt'>walled-closing-delimiter</span> <span class='op'>[</span> <span class='nt'>damaged</span> <span class='op'>]</span> <span class='op'>]</span>
+<span class='nt'>singleton</span> ::= 
+    <span class='nt'>plain-opening-delimiter</span> <span class='op'>[</span> <span class='nt'>damaged</span> <span class='op'>]</span> <span class='op'>|</span>
+    <span class='nt'>plain-closing-delimiter</span> <span class='op'>[</span> <span class='nt'>damaged</span> <span class='op'>]</span> <span class='op'>|</span>
+    <span class='nt'>walled-opening-delimiter</span> <span class='op'>[</span> <span class='nt'>damaged</span> <span class='op'>]</span> <span class='op'>|</span>
+    <span class='nt'>walled-closing-delimiter</span> <span class='op'>[</span> <span class='nt'>damaged</span> <span class='op'>]</span>
+<span class='nt'>plain-opening-delimiter</span> ::= <span class='t'>&#x13258;</span> <span class='op'>|</span> <span class='t'>&#x13259;</span> <span class='op'>|</span> <span class='t'>&#x1325A;</span> <span class='op'>|</span> <span class='t'>&#x13379;</span> <span class='op'>|</span> <span class='t'>&#x1342F;</span>
+<span class='nt'>plain-closing-delimiter</span> ::= <span class='t'>&#x1325B;</span> <span class='op'>|</span> <span class='t'>&#x1325C;</span> <span class='op'>|</span> <span class='t'>&#x1325D;</span> <span class='op'>|</span> <span class='t'>&#x13282;</span> <span class='op'>|</span> <span class='t'>&#x1337A;</span> <span class='op'>|</span> <span class='t'>&#x1337B;</span>
+<span class='nt'>walled-opening-delimiter</span> ::= <span class='t'>&#x13286;</span> <span class='op'>|</span> <span class='t'>&#x13288;</span>
+<span class='nt'>walled-closing-delimiter</span> ::= <span class='t'>&#x13287;</span> <span class='op'>|</span> <span class='t'>&#x13289;</span>
+<span class='nt'>damaged</span> ::= <span class='t'>&#x13447;</span> <span class='op'>|</span> <span class='t'>&#x13448;</span> <span class='op'>|</span> <span class='t'>&#x13449;</span> <span class='op'>|</span> <span class='t'>&#x1344A;</span> <span class='op'>|</span> <span class='t'>&#x1344B;</span> <span class='op'>|</span> <span class='t'>&#x1344C;</span> <span class='op'>|</span> <span class='t'>&#x1344D;</span> <span class='op'>|</span> <span class='t'>&#x1344E;</span> <span class='op'>|</span> <span class='t'>&#x1344F;</span> <span class='op'>|</span> <span class='t'>&#x13450;</span> <span class='op'>|</span> <span class='t'>&#x13451;</span> <span class='op'>|</span> <span class='t'>&#x13452;</span> <span class='op'>|</span> <span class='t'>&#x13453;</span> <span class='op'>|</span> <span class='t'>&#x13454;</span> <span class='op'>|</span> <span class='t'>&#x13455;</span>
+</pre>
 
 <h2>Links</h2>
 
