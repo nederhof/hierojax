@@ -13138,6 +13138,7 @@ const mdcMnemonics = {
 'K': 'S46',
 'nTrw': 'R8a',
 'nn': 'M22a',
+'o': 'Z52',
 'O': 'Z52',
 };
  
@@ -14326,6 +14327,7 @@ class MdcSign extends MdcHieroglyph {
 	}
 	static nameToChar(name) {
 		var uniName = name;
+		console.log(name);
 		if (name in mdcMnemonics)
 			uniName = mdcMnemonics[name];
 		else if (name in uniMnemonics)
