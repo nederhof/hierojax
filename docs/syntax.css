@@ -18,6 +18,8 @@
 	font-family: Hieroglyphic;
 	font-size: 20px;
 	letter-spacing: 2px;
+	position: relative;
+	top: 4px;
 }
 
 .op {

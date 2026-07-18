@@ -13109,6 +13109,7 @@ const mdcNamesUniKemet = {
  
 const mdcMnemonics = {
 'M': 'Aa15',
+'R': 'D153',
 'mw': 'N35a',
 'id': 'N42',
 'aAv': 'O29a',
@@ -13137,6 +13138,7 @@ const mdcMnemonics = {
 'K': 'S46',
 'nTrw': 'R8a',
 'nn': 'M22a',
+'O': 'Z52',
 };
  
 const MdcLigatures = {
