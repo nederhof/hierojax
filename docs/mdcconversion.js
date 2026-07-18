@@ -14327,7 +14327,6 @@ class MdcSign extends MdcHieroglyph {
 	}
 	static nameToChar(name) {
 		var uniName = name;
-		console.log(name);
 		if (name in mdcMnemonics)
 			uniName = mdcMnemonics[name];
 		else if (name in uniMnemonics)
