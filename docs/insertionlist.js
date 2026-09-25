@@ -28,7 +28,6 @@ function printInsertionGlyph(li, ch, glyph) {
 		im.setAttribute('src', 'rotation' + glyph.rot + '.svg');
 		li.appendChild(im);
 	}
-
 	const places = Object.keys(glyph).filter(p => Group.INSERTION_PLACES.includes(p));
 	const meas = PrintedAny.correctedMeasurement(ch, hieroSize, 1, 1, rot, false, { });
 	const buf = (hieroSize - meas.w) / hieroSize / 2;
@@ -84,6 +83,16 @@ function printInsertionGlyph(li, ch, glyph) {
 		const h = Math.round(meas.h);
 		ctx.rect(x, y, w, h);
 		ctx.stroke();
+		if (glyph.out) {
+			if (glyph.out.includes('s'))
+				printOut(ctx, x, y, x, y+h);
+			if (glyph.out.includes('e'))
+				printOut(ctx, x+w, y, x+w, y+h);
+			if (glyph.out.includes('t'))
+				printOut(ctx, x, y, x+w, y);
+			if (glyph.out.includes('b'))
+				printOut(ctx, x, y+h, x+w, y+h);
+		}
 		Shapes.prepareFont(ctx, hieroSize, 'black');
 		ctx.translate(Math.round(hieroSize * (0.5 + buf) + meas.widthScaled/2 - meas.x), 
 				Math.round(hieroSize * 1.5 - meas.heightScaled/2 - meas.y));
@@ -94,6 +103,14 @@ function printInsertionGlyph(li, ch, glyph) {
 		ctx.fillText(ch, Math.round(hieroSize * buf), Math.round(hieroSize * 1.5));
 	}
 	li.appendChild(canvas);
+}
+
+function printOut(ctx, x0, y0, x1, y1) {
+	ctx.strokeStyle = 'red';
+	ctx.beginPath();
+	ctx.moveTo(x0, y0);
+	ctx.lineTo(x1, y1);
+	ctx.stroke();
 }
 
 function printInsertion(ch) {

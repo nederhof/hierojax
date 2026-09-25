@@ -115,7 +115,7 @@ class Shapes {
 			const xMax = w+dist-1;
 			const yMin = -dist;
 			const yMax = h+dist-1;
-			return { w, h, xMins, xMaxs, yMins, yMaxs, xMin, xMax, yMin, yMax };
+			return { w, h, xMins, xMaxs, yMins, yMaxs, xMin, xMax, yMin, yMax, dist };
 		}
 		var x = margins.l;
 		var y = Shapes.topMostDark(plane, x, margins.t, h-1-margins.b);
@@ -332,10 +332,10 @@ class Shapes {
 		return rect;
 	}
 	static distances(plane, hull, pPlane, pHull, scalePrev, scale) {
-		var l = Number.MIN_SAFE_INTEGER;
-		var r = Number.MAX_SAFE_INTEGER;
-		var t = Number.MIN_SAFE_INTEGER;
-		var b = Number.MAX_SAFE_INTEGER;
+		var l = -hull.dist
+		var r = hull.dist
+		var t = -hull.dist
+		var b = hull.dist
 		t = Shapes.distancesBottommost(plane, hull, pPlane, pHull, scalePrev, scale, t,
 			Math.round(pHull.x), hull.w + hull.dist, 1);
 		t = Shapes.distancesBottommost(plane, hull, pPlane, pHull, scalePrev, scale, t,
@@ -355,6 +355,10 @@ class Shapes {
 		return { l, r, t, b };
 	}
 	static distancesBottommost(plane, hull, pPlane, pHull, scalePrev, scale, t, first, last, incr) {
+		const scaleFactor = scalePrev / scale;
+		const almostLast = Math.round(incr > 0 ? 
+			first + (last-first) * scaleFactor : 
+			first - (first-last) * scaleFactor);
 		for (let x = first; incr > 0 ? x < last : x > last; x += incr) {
 			const xPlane = Math.round(pPlane.x + (x - pHull.x) * scale);
 			const yMin = hull.yMins[x];
@@ -365,7 +369,7 @@ class Shapes {
 				const yPlaneMax = Math.round(pPlane.y - distPrev);
 				const bottomMost = Shapes.bottomMostDark(plane, xPlane, yPlaneMin, Math.round(pPlane.y));
 				if (!isNaN(bottomMost)) {
-					if (bottomMost < yPlaneMax+1)
+					if (bottomMost < yPlaneMax+1) // || (incr > 0 ? x < almostLast : x > almostLast))
 						t = Math.max(t, bottomMost - yPlaneMin + 1);
 					else
 						break;
@@ -375,6 +379,10 @@ class Shapes {
 		return t;
 	}
 	static distancesTopmost(plane, hull, pPlane, pHull, scalePrev, scale, b, first, last, incr) {
+		const scaleFactor = scalePrev / scale;
+		const almostLast = Math.round(incr > 0 ? 
+			first + (last-first) * scaleFactor : 
+			first - (first-last) * scaleFactor);
 		for (let x = first; incr > 0 ? x < last : x > last; x += incr) {
 			const xPlane = Math.round(pPlane.x + (x - pHull.x) * scale);
 			const yMax = hull.yMaxs[x];
@@ -385,7 +393,7 @@ class Shapes {
 				const yPlaneMax = Math.round(pPlane.y + dist);
 				const topMost = Shapes.topMostDark(plane, xPlane, Math.round(pPlane.y), yPlaneMax);
 				if (!isNaN(topMost)) {
-					if (topMost > yPlaneMin-1)
+					if (topMost > yPlaneMin-1) // || (incr > 0 ? x < almostLast : x > almostLast))
 						b = Math.min(b, topMost - yPlaneMax - 1);
 					else
 						break;
@@ -395,6 +403,10 @@ class Shapes {
 		return b;
 	}
 	static distancesRightmost(plane, hull, pPlane, pHull, scalePrev, scale, l, first, last, incr) {
+		const scaleFactor = scalePrev / scale;
+		const almostLast = Math.round(incr > 0 ? 
+			first + (last-first) * scaleFactor : 
+			first - (first-last) * scaleFactor);
 		for (let y = first; incr > 0 ? y < last : y > last; y += incr) {
 			const yPlane = Math.round(pPlane.y + (y - pHull.y) * scale);
 			const xMin = hull.xMins[y];
@@ -405,7 +417,7 @@ class Shapes {
 				const xPlaneMax = Math.round(pPlane.x - distPrev);
 				const rightMost = Shapes.rightMostDark(plane, xPlaneMin, Math.round(pPlane.x), yPlane);
 				if (!isNaN(rightMost)) {
-					if (rightMost < xPlaneMax+1)
+					if (rightMost < xPlaneMax+1) // || (incr > 0 ? y < almostLast : y > almostLast))
 						l = Math.max(l, rightMost - xPlaneMin + 1);
 					else
 						break;
@@ -415,6 +427,10 @@ class Shapes {
 		return l;
 	}
 	static distancesLeftmost(plane, hull, pPlane, pHull, scalePrev, scale, r, first, last, incr) {
+		const scaleFactor = scalePrev / scale;
+		const almostLast = Math.round(incr > 0 ? 
+			first + (last-first) * scaleFactor : 
+			first - (first-last) * scaleFactor);
 		for (let y = first; incr > 0 ? y < last : y > last; y += incr) {
 			const yPlane = Math.round(pPlane.y + (y - pHull.y) * scale);
 			const xMax = hull.xMaxs[y];
@@ -425,7 +441,7 @@ class Shapes {
 				const xPlaneMax = Math.round(pPlane.x + dist);
 				const leftMost = Shapes.leftMostDark(plane, Math.round(pPlane.x), xPlaneMax, yPlane);
 				if (!isNaN(leftMost)) {
-					if (leftMost > xPlaneMin-1)
+					if (leftMost > xPlaneMin-1) // || (incr > 0 ? y < almostLast : y > almostLast))
 						r = Math.min(r, leftMost - xPlaneMax - 1);
 					else
 						break;
@@ -1519,7 +1535,8 @@ class Horizontal extends Group {
 		this.groups.forEach(g => g.resize(f));
 	}
 	fit(options, w, h) {
-		this.groups.forEach(g => g.fit(options, Infinity, 1));
+		const height = this.properGroups().length == 1 ? Infinity : 1;
+		this.groups.forEach(g => g.fit(options, Infinity, height));
 		super.fit(options, w, h);
 	}
 	format(options, x0, x1, x2, x3, y0, y1, y2, y3) {
@@ -1724,6 +1741,17 @@ class Enclosure extends Group {
 			this.groups.forEach(g => g.fit(options, innerSpace, Infinity));
 		this.fitOpen(options);
 		this.fitClose(options);
+		if (Group.h(options)) {
+			if (this.kernOpenSize() + this.innerSize(options).w + this.kernCloseSize() < 0) {
+				this.kernOpen = 0;
+				this.kernClose = 0;
+			}
+		} else {
+			if (this.kernOpenSize() + this.innerSize(options).h + this.kernCloseSize() < 0) {
+				this.kernOpen = 0;
+				this.kernClose = 0;
+			}
+		}
 		super.fit(options, w, h);
 	}
 	fitOpen(options) {
